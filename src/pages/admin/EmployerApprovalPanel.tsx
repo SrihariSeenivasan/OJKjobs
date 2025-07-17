@@ -1,48 +1,18 @@
-import React, { useState } from 'react';
-
-const mockEmployers = [
-  {
-    id: 'EMP001',
-    name: 'ABC Textiles',
-    email: 'abc@textiles.com',
-    category: 'MSME',
-    status: 'pending',
-    activityLog: ['Registered on 2025-07-17'],
-  },
-  {
-    id: 'EMP002',
-    name: 'XYZ Foods',
-    email: 'xyz@foods.com',
-    category: 'Enterprise',
-    status: 'approved',
-    activityLog: ['Registered on 2025-07-16', 'Approved on 2025-07-17'],
-  },
-];
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../../store';
+import { approveEmployer, setEmployerCategory } from '../../store/slices/employerSlice';
 
 const EmployerApprovalPanel: React.FC = () => {
-  const [employers, setEmployers] = useState(mockEmployers);
-  // Removed unused selectedCategory state
+  const employers = useSelector((state: RootState) => state.employers.employers);
+  const dispatch = useDispatch();
 
   const handleApprove = (id: string) => {
-    setEmployers(prev =>
-      prev.map(emp =>
-        emp.id === id
-          ? {
-              ...emp,
-              status: 'approved',
-              activityLog: [...emp.activityLog, `Approved on ${new Date().toISOString().slice(0, 10)}`],
-            }
-          : emp
-      )
-    );
+    dispatch(approveEmployer(id));
   };
 
   const handleCategoryChange = (id: string, category: string) => {
-    setEmployers(prev =>
-      prev.map(emp =>
-        emp.id === id ? { ...emp, category } : emp
-      )
-    );
+    dispatch(setEmployerCategory({ id, category }));
   };
 
   return (

@@ -10,6 +10,11 @@ export interface EmployerProfile {
   logo?: string;
   hiringNeeds: string[];
   activityLog: string[];
+  mobile?: string;
+  numEmployees?: string;
+  industry?: string;
+  location?: { state: string; district: string; city: string };
+  gst?: string;
 }
 
 interface EmployerState {
