@@ -1,0 +1,136 @@
+{
+  "nav": {
+    "home": "Home",
+    "forEmployers": "For Employers",
+    "forWorkers": "For Workers",
+    "oneDayJob": "1-Day Job",
+    "contactUs": "Contact Us",
+    "login": "Login",
+    "logout": "Logout",
+    "profile": "Profile",
+    "dashboard": "Dashboard"
+  },
+  "hero": {
+    "title": "Bridging the Job Gap in Kongu Nadu",
+    "subtitle": "Connect with verified employers and skilled workers in your local area",
+    "imHiring": "I'm Hiring",
+    "ineedJob": "I Need a Job",
+    "oneDayWork": "1-Day Work"
+  },
+  "features": {
+    "title": "Why Choose Our Platform?",
+    "verified": {
+      "title": "Verified Users",
+      "description": "All employers and workers are verified through KYC process"
+    },
+    "fast": {
+      "title": "24-Hour Hiring",
+      "description": "Quick hiring process with instant notifications"
+    },
+    "local": {
+      "title": "Local Manpower",
+      "description": "Connect with skilled workers in your local area"
+    }
+  },
+  "industries": {
+    "title": "Industries We Serve",
+    "textile": "Textile & Garments",
+    "hospitality": "Hotels & Restaurants",
+    "retail": "Retail & Sales",
+    "construction": "Construction",
+    "manufacturing": "Manufacturing",
+    "services": "Services"
+  },
+  "testimonials": {
+    "title": "What Our Users Say",
+    "employer1": "Found skilled workers within 2 hours of posting. Excellent platform!",
+    "employer2": "The verification process gives me confidence in hiring quality workers.",
+    "worker1": "Got a job within a day of registration. Highly recommended!",
+    "worker2": "The 1-day work feature helped me earn extra income on weekends."
+  },
+  "footer": {
+    "quickLinks": "Quick Links",
+    "terms": "Terms & Conditions",
+    "privacy": "Privacy Policy",
+    "refund": "Refund Policy",
+    "sitemap": "Sitemap",
+    "contact": "Contact Us",
+    "followUs": "Follow Us",
+    "email": "Email",
+    "phone": "Phone",
+    "address": "Address"
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Register",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "phone": "Phone Number",
+    "otp": "Enter OTP",
+    "sendOtp": "Send OTP",
+    "verifyOtp": "Verify OTP",
+    "forgotPassword": "Forgot Password?",
+    "rememberMe": "Remember Me",
+    "loginSuccess": "Login successful!",
+    "loginError": "Login failed. Please try again.",
+    "registerSuccess": "Registration successful!",
+    "registerError": "Registration failed. Please try again."
+  },
+  "jobs": {
+    "title": "Jobs",
+    "postJob": "Post a Job",
+    "browseJobs": "Browse Jobs",
+    "myJobs": "My Jobs",
+    "appliedJobs": "Applied Jobs",
+    "savedJobs": "Saved Jobs",
+    "jobTitle": "Job Title",
+    "company": "Company",
+    "location": "Location",
+    "salary": "Salary",
+    "type": "Job Type",
+    "description": "Description",
+    "requirements": "Requirements",
+    "benefits": "Benefits",
+    "apply": "Apply Now",
+    "save": "Save Job",
+    "unsave": "Unsave Job",
+    "applied": "Applied",
+    "boost": "Boost Job",
+    "edit": "Edit",
+    "delete": "Delete",
+    "viewApplications": "View Applications",
+    "applications": "Applications",
+    "noJobs": "No jobs found",
+    "filters": {
+      "all": "All Jobs",
+      "fullTime": "Full Time",
+      "partTime": "Part Time",
+      "contract": "Contract",
+      "temporary": "Temporary",
+      "oneDay": "1-Day Work"
+    }
+  },
+  "common": {
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "confirm": "Confirm",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "warning": "Warning",
+    "info": "Info",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "reset": "Reset",
+    "selectLanguage": "Select Language"
+  }
+}
