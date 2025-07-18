@@ -1,31 +1,30 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { store } from './store';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import './i18n';
+import { store } from './store';
 
 // Layout Components
 import Layout from './components/common/Layout';
-import AdminPanel from './pages/admin/AdminPanel';
 import ProtectedRoute from './components/common/ProtectedRoute';
+import AdminPanel from './pages/admin/AdminPanel';
 
 // Pages
-import Home from './pages/Home';
 import AuthGateway from './pages/AuthGateway';
 import Dashboard from './pages/Dashboard';
+import Home from './pages/Home';
 import BrowseJobs from './pages/jobs/BrowseJobs';
 import PostJob from './pages/jobs/PostJob';
-import TermsAndConditions from './pages/TermsAndConditions';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import RefundPolicy from './pages/RefundPolicy';
+import TermsAndConditions from './pages/TermsAndConditions';
 // import JobseekerLogin from './pages/auth/JobseekerLogin';
-import JobseekerProfile from './pages/auth/JobseekerProfile';
-import Profile from './pages/Profile';
-import EmployeeLogin from './pages/auth/EmployeeLogin';
+import EmployeeLogin from './pages/auth/EmployerLogin';
 import EmployerPaymentStep from './pages/auth/EmployerPaymentStep';
 import EmployerProfileSetup from './pages/auth/EmployerProfileSetup';
 import EmployerReviewStep from './pages/auth/EmployerReviewStep';
+import JobseekerProfile from './pages/auth/JobseekerProfile';
 import ContactUs from './pages/ContactUs';
+import Profile from './pages/Profile';
 function App() {
   return (
     <Provider store={store}>

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../store';
 import { addJob } from '../../store/slices/jobSlice';
 import { addNotification } from '../../store/slices/uiSlice';
-import { RootState } from '../../store';
 
 
 const PostJob: React.FC = () => {
@@ -37,9 +37,10 @@ const PostJob: React.FC = () => {
   });
 
   const [isLoading, setIsLoading] = useState(false);
+  const [jobPosted, setJobPosted] = useState(false);
   // const [showBoostModal, setShowBoostModal] = useState(false);
   const [step, setStep] = useState(0);
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  // Removed unused isSubmitted state
   // Removed isAdminApproved state (no longer needed)
   // Removed unused jobId state
 
@@ -92,8 +93,9 @@ const PostJob: React.FC = () => {
     };
     dispatch(addJob(newJob));
     setIsLoading(false);
-    setIsSubmitted(true);
-    // isAdminApproved state removed
+    setJobPosted(true);
+    // Optionally reset form fields after submit
+    // setFormData({ ... });
     dispatch(addNotification({
       type: 'info',
       message: 'Your job post is under review. It will be posted once approved by admin.'
@@ -141,12 +143,11 @@ const PostJob: React.FC = () => {
         {/* Stepper UI */}
         <div className="flex items-center justify-between mb-8">
           {(() => {
-            const steps = ["Company Information", "Job Details", "Review & Submit", "Under Review"];
+            // Only keep 'Job Details' and 'Review & Submit' steps
+            const steps = ["Job Details", "Review & Submit"];
             const icons = [
-              <span role="img" aria-label="company">🏢</span>,
               <span role="img" aria-label="profile">📍</span>,
-              <span role="img" aria-label="review">✔️</span>,
-              <span role="img" aria-label="clock">⏲️</span>
+              <span role="img" aria-label="review">✔️</span>
             ];
             const items = [];
             for (let i = 0; i < steps.length; i++) {
@@ -164,8 +165,6 @@ const PostJob: React.FC = () => {
                 let dividerColor = 'bg-gray-200';
                 if (step > i) {
                   dividerColor = 'bg-blue-600'; // completed
-                } else if (step === 2 && i === 2) {
-                  dividerColor = 'bg-yellow-400'; // review line
                 }
                 items.push(
                   <div key={`divider-${i}`} className={`flex-1 h-1 mx-2 ${dividerColor}`} style={{ alignSelf: 'center' }} />
@@ -178,52 +177,8 @@ const PostJob: React.FC = () => {
 
         {/* Multi-step Form */}
         <div className="bg-white rounded-lg shadow-sm p-6">
+          {/* Removed Company Information step */}
           {step === 0 && (
-            <form onSubmit={e => { e.preventDefault(); setStep(1); }}>
-              <div className="bg-blue-50 rounded-lg p-4 mb-2">
-                <h2 className="text-lg font-semibold text-blue-700 mb-2">Company Information</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Company Name *</label>
-                    <input type="text" name="company" required value={formData.company} onChange={handleChange} className="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Your company name" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Location *</label>
-                    <input type="text" name="companyLocation" required value={formData.companyLocation} onChange={handleChange} className="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="e.g., Coimbatore" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Year of Establishment *</label>
-                    <input type="number" name="yearOfEstablishment" required value={formData.yearOfEstablishment} onChange={handleChange} className="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="e.g., 2010" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">No. of Employees *</label>
-                    <select name="numEmployees" required value={formData.numEmployees} onChange={handleChange} className="w-full px-3 py-2 border border-gray-300 rounded-md">
-                      <option value="">Select</option>
-                      <option value="1-10">1-10</option>
-                      <option value="11-50">11-50</option>
-                      <option value="51-200">51-200</option>
-                      <option value="201-500">201-500</option>
-                      <option value="500+">500+</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">GST or Registration Number (optional)</label>
-                    <input type="text" name="gstNumber" value={formData.gstNumber} onChange={handleChange} className="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="GSTIN or Reg. No." />
-                  </div>
-                </div>
-                {/* Admin Verification Pending Message */}
-                {!formData.adminVerified && (
-                  <div className="mt-4 p-3 bg-yellow-100 border-l-4 border-yellow-400 text-yellow-800 rounded">
-                    <strong>Admin Verification Pending:</strong> Your company details are under review. You can post jobs, but they will be visible after admin approval.
-                  </div>
-                )}
-              </div>
-              <div className="flex justify-end pt-4">
-                <button type="submit" className="bg-blue-600 text-white py-2 px-6 rounded-md font-medium hover:bg-blue-700">Next</button>
-              </div>
-            </form>
-          )}
-          {step === 1 && (
             <form onSubmit={e => { e.preventDefault(); setStep(2); }}>
               <div className="bg-green-50 rounded-lg p-4 mb-2">
                 <h2 className="text-lg font-semibold text-green-700 mb-2">Job Details</h2>
@@ -301,7 +256,7 @@ const PostJob: React.FC = () => {
               </div>
             </form>
           )}
-          {step === 2 && (
+          {step === 1 && !jobPosted && (
             <form onSubmit={handleSubmit}>
               <div className="bg-gray-50 rounded-lg p-4 mb-2">
                 <h2 className="text-lg font-semibold text-gray-700 mb-2">Review & Submit</h2>
@@ -324,16 +279,18 @@ const PostJob: React.FC = () => {
               </div>
               <div className="flex justify-between pt-4">
                 <button type="button" className="bg-gray-200 text-gray-700 py-2 px-6 rounded-md font-medium hover:bg-gray-300" onClick={() => setStep(1)}>Back</button>
-                <button type="submit" disabled={isLoading} className="bg-blue-600 text-white py-2 px-6 rounded-md font-medium hover:bg-blue-700 disabled:opacity-50">{isLoading ? t('common.loading') : 'Submit for Review'}</button>
+                <button type="submit" disabled={isLoading} className="bg-blue-600 text-white py-2 px-6 rounded-md font-medium hover:bg-blue-700 disabled:opacity-50">{isLoading ? t('common.loading') : 'Post Job'}</button>
               </div>
             </form>
           )}
-          {step === 2 && isSubmitted && (
-            <div className="mt-6 p-4 bg-yellow-100 border-l-4 border-yellow-400 text-yellow-800 rounded">
-              <strong>Under Review:</strong> Your job post is under admin review. It will be posted once approved.
-              <div className="mt-2 text-sm">Please wait for admin approval...</div>
+          {step === 1 && jobPosted && (
+            <div className="bg-gray-50 rounded-lg p-4 mb-2">
+              <div className="mt-4 p-3 bg-green-100 border-l-4 border-green-400 text-green-800 rounded text-center">
+                <strong>Job has been posted!</strong> Your job post is under review and will be visible once approved by admin.
+              </div>
             </div>
           )}
+          {/* Removed Under Review message */}
         </div>
       </div>
     </div>

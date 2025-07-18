@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
+import EmployerLogin from './auth/EmployerLogin';
 import JobseekerLogin from './auth/JobseekerLogin';
-import EmployeeLogin from './auth/EmployeeLogin';
 
 const AuthGateway: React.FC = () => {
   const [role, setRole] = useState<'jobseeker' | 'employer' | null>(null);
@@ -18,7 +18,7 @@ const AuthGateway: React.FC = () => {
           </>
         )}
         {role === 'jobseeker' && <JobseekerLogin />}
-        {role === 'employer' && <EmployeeLogin />}
+        {role === 'employer' && <EmployerLogin />}
       </div>
     </div>
   );
