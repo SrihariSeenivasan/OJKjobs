@@ -25,6 +25,7 @@ import EmployeeLogin from './pages/auth/EmployeeLogin';
 import EmployerPaymentStep from './pages/auth/EmployerPaymentStep';
 import EmployerProfileSetup from './pages/auth/EmployerProfileSetup';
 import EmployerReviewStep from './pages/auth/EmployerReviewStep';
+import ContactUs from './pages/ContactUs';
 function App() {
   return (
     <Provider store={store}>
@@ -42,6 +43,7 @@ function App() {
           <Route path="/EmployerPaymentSetup" element={<EmployerPaymentStep />} />
           <Route path="/EmployerProfileSetup" element={<EmployerProfileSetup />} />
           <Route path="/EmployerReviewStep" element={<EmployerReviewStep />} />
+          <Route path="/ContactUs" element ={<ContactUs />} />
             {/* Protected Routes */}
             <Route path="/dashboard" element={
               <ProtectedRoute>

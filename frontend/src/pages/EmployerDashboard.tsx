@@ -12,16 +12,30 @@ import {
 } from '@heroicons/react/24/outline';
 import EmployerProfileSection from './auth/EmployerProfileSection';
 
+// Applicant type
+interface Applicant {
+  id: string;
+  name: string;
+  age: number;
+  location: string;
+  education: string;
+  experience: number;
+  headline: string;
+  cover: string;
+  cv: string;
+  status: 'pending' | 'approved';
+}
+
 const EmployerDashboard: React.FC = () => {
   const { user } = useSelector((state: RootState) => state.auth);
   const { myJobs } = useSelector((state: RootState) => state.jobs);
   // Mock applicants data for each job
-  const [applicants, setApplicants] = useState<{ [jobId: string]: any[] }>({});
-  const [selectedApplicant, setSelectedApplicant] = useState<any | null>(null);
+  const [applicants, setApplicants] = useState<{ [jobId: string]: Applicant[] }>({});
+  const [selectedApplicant, setSelectedApplicant] = useState<Applicant | null>(null);
   const [showModal, setShowModal] = useState(false);
   useEffect(() => {
     // Mock: Each job has 2 applicants
-    const mockApplicants: { [jobId: string]: any[] } = {};
+    const mockApplicants: { [jobId: string]: Applicant[] } = {};
     myJobs.forEach(job => {
       mockApplicants[job.id] = [
         {
@@ -64,7 +78,7 @@ const EmployerDashboard: React.FC = () => {
   };
 
   // View details handler
-  const handleViewDetails = (applicant: any) => {
+  const handleViewDetails = (applicant: Applicant) => {
     setSelectedApplicant(applicant);
     setShowModal(true);
   };

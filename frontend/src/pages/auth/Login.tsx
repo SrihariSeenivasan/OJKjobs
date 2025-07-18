@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { setUser, setError } from '../../store/slices/authSlice';
 import { addNotification } from '../../store/slices/uiSlice';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
+import OjkLogo from '../../components/common/OjkLogo';
 
 const Login: React.FC = () => {
   const { t } = useTranslation();
@@ -21,6 +22,14 @@ const Login: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const from = location.state?.from?.pathname || '/dashboard';
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value, type, checked } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value
+    }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,28 +57,17 @@ const Login: React.FC = () => {
       
       navigate(from, { replace: true });
     } catch {
-      dispatch(setError(t('auth.loginError')));
-      dispatch(addNotification({
-        type: 'error',
-        message: t('auth.loginError')
-      }));
+      dispatch(setError('Login failed.'));
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value
-    }));
-  };
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
-        <div>
+        <div className="flex flex-col items-center mb-4">
+          <OjkLogo className="w-20 h-20 mb-2" />
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
             {t('auth.login')}
           </h2>
@@ -80,7 +78,6 @@ const Login: React.FC = () => {
             </Link>
           </p>
         </div>
-
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="space-y-4">
             <div>
