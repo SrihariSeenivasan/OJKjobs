@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { mockEmployees, mockEmployers } from '../../constants';
 
 import AdminDashboard from './AdminDashboard';
+import AdminSupport from './AdminSupport';
 import EmployeeManagement from './EmployeeManagement';
 import EmployerManagement from './EmployerManagement';
 import JobManagement from './JobManagement';
@@ -10,7 +11,7 @@ import JobManagement from './JobManagement';
 const ADMIN_PASSWORD = 'ojkadmin2025';
 
 const AdminPanel: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'employers' | 'employees' | 'jobs'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'employers' | 'employees' | 'jobs' | 'support'>('dashboard');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState('');
   const [employers, setEmployers] = useState(mockEmployers);
@@ -52,7 +53,7 @@ const AdminPanel: React.FC = () => {
     }
   };
 
-  const handleTabChange = (tab: 'dashboard' | 'employers' | 'employees' | 'jobs') => {
+  const handleTabChange = (tab: 'dashboard' | 'employers' | 'employees' | 'jobs' | 'support') => {
     setActiveTab(tab);
     setIsSidebarOpen(false); // Close sidebar on mobile when tab is selected
   };
@@ -148,6 +149,17 @@ const AdminPanel: React.FC = () => {
                   <span className="text-lg">💼</span> 
                   <span className="font-semibold">Job Posts</span>
                 </button>
+                <button 
+                  onClick={() => handleTabChange('support')} 
+                  className={`w-full text-left px-4 py-3 rounded-xl font-medium transition-all duration-200 flex items-center gap-3 group ${
+                    activeTab === 'support' 
+                      ? 'bg-white text-blue-700 shadow-lg transform scale-105' 
+                      : 'hover:bg-blue-600 hover:bg-opacity-80 hover:translate-x-2'
+                  }`}
+                >
+                  <span className="text-lg">🛟</span> 
+                  <span className="font-semibold">Support</span>
+                </button>
               </nav>
             )}
 
@@ -238,6 +250,11 @@ const AdminPanel: React.FC = () => {
                 {/* Jobs Tab */}
                 {activeTab === 'jobs' && (
                   <JobManagement employers={employers} />
+                )}
+
+                {/* Support Tab */}
+                {activeTab === 'support' && (
+                  <AdminSupport />
                 )}
               </div>
             )}

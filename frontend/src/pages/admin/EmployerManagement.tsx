@@ -26,6 +26,10 @@ export interface Employer {
   jobsPosted: number;
   address: string;
   jobs: Job[];
+  yearOfEstablishment?: string;
+  companyLogo?: string; // New field
+  companyDescription?: string; // New field
+  hiringNeeds?: string; // New field
 }
 
 interface EmployerManagementProps {
@@ -387,9 +391,25 @@ const EmployerManagement: React.FC<EmployerManagementProps> = ({
                 <div className="space-y-4">
                   <h4 className="font-semibold text-gray-800 text-lg">Company Information</h4>
                   <div className="space-y-3">
+                    {/* Company Name and Logo in the same row */}
+                    <div className="flex items-center gap-4">
+                      {selectedEmployer.companyLogo ? (
+                        <img src={selectedEmployer.companyLogo} alt="Company Logo" className="w-20 h-20 object-contain rounded border bg-white" />
+                      ) : (
+                        <div className="w-20 h-20 flex items-center justify-center bg-gray-100 text-gray-400 rounded border">No Logo</div>
+                      )}
+                      <div>
+                        <label className="text-sm text-gray-600">Company Name</label>
+                        <p className="font-medium text-gray-900 text-lg">{selectedEmployer.companyName}</p>
+                      </div>
+                    </div>
                     <div>
-                      <label className="text-sm text-gray-600">Company Name</label>
-                      <p className="font-medium text-gray-900">{selectedEmployer.companyName}</p>
+                      <label className="text-sm text-gray-600">Address</label>
+                      <p className="font-medium text-gray-900">{selectedEmployer.address}</p>
+                    </div>
+                    <div>
+                      <label className="text-sm text-gray-600">Short Company Description</label>
+                      <p className="font-medium text-gray-900 whitespace-pre-line">{selectedEmployer.companyDescription || '-'}</p>
                     </div>
                     <div>
                       <label className="text-sm text-gray-600">Industry</label>
@@ -400,9 +420,14 @@ const EmployerManagement: React.FC<EmployerManagementProps> = ({
                       <p className="font-medium text-gray-900">{selectedEmployer.companySize}</p>
                     </div>
                     <div>
-                      <label className="text-sm text-gray-600">Address</label>
-                      <p className="font-medium text-gray-900">{selectedEmployer.address}</p>
+                      <label className="text-sm text-gray-600">Year of Establishment</label>
+                      <p className="font-medium text-gray-900">{selectedEmployer.yearOfEstablishment || '-'}</p>
                     </div>
+                    <div>
+                      <label className="text-sm text-gray-600">Hiring Needs</label>
+                      <p className="font-medium text-gray-900 whitespace-pre-line">{selectedEmployer.hiringNeeds || '-'}</p>
+                    </div>
+                    
                   </div>
                 </div>
                 
@@ -458,27 +483,7 @@ const EmployerManagement: React.FC<EmployerManagementProps> = ({
                 </div>
               </div>
 
-              {/* Documents */}
-              <div className="mb-6">
-                <h4 className="font-semibold text-gray-800 text-lg mb-4">Uploaded Documents</h4>
-                <div className="space-y-2">
-                  {selectedEmployer.documents.map((doc: string, index: number) => (
-                    <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                          <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                          </svg>
-                        </div>
-                        <span className="font-medium text-gray-900">{doc}</span>
-                      </div>
-                      <button className="text-blue-600 hover:text-blue-800 text-sm font-medium transition-colors">
-                        Download
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              </div>
+
 
               {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t border-gray-200">
