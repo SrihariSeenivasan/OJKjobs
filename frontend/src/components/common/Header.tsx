@@ -10,10 +10,10 @@ import {
   XMarkIcon, 
   UserIcon, 
   ChevronDownIcon,
-  BriefcaseIcon,
   ArrowLeftOnRectangleIcon,
   CogIcon
 } from '@heroicons/react/24/outline';
+import OjkLogo from './OjkLogo';
 
 const Header: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -64,7 +64,7 @@ const Header: React.FC = () => {
             }}
             title="Alt+Click for Admin Panel"
           >
-            <BriefcaseIcon className="h-8 w-8 text-blue-600" />
+            <OjkLogo className="h-8 w-8" />
             <span className="text-xl font-bold text-gray-900">OJK Jobs</span>
           </span>
 
@@ -79,7 +79,7 @@ const Header: React.FC = () => {
             <Link to="/1-day-job" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
               {t('nav.oneDayJob')}
             </Link>
-            <Link to="/contact-us" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
+            <Link to="/contactUs" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
               {t('nav.contactUs')}
             </Link>
           </nav>

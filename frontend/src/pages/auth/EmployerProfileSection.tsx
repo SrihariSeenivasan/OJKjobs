@@ -1,4 +1,3 @@
-// ...existing code...
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -6,7 +5,11 @@ import { RootState } from '../../store';
 import { submitEmployerProfile } from '../../store/slices/employerSlice';
 import { addNotification } from '../../store/slices/uiSlice';
 
-const EmployerProfileSection: React.FC = () => {
+interface EmployerProfileSectionProps {
+  isVerified?: boolean;
+}
+
+const EmployerProfileSection: React.FC<EmployerProfileSectionProps> = ({ isVerified: isVerifiedProp }) => {
   const [step, setStep] = useState(0); // 0: start, 1: form1, 2: form2, 3: payment, 4: review
   const [form, setForm] = useState({
     companyName: '',
@@ -38,7 +41,7 @@ const EmployerProfileSection: React.FC = () => {
   const employerProfile = useSelector((state: RootState) =>
     state.employers.employers.find(e => e.id === user?.id)
   );
-  const isVerified = employerProfile?.status === 'approved';
+  const isVerified = typeof isVerifiedProp === 'boolean' ? isVerifiedProp : employerProfile?.status === 'approved';
 
   // Initialize editForm when employerProfile changes and is verified
   React.useEffect(() => {

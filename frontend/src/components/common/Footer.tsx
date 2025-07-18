@@ -2,11 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { 
-  BriefcaseIcon, 
   MapPinIcon, 
   PhoneIcon, 
   EnvelopeIcon 
 } from '@heroicons/react/24/outline';
+import OjkLogo from './OjkLogo';
 import { FaFacebookF, FaXTwitter, FaInstagram, FaLinkedinIn } from 'react-icons/fa6';
 
 const Footer: React.FC = () => {
@@ -42,7 +42,7 @@ const Footer: React.FC = () => {
           {/* Company Info */}
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
-              <BriefcaseIcon className="h-8 w-8 text-blue-400" />
+              <OjkLogo className="h-8 w-8" />
               <span className="text-xl font-bold">OJK Jobs</span>
             </div>
             <p className="text-gray-400 text-sm">
