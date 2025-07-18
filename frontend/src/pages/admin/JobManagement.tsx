@@ -1,21 +1,18 @@
-import React from 'react';
 
-// Example job type
-interface Job {
+import React from 'react';
+export interface Job {
   id: string;
-  headline: string;
-  responsibilities: string;
-  location: { city: string; state: string };
-  minSalary: number;
-  maxSalary: number;
-  jobType: string;
-  industry: string;
-  requirements: string;
-  benefits: string;
-  applicationDeadline: string;
+  title: string;
+  description: string;
+  location: string;
+  salary: string;
+  postedDate: string;
+  employerId: string;
+  requirements: string[];
+  status: string;
 }
 
-interface Employer {
+export interface Employer {
   id: string;
   companyName: string;
   jobs: Job[];
@@ -40,15 +37,13 @@ const JobManagement: React.FC<JobManagementProps> = ({ employers }) => {
             <div className="space-y-8">
               {employer.jobs.map((job) => (
                 <div key={job.id} className="bg-white border border-gray-200 rounded-xl shadow-lg p-6">
-                  <h4 className="text-xl font-bold text-blue-600 mb-2">{job.headline}</h4>
-                  <div className="mb-2"><span className="font-semibold">Responsibilities:</span> {job.responsibilities}</div>
-                  <div className="mb-2"><span className="font-semibold">Location:</span> {job.location.city}, {job.location.state}</div>
-                  <div className="mb-2"><span className="font-semibold">Salary:</span> ₹{job.minSalary} - ₹{job.maxSalary}</div>
-                  <div className="mb-2"><span className="font-semibold">Job Type:</span> {job.jobType}</div>
-                  <div className="mb-2"><span className="font-semibold">Industry:</span> {job.industry}</div>
-                  <div className="mb-2"><span className="font-semibold">Requirements:</span> {job.requirements}</div>
-                  <div className="mb-2"><span className="font-semibold">Benefits:</span> {job.benefits}</div>
-                  <div className="mb-2"><span className="font-semibold">Application Deadline:</span> {job.applicationDeadline}</div>
+                  <h4 className="text-xl font-bold text-blue-600 mb-2">{job.title}</h4>
+                  <div className="mb-2"><span className="font-semibold">Description:</span> {job.description}</div>
+                  <div className="mb-2"><span className="font-semibold">Location:</span> {job.location}</div>
+                  <div className="mb-2"><span className="font-semibold">Salary:</span> {job.salary}</div>
+                  <div className="mb-2"><span className="font-semibold">Posted Date:</span> {new Date(job.postedDate).toLocaleDateString()}</div>
+                  <div className="mb-2"><span className="font-semibold">Requirements:</span> {job.requirements.join(', ')}</div>
+                  <div className="mb-2"><span className="font-semibold">Status:</span> {job.status}</div>
                 </div>
               ))}
             </div>

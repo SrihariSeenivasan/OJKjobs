@@ -1,3 +1,49 @@
+export const mockJobs = [
+  {
+    id: 'job1',
+    title: 'Frontend Developer',
+    description: 'Develop and maintain web applications using React and TypeScript.',
+    location: 'Remote',
+    salary: '₹8,00,000 - ₹12,00,000',
+    postedDate: '2024-07-01',
+    employerId: '1',
+    requirements: ['React', 'TypeScript', 'REST APIs'],
+    status: 'active',
+  },
+  {
+    id: 'job2',
+    title: 'Backend Engineer',
+    description: 'Work on Node.js and Express backend services.',
+    location: 'Bangalore, India',
+    salary: '₹10,00,000 - ₹15,00,000',
+    postedDate: '2024-07-05',
+    employerId: '1',
+    requirements: ['Node.js', 'Express', 'MongoDB'],
+    status: 'active',
+  },
+  {
+    id: 'job3',
+    title: 'UI/UX Designer',
+    description: 'Design user interfaces and experiences for mobile and web.',
+    location: 'Remote',
+    salary: '₹6,00,000 - ₹9,00,000',
+    postedDate: '2024-07-10',
+    employerId: '3',
+    requirements: ['Figma', 'Adobe XD', 'Creativity'],
+    status: 'active',
+  },
+  {
+    id: 'job4',
+    title: 'Energy Analyst',
+    description: 'Analyze energy consumption and optimize usage.',
+    location: 'Hyderabad, India',
+    salary: '₹7,00,000 - ₹10,00,000',
+    postedDate: '2024-07-12',
+    employerId: '2',
+    requirements: ['Excel', 'Data Analysis', 'Energy Sector Knowledge'],
+    status: 'active',
+  },
+];
 
 export const mockEmployers = [
   {
@@ -13,7 +59,10 @@ export const mockEmployers = [
     documents: ['business_license.pdf', 'tax_certificate.pdf'],
     jobsPosted: 5,
     address: '123 Tech Street, Silicon Valley, CA',
-    jobs: []
+    jobs: [
+     
+      ...mockJobs.filter(j => j.employerId === '1')
+    ]
   },
   {
     id: '2',
@@ -28,7 +77,10 @@ export const mockEmployers = [
     documents: ['business_license.pdf', 'environmental_cert.pdf'],
     jobsPosted: 12,
     address: '456 Green Ave, Portland, OR',
-    jobs: []
+    jobs: [
+    
+      ...mockJobs.filter(j => j.employerId === '2')
+    ]
   },
   {
     id: '3',
@@ -43,7 +95,10 @@ export const mockEmployers = [
     documents: ['portfolio.pdf'],
     jobsPosted: 2,
     address: '789 Creative Blvd, New York, NY',
-    jobs: []
+    jobs: [
+      
+      ...mockJobs.filter(j => j.employerId === '3')
+    ]
   }
 ];
 
