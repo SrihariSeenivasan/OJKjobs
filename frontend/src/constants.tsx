@@ -105,7 +105,10 @@ export const mockEmployers = [
 export const mockEmployees = [
   {
     id: '1',
+    employeeId: 'EMP001',
     name: 'Alice Smith',
+    gender: 'Female',
+    age: 29,
     email: 'alice@email.com',
     phone: '+1-555-1111',
     registrationDate: '2024-01-10',
@@ -113,14 +116,24 @@ export const mockEmployees = [
     profileComplete: 95,
     skills: ['React', 'Node.js', 'Python'],
     experience: '5 years',
+    education: 'B.Tech in Computer Science',
     resume: 'alice_resume.pdf',
     location: 'San Francisco, CA',
     jobsApplied: 8,
-    profileImage: '/api/placeholder/40/40'
+    profileImage: '/api/placeholder/40/40',
+    headline: 'Full Stack Developer passionate about building scalable web apps.',
+    socialLinks: {
+      linkedin: 'https://linkedin.com/in/alicesmith',
+      github: 'https://github.com/alicesmith',
+      twitter: ''
+    }
   },
   {
     id: '2',
+    employeeId: 'EMP002',
     name: 'Bob Brown',
+    gender: 'Male',
+    age: 32,
     email: 'bob@email.com',
     phone: '+1-555-2222',
     registrationDate: '2024-01-15',
@@ -128,14 +141,24 @@ export const mockEmployees = [
     profileComplete: 70,
     skills: ['Java', 'Spring Boot', 'MySQL'],
     experience: '3 years',
+    education: 'MCA',
     resume: 'bob_resume.pdf',
     location: 'Austin, TX',
     jobsApplied: 12,
-    profileImage: '/api/placeholder/40/40'
+    profileImage: '/api/placeholder/40/40',
+    headline: 'Backend Engineer with a love for clean code and databases.',
+    socialLinks: {
+      linkedin: 'https://linkedin.com/in/bobbrown',
+      github: '',
+      twitter: 'https://twitter.com/bobbrown'
+    }
   },
   {
     id: '3',
+    employeeId: 'EMP003',
     name: 'Carol Davis',
+    gender: 'Female',
+    age: 26,
     email: 'carol@email.com',
     phone: '+1-555-3333',
     registrationDate: '2024-02-01',
@@ -143,9 +166,16 @@ export const mockEmployees = [
     profileComplete: 45,
     skills: ['UI/UX', 'Figma', 'Adobe Creative Suite'],
     experience: '2 years',
+    education: 'B.Des in Visual Communication',
     resume: 'carol_resume.pdf',
     location: 'Los Angeles, CA',
     jobsApplied: 5,
-    profileImage: '/api/placeholder/40/40'
+    profileImage: '/api/placeholder/40/40',
+    headline: 'Creative UI/UX Designer focused on user-centered design.',
+    socialLinks: {
+      linkedin: '',
+      github: 'https://github.com/caroldavis',
+      twitter: ''
+    }
   }
 ];
