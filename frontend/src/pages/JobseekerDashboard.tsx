@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { RootState } from '../store';
@@ -13,10 +13,6 @@ import {
 const JobseekerDashboard: React.FC = () => {
   const { user } = useSelector((state: RootState) => state.auth);
   const { appliedJobs, savedJobs } = useSelector((state: RootState) => state.jobs);
-  const [showApplyModal, setShowApplyModal] = useState(false);
-  const [cover, setCover] = useState('');
-  const [cv, setCv] = useState<File | null>(null);
-  const [appliedJobId, setAppliedJobId] = useState<string | null>(null);
 
   const stats = [
     {
@@ -47,27 +43,6 @@ const JobseekerDashboard: React.FC = () => {
     { name: 'Saved Jobs', href: '/saved-jobs', icon: BookmarkIcon, color: 'bg-green-600' },
     { name: 'Profile', href: '/profile', icon: UserGroupIcon, color: 'bg-purple-600' }
   ];
-
-  // Mock jobs to apply for
-  const jobsToApply = [
-    { id: 'job1', title: 'Retail Sales Assistant' },
-    { id: 'job2', title: 'Construction Worker' }
-  ];
-
-  const handleApplyClick = (jobId: string) => {
-    setAppliedJobId(jobId);
-    setShowApplyModal(true);
-  };
-
-  const handleApplySubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Here you would dispatch an action to apply to the job and send cover/cv
-    setShowApplyModal(false);
-    setCover('');
-    setCv(null);
-    setAppliedJobId(null);
-    // For demo, just close modal
-  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -113,26 +88,6 @@ const JobseekerDashboard: React.FC = () => {
             ))}
           </div>
         </div>
-        {/* Jobs to Apply Section */}
-        <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Apply for Jobs</h2>
-          <div className="space-y-4">
-            {jobsToApply.map(job => (
-              <div key={job.id} className="flex items-center justify-between p-3 border rounded-lg">
-                <div>
-                  <span className="font-medium text-gray-900">{job.title}</span>
-                </div>
-                <button
-                  className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-                  onClick={() => handleApplyClick(job.id)}
-                >
-                  Apply
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
-
         {/* Recent Activity for Jobseekers */}
         <div className="bg-white rounded-lg shadow-sm p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Recent Activity</h2>
@@ -157,48 +112,6 @@ const JobseekerDashboard: React.FC = () => {
             </div>
           </div>
         </div>
-
-        {/* Apply Modal */}
-        {showApplyModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
-            <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full relative">
-              <button
-                className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
-                onClick={() => setShowApplyModal(false)}
-              >
-                &times;
-              </button>
-              <h3 className="text-xl font-bold mb-4">Apply for Job</h3>
-              <form onSubmit={handleApplySubmit} className="space-y-4">
-                <div>
-                  <label className="block font-semibold mb-1">Cover Details</label>
-                  <textarea
-                    className="w-full border rounded px-3 py-2"
-                    value={cover}
-                    onChange={e => setCover(e.target.value)}
-                    required
-                    placeholder="Write a short cover letter..."
-                  />
-                </div>
-                <div>
-                  <label className="block font-semibold mb-1">Upload CV</label>
-                  <input
-                    type="file"
-                    accept=".pdf,.doc,.docx"
-                    onChange={e => setCv(e.target.files ? e.target.files[0] : null)}
-                    required
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-                >
-                  Submit Application
-                </button>
-              </form>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );

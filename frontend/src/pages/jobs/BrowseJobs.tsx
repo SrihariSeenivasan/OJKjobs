@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { RootState } from '../../store';
-import { setJobs, setFilters, applyToJob, saveJob, unsaveJob } from '../../store/slices/jobSlice';
+import { setFilters, applyToJob, saveJob, unsaveJob } from '../../store/slices/jobSlice';
 import { addNotification } from '../../store/slices/uiSlice';
 import { 
   MagnifyingGlassIcon, 
@@ -14,69 +14,73 @@ import {
 import { BookmarkIcon as BookmarkSolidIcon } from '@heroicons/react/24/solid';
 
 const BrowseJobs: React.FC = () => {
-  const { t } = useTranslation();
   const dispatch = useDispatch();
+  React.useEffect(() => {
+    const mockJobs = [
+      {
+        id: '1',
+        title: 'Textile Machine Operator',
+        company: 'Kongu Textiles Ltd',
+        location: { city: 'Coimbatore', state: 'Tamil Nadu' },
+        salary: { min: 18000, max: 25000, currency: 'INR' },
+        type: 'full-time',
+        industry: 'Textile',
+        requirements: ['Experience with textile machinery', 'Basic literacy'],
+        benefits: ['Health insurance', 'Overtime pay'],
+        postedDate: '2024-01-15',
+        expiryDate: '2024-02-15',
+        isActive: true,
+        isBoosted: false,
+        applicationsCount: 12,
+        employerId: 'emp1'
+      },
+      {
+        id: '2',
+        title: 'Hotel Service Staff',
+        company: 'Grand Palace Hotel',
+        location: { city: 'Madurai', state: 'Tamil Nadu' },
+        salary: { min: 15000, max: 20000, currency: 'INR' },
+        type: 'part-time',
+        industry: 'Hospitality',
+        requirements: ['Good communication skills', 'Presentable appearance'],
+        benefits: ['Flexible timing', 'Tips'],
+        postedDate: '2024-01-16',
+        expiryDate: '2024-02-16',
+        isActive: true,
+        isBoosted: true,
+        applicationsCount: 8,
+        employerId: 'emp2'
+      },
+      {
+        id: '3',
+        title: 'Daily Wage Construction Worker',
+        company: 'ABC Construction',
+        location: { city: 'Chennai', state: 'Tamil Nadu' },
+        salary: { min: 500, max: 800, currency: 'INR' },
+        type: '1-day',
+        industry: 'Construction',
+        requirements: ['Physical fitness', 'Basic tools knowledge'],
+        benefits: ['Daily payment', 'Transport allowance'],
+        postedDate: '2024-01-17',
+        expiryDate: '2024-01-20',
+        isActive: true,
+        isBoosted: false,
+        applicationsCount: 25,
+        employerId: 'emp3'
+      }
+    ];
+    dispatch({ type: 'jobs/setJobs', payload: mockJobs });
+  }, [dispatch]);
+  const { t } = useTranslation();
   const { jobs, filters, appliedJobs, savedJobs } = useSelector((state: RootState) => state.jobs);
   const [searchTerm, setSearchTerm] = useState('');
+  const [showApplyModal, setShowApplyModal] = useState(false);
+  const [applyJobId, setApplyJobId] = useState<string | null>(null);
+  const [resume, setResume] = useState<File | null>(null);
+  const [skills, setSkills] = useState<string>('');
+  const [coverLetter, setCoverLetter] = useState('');
 
-  // Mock jobs data
-  const mockJobs = [
-    {
-      id: '1',
-      title: 'Textile Machine Operator',
-      company: 'Kongu Textiles Ltd',
-      location: { city: 'Coimbatore', state: 'Tamil Nadu' },
-      salary: { min: 18000, max: 25000, currency: 'INR' },
-      type: 'full-time' as const,
-      industry: 'Textile',
-      requirements: ['Experience with textile machinery', 'Basic literacy'],
-      benefits: ['Health insurance', 'Overtime pay'],
-      postedDate: '2024-01-15',
-      expiryDate: '2024-02-15',
-      isActive: true,
-      isBoosted: false,
-      applicationsCount: 12,
-      employerId: 'emp1'
-    },
-    {
-      id: '2',
-      title: 'Hotel Service Staff',
-      company: 'Grand Palace Hotel',
-      location: { city: 'Madurai', state: 'Tamil Nadu' },
-      salary: { min: 15000, max: 20000, currency: 'INR' },
-      type: 'part-time' as const,
-      industry: 'Hospitality',
-      requirements: ['Good communication skills', 'Presentable appearance'],
-      benefits: ['Flexible timing', 'Tips'],
-      postedDate: '2024-01-16',
-      expiryDate: '2024-02-16',
-      isActive: true,
-      isBoosted: true,
-      applicationsCount: 8,
-      employerId: 'emp2'
-    },
-    {
-      id: '3',
-      title: 'Daily Wage Construction Worker',
-      company: 'ABC Construction',
-      location: { city: 'Chennai', state: 'Tamil Nadu' },
-      salary: { min: 500, max: 800, currency: 'INR' },
-      type: '1-day' as const,
-      industry: 'Construction',
-      requirements: ['Physical fitness', 'Basic tools knowledge'],
-      benefits: ['Daily payment', 'Transport allowance'],
-      postedDate: '2024-01-17',
-      expiryDate: '2024-01-20',
-      isActive: true,
-      isBoosted: false,
-      applicationsCount: 25,
-      employerId: 'emp3'
-    }
-  ];
-
-  useEffect(() => {
-    dispatch(setJobs(mockJobs));
-  }, [dispatch]);
+  // ...existing code...
 
   const filteredJobs = jobs.filter(job => {
     const matchesSearch = job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -90,13 +94,6 @@ const BrowseJobs: React.FC = () => {
     return matchesSearch && matchesType && matchesLocation && matchesSalary && matchesIndustry;
   });
 
-  const handleApply = (jobId: string) => {
-    dispatch(applyToJob(jobId));
-    dispatch(addNotification({
-      type: 'success',
-      message: 'Successfully applied to job!'
-    }));
-  };
 
   const handleSave = (jobId: string) => {
     if (savedJobs.includes(jobId)) {
@@ -112,6 +109,26 @@ const BrowseJobs: React.FC = () => {
         message: 'Job saved successfully!'
       }));
     }
+  };
+
+  const handleApplyClick = (jobId: string) => {
+    setApplyJobId(jobId);
+    setShowApplyModal(true);
+  };
+
+  const handleApplySubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!resume || !skills.trim() || !applyJobId) return;
+    dispatch(applyToJob(applyJobId));
+    dispatch(addNotification({
+      type: 'success',
+      message: 'Your job is applied!'
+    }));
+    setShowApplyModal(false);
+    setResume(null);
+    setSkills('');
+    setCoverLetter('');
+    setApplyJobId(null);
   };
 
   const getJobTypeColor = (type: string) => {
@@ -260,9 +277,8 @@ const BrowseJobs: React.FC = () => {
                         <BookmarkIcon className="h-5 w-5 text-gray-400" />
                       )}
                     </button>
-                    
                     <button
-                      onClick={() => handleApply(job.id)}
+                      onClick={() => handleApplyClick(job.id)}
                       disabled={appliedJobs.includes(job.id)}
                       className={`px-6 py-2 rounded-md font-medium transition-colors ${
                         appliedJobs.includes(job.id)
@@ -279,6 +295,58 @@ const BrowseJobs: React.FC = () => {
           )}
         </div>
       </div>
+
+      {/* Apply Modal */}
+      {showApplyModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+          <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full relative">
+            <button
+              className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+              onClick={() => setShowApplyModal(false)}
+            >
+              &times;
+            </button>
+            <h3 className="text-xl font-bold mb-4">Apply for Job</h3>
+            <form onSubmit={handleApplySubmit} className="space-y-4">
+              <div>
+                <label className="block font-semibold mb-1">Upload Resume</label>
+                <input
+                  type="file"
+                  accept=".pdf,.doc,.docx"
+                  onChange={e => setResume(e.target.files ? e.target.files[0] : null)}
+                  required
+                />
+              </div>
+              <div>
+                <label className="block font-semibold mb-1">Relevant Skills</label>
+                <input
+                  type="text"
+                  value={skills}
+                  onChange={e => setSkills(e.target.value)}
+                  required
+                  placeholder="E.g. Machine operation, customer service"
+                  className="w-full border rounded px-3 py-2"
+                />
+              </div>
+              <div>
+                <label className="block font-semibold mb-1">Cover Letter <span className="text-gray-400">(optional)</span></label>
+                <textarea
+                  className="w-full border rounded px-3 py-2"
+                  value={coverLetter}
+                  onChange={e => setCoverLetter(e.target.value)}
+                  placeholder="Write a short cover letter..."
+                />
+              </div>
+              <button
+                type="submit"
+                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-full"
+              >
+                Submit Application
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
