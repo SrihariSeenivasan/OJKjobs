@@ -10,7 +10,7 @@ import AdminPanel from './pages/admin/AdminPanel';
 
 // Pages
 import AuthGateway from './pages/AuthGateway';
-import Dashboard from './pages/Dashboard';
+
 import Home from './pages/Home';
 import BrowseJobs from './pages/jobs/BrowseJobs';
 import PostJob from './pages/jobs/PostJob';
@@ -25,6 +25,7 @@ import EmployerReviewStep from './pages/auth/EmployerReviewStep';
 import JobseekerProfile from './pages/auth/JobseekerProfile';
 import ContactUs from './pages/ContactUs';
 import Profile from './pages/Profile';
+import Dashboard from './pages/Dashboard';
 function App() {
   return (
     <Provider store={store}>
@@ -56,6 +57,7 @@ function App() {
             } />
 
             {/* Static Pages */}
+            
             <Route path="/contact-us" element={<div className="p-8 text-center">Contact Us page coming soon!</div>} />
             <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />

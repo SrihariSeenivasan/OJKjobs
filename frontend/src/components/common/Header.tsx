@@ -1,18 +1,20 @@
+import {
+  ArrowLeftOnRectangleIcon,
+  Bars3Icon,
+  BellIcon,
+  ChevronDownIcon,
+  CogIcon,
+  UserIcon,
+  XMarkIcon
+} from '@heroicons/react/24/outline';
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
 import { RootState } from '../../store';
 import { logout } from '../../store/slices/authSlice';
 import { setLanguage, toggleMobileMenu } from '../../store/slices/uiSlice';
-import { 
-  Bars3Icon, 
-  XMarkIcon, 
-  UserIcon, 
-  ChevronDownIcon,
-  ArrowLeftOnRectangleIcon,
-  CogIcon
-} from '@heroicons/react/24/outline';
+import NotificationComponent from './Notification';
 import OjkLogo from './OjkLogo';
 
 const Header: React.FC = () => {
@@ -24,6 +26,7 @@ const Header: React.FC = () => {
   
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [isLanguageMenuOpen, setIsLanguageMenuOpen] = useState(false);
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
 
   const languages = [
     { code: 'en', name: 'English', flag: '🇬🇧' },
@@ -82,10 +85,64 @@ const Header: React.FC = () => {
             <Link to="/contactUs" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
               {t('nav.contactUs')}
             </Link>
+            
           </nav>
 
           {/* Right Side */}
           <div className="flex items-center space-x-4">
+            {user?.role === 'employer' && (
+              <button
+                className="bg-blue-600 text-white px-4 py-2 rounded-md font-medium hover:bg-blue-700 transition-colors"
+                onClick={() => navigate('/post-job')}
+              >
+                Post Job
+              </button>
+            )}
+            {/* Notification Icon (moved left of language selector) */}
+            {isAuthenticated && (
+              <div className="relative">
+                <button
+                  className="relative text-gray-700 hover:text-blue-600 transition-colors"
+                  onClick={() => setIsNotificationOpen(!isNotificationOpen)}
+                  aria-label="Notifications"
+                >
+                  <BellIcon className="h-6 w-6" />
+                </button>
+                {isNotificationOpen && (
+                  <div className="absolute right-0 mt-10 w-64 z-20">
+                    <NotificationComponent
+                      type={user?.role === 'employer' ? 'employer' : 'jobseeker'}
+                      notifications={[
+                        {
+                          id: '1',
+                          message: 'Welcome to OJK Jobs!',
+                          read: false,
+                          timestamp: new Date(),
+                          priority: 'low',
+                          category: 'system'
+                        },
+                        {
+                          id: '2',
+                          message: 'Your profile is 80% complete.',
+                          read: true,
+                          timestamp: new Date(Date.now() - 60 * 60 * 1000),
+                          priority: 'medium',
+                          category: 'system'
+                        },
+                        {
+                          id: '3',
+                          message: user?.role === 'employer' ? 'You have 2 new job applications.' : 'New jobs posted in your area!',
+                          read: false,
+                          timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000),
+                          priority: user?.role === 'employer' ? 'high' : 'medium',
+                          category: user?.role === 'employer' ? 'application' : 'promotion'
+                        }
+                      ]}
+                    />
+                  </div>
+                )}
+              </div>
+            )}
             {/* Language Selector */}
             <div className="relative">
               <button
@@ -96,7 +153,6 @@ const Header: React.FC = () => {
                 <span className="hidden sm:inline">{currentLanguage.name}</span>
                 <ChevronDownIcon className="h-4 w-4" />
               </button>
-              
               {isLanguageMenuOpen && (
                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10">
                   {languages.map((lang) => (
@@ -114,10 +170,9 @@ const Header: React.FC = () => {
                 </div>
               )}
             </div>
-
-            {/* Auth Buttons */}
+            {/* Auth Buttons & Profile */}
             {isAuthenticated ? (
-              <div className="relative">
+              <div className="relative flex items-center space-x-2">
                 <button
                   onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
                   className="flex items-center space-x-2 text-gray-700 hover:text-blue-600 transition-colors"
@@ -126,7 +181,6 @@ const Header: React.FC = () => {
                   <span className="hidden sm:inline">{user?.name}</span>
                   <ChevronDownIcon className="h-4 w-4" />
                 </button>
-                
                 {isProfileMenuOpen && (
                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10">
                     <Link

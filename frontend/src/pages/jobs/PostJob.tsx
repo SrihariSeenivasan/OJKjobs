@@ -38,11 +38,7 @@ const PostJob: React.FC = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [jobPosted, setJobPosted] = useState(false);
-  // const [showBoostModal, setShowBoostModal] = useState(false);
-  const [step, setStep] = useState(0);
-  // Removed unused isSubmitted state
-  // Removed isAdminApproved state (no longer needed)
-  // Removed unused jobId state
+
 
   const jobTypes = [
     { value: 'full-time', label: t('jobs.filters.fullTime') },
@@ -52,14 +48,37 @@ const PostJob: React.FC = () => {
     { value: '1-day', label: t('jobs.filters.oneDay') }
   ];
 
+  // Expanded industry list (can be further extended)
   const industries = [
-    'Textile',
-    'Hospitality',
-    'Construction',
-    'Manufacturing',
-    'Retail',
-    'Services'
+    'Agriculture', 'Automotive', 'Banking', 'Biotechnology', 'Chemicals', 'Construction', 'Consulting',
+    'Consumer Goods', 'Design', 'Education', 'Electronics', 'Energy', 'Engineering', 'Entertainment',
+    'Environmental', 'Finance', 'Food & Beverage', 'Government', 'Healthcare', 'Hospitality',
+    'Information Technology', 'Insurance', 'Legal', 'Logistics', 'Manufacturing', 'Marketing',
+    'Media', 'Mining', 'Non-Profit', 'Oil & Gas', 'Pharmaceuticals', 'Real Estate', 'Retail',
+    'Services', 'Telecommunications', 'Textile', 'Tourism', 'Transportation', 'Utilities', 'Other'
   ];
+
+  // For city/state autocomplete
+  // Removed unused cityQuery state
+  const [cityResults, setCityResults] = useState<{city: string, region: string}[]>([]);
+  const [cityLoading, setCityLoading] = useState(false);
+
+  // Free API: GeoDB Cities (https://rapidapi.com/wirefreethought/api/geodb-cities/)
+  // We'll use the public endpoint for demo (no API key, limited results)
+  const fetchCities = async (query: string) => {
+    if (!query) return;
+    setCityLoading(true);
+    try {
+      const resp = await fetch(`https://geodb-free-service.wirefreethought.com/v1/geo/cities?limit=5&namePrefix=${encodeURIComponent(query)}`);
+      const data = await resp.json();
+      setCityResults(
+        (data.data || []).map((item: { city: string; region: string }) => ({ city: item.city, region: item.region }))
+      );
+    } catch {
+      setCityResults([]);
+    }
+    setCityLoading(false);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -140,46 +159,23 @@ const PostJob: React.FC = () => {
           <p className="text-gray-600">Fill out the form below to post a new job</p>
         </div>
 
-        {/* Stepper UI */}
-        <div className="flex items-center justify-between mb-8">
-          {(() => {
-            // Only keep 'Job Details' and 'Review & Submit' steps
-            const steps = ["Job Details", "Review & Submit"];
-            const icons = [
-              <span role="img" aria-label="profile">📍</span>,
-              <span role="img" aria-label="review">✔️</span>
-            ];
-            const items = [];
-            for (let i = 0; i < steps.length; i++) {
-              items.push(
-                <div key={steps[i]} className="flex-1 flex flex-col items-center">
-                  <div className={`rounded-full w-12 h-12 flex items-center justify-center mb-2 ${step === i ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-600'}`}
-                    style={{ border: step === i ? '2px solid #2563eb' : '2px solid #e5e7eb' }}>
-                    {icons[i]}
-                  </div>
-                  <span className={`text-sm font-medium ${step === i ? 'text-blue-700' : 'text-gray-700'}`}>{steps[i]}</span>
-                </div>
-              );
-              if (i < steps.length - 1) {
-                // Divider color logic
-                let dividerColor = 'bg-gray-200';
-                if (step > i) {
-                  dividerColor = 'bg-blue-600'; // completed
-                }
-                items.push(
-                  <div key={`divider-${i}`} className={`flex-1 h-1 mx-2 ${dividerColor}`} style={{ alignSelf: 'center' }} />
-                );
-              }
-            }
-            return <>{items}</>;
-          })()}
-        </div>
+        {/* Removed Stepper UI */}
 
-        {/* Multi-step Form */}
+        {/* Single Job Details Form */}
         <div className="bg-white rounded-lg shadow-sm p-6">
-          {/* Removed Company Information step */}
-          {step === 0 && (
-            <form onSubmit={e => { e.preventDefault(); setStep(2); }}>
+          {!jobPosted ? (
+            <form onSubmit={handleSubmit}>
+              {/* Back button at the top */}
+              <div className="mb-4">
+                <button
+                  type="button"
+                  className="bg-gray-200 text-gray-700 py-2 px-4 md:px-6 rounded-md font-medium hover:bg-gray-300 w-full md:w-auto text-left md:text-base"
+                  style={{ maxWidth: '200px' }}
+                  onClick={() => window.history.back()}
+                >
+                  &larr; Back
+                </button>
+              </div>
               <div className="bg-green-50 rounded-lg p-4 mb-2">
                 <h2 className="text-lg font-semibold text-green-700 mb-2">Job Details</h2>
                 <div className="mb-4">
@@ -193,20 +189,68 @@ const PostJob: React.FC = () => {
                 {/* Auto Location Detection */}
                 <div className="mb-4">
                   <label className="block text-sm font-medium text-gray-700 mb-2">Job Location *</label>
-                  <div className="flex gap-2">
-                    <input type="text" name="location.city" required value={formData.location.city} onChange={handleChange} className="flex-1 px-3 py-2 border border-gray-300 rounded-md" placeholder="City" />
-                    <input type="text" name="location.state" required value={formData.location.state} onChange={handleChange} className="flex-1 px-3 py-2 border border-gray-300 rounded-md" placeholder="State" />
-                    <button type="button" className="bg-blue-100 text-blue-700 px-3 py-2 rounded-md font-medium hover:bg-blue-200" onClick={() => {
-                      if (navigator.geolocation) {
-                        navigator.geolocation.getCurrentPosition(() => {
-                          setFormData(prev => ({
-                            ...prev,
-                            location: { city: 'Detected', state: 'Detected' }
-                          }));
-                        });
-                      }
-                    }}>Detect Location</button>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-2">
+                    <input
+                      type="text"
+                      name="location.city"
+                      required
+                      value={formData.location.city}
+                      onChange={e => {
+                        handleChange(e);
+                        if (e.target.value.length >= 3) fetchCities(e.target.value);
+                        else setCityResults([]);
+                      }}
+                      className="px-3 py-2 border border-gray-300 rounded-md w-full"
+                      placeholder="City (type to search)"
+                      autoComplete="off"
+                    />
+                    <input
+                      type="text"
+                      name="location.state"
+                      required
+                      value={formData.location.state}
+                      onChange={handleChange}
+                      className="px-3 py-2 border border-gray-300 rounded-md w-full"
+                      placeholder="State"
+                    />
+                    <button
+                      type="button"
+                      className="bg-blue-100 text-blue-700 px-3 py-2 rounded-md font-medium hover:bg-blue-200 w-full"
+                      onClick={() => {
+                        if (navigator.geolocation) {
+                          navigator.geolocation.getCurrentPosition(() => {
+                            setFormData(prev => ({
+                              ...prev,
+                              location: { city: 'Detected', state: 'Detected' }
+                            }));
+                          });
+                        }
+                      }}
+                    >
+                      Detect Location
+                    </button>
                   </div>
+                  {/* City autocomplete dropdown */}
+                  {cityLoading && <div className="text-xs text-gray-500">Searching cities...</div>}
+                  {cityResults.length > 0 && (
+                    <div className="border border-gray-200 rounded bg-white shadow-md mt-1 z-10 absolute w-full max-w-md">
+                      {cityResults.map((item, idx) => (
+                        <div
+                          key={item.city + item.region + idx}
+                          className="px-3 py-2 cursor-pointer hover:bg-blue-50 text-sm"
+                          onClick={() => {
+                            setFormData(prev => ({
+                              ...prev,
+                              location: { city: item.city, state: item.region }
+                            }));
+                            setCityResults([]);
+                          }}
+                        >
+                          {item.city}, {item.region}
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
@@ -250,47 +294,17 @@ const PostJob: React.FC = () => {
                   <input type="date" name="expiryDate" required value={formData.expiryDate} onChange={handleChange} className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" />
                 </div>
               </div>
-              <div className="flex justify-between pt-4">
-                <button type="button" className="bg-gray-200 text-gray-700 py-2 px-6 rounded-md font-medium hover:bg-gray-300" onClick={() => setStep(0)}>Back</button>
-                <button type="submit" className="bg-blue-600 text-white py-2 px-6 rounded-md font-medium hover:bg-blue-700">Next</button>
-              </div>
-            </form>
-          )}
-          {step === 1 && !jobPosted && (
-            <form onSubmit={handleSubmit}>
-              <div className="bg-gray-50 rounded-lg p-4 mb-2">
-                <h2 className="text-lg font-semibold text-gray-700 mb-2">Review & Submit</h2>
-                <div className="space-y-2">
-                  <div><strong>Company Name:</strong> {formData.company}</div>
-                  <div><strong>Location:</strong> {formData.companyLocation}</div>
-                  <div><strong>Year of Establishment:</strong> {formData.yearOfEstablishment}</div>
-                  <div><strong>No. of Employees:</strong> {formData.numEmployees}</div>
-                  <div><strong>GST/Reg No:</strong> {formData.gstNumber}</div>
-                  <div><strong>Headline:</strong> {formData.title}</div>
-                  <div><strong>Job Responsibilities:</strong> {formData.description}</div>
-                  <div><strong>Location:</strong> {formData.location.city}, {formData.location.state}</div>
-                  <div><strong>Salary:</strong> ₹{formData.salary.min} - ₹{formData.salary.max} ({formData.salary.currency})</div>
-                  <div><strong>Type:</strong> {formData.type}</div>
-                  <div><strong>Industry:</strong> {formData.industry}</div>
-                  <div><strong>Requirements:</strong> <ul className="list-disc ml-6">{formData.requirements.split('\n').filter(Boolean).map((req, i) => <li key={i}>{req}</li>)}</ul></div>
-                  <div><strong>Benefits:</strong> <ul className="list-disc ml-6">{formData.benefits.split('\n').filter(Boolean).map((ben, i) => <li key={i}>{ben}</li>)}</ul></div>
-                  <div><strong>Application Deadline:</strong> {formData.expiryDate}</div>
-                </div>
-              </div>
-              <div className="flex justify-between pt-4">
-                <button type="button" className="bg-gray-200 text-gray-700 py-2 px-6 rounded-md font-medium hover:bg-gray-300" onClick={() => setStep(1)}>Back</button>
+              <div className="flex justify-end pt-4">
                 <button type="submit" disabled={isLoading} className="bg-blue-600 text-white py-2 px-6 rounded-md font-medium hover:bg-blue-700 disabled:opacity-50">{isLoading ? t('common.loading') : 'Post Job'}</button>
               </div>
             </form>
-          )}
-          {step === 1 && jobPosted && (
+          ) : (
             <div className="bg-gray-50 rounded-lg p-4 mb-2">
               <div className="mt-4 p-3 bg-green-100 border-l-4 border-green-400 text-green-800 rounded text-center">
-                <strong>Job has been posted!</strong> Your job post is under review and will be visible once approved by admin.
+                <strong>Job has been posted!</strong> Your job post is now live and visible to job seekers.
               </div>
             </div>
           )}
-          {/* Removed Under Review message */}
         </div>
       </div>
     </div>
