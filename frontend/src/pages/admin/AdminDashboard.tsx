@@ -1,3 +1,4 @@
+import { Briefcase, Building2, Hourglass, User2, Users2 } from 'lucide-react';
 import React, { useState } from 'react';
 import { mockEmployees, mockEmployers } from '../../constants';
 
@@ -26,7 +27,7 @@ const AdminDashboard: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
         <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl shadow-lg p-6 border border-blue-200">
           <div className="flex items-center justify-between mb-4">
-            <span className="text-3xl">🏢</span>
+            <Building2 className="w-8 h-8 text-blue-700" />
             <span className="text-sm font-medium text-blue-600">Total</span>
           </div>
           <div className="text-2xl font-bold text-blue-700">{mockEmployers.length}</div>
@@ -34,7 +35,7 @@ const AdminDashboard: React.FC = () => {
         </div>
         <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl shadow-lg p-6 border border-green-200">
           <div className="flex items-center justify-between mb-4">
-            <span className="text-3xl">👥</span>
+            <Users2 className="w-8 h-8 text-green-700" />
             <span className="text-sm font-medium text-green-600">Active</span>
           </div>
           <div className="text-2xl font-bold text-green-700">{mockEmployees.length}</div>
@@ -42,7 +43,7 @@ const AdminDashboard: React.FC = () => {
         </div>
         <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl shadow-lg p-6 border border-orange-200">
           <div className="flex items-center justify-between mb-4">
-            <span className="text-3xl">👤</span>
+            <User2 className="w-8 h-8 text-orange-700" />
             <span className="text-sm font-medium text-orange-600">Users</span>
           </div>
           <div className="text-2xl font-bold text-orange-700">{mockEmployers.length + mockEmployees.length}</div>
@@ -50,7 +51,7 @@ const AdminDashboard: React.FC = () => {
         </div>
         <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl shadow-lg p-6 border border-purple-200">
           <div className="flex items-center justify-between mb-4">
-            <span className="text-3xl">💼</span>
+            <Briefcase className="w-8 h-8 text-purple-700" />
             <span className="text-sm font-medium text-purple-600">Live</span>
           </div>
           <div className="text-2xl font-bold text-purple-700">{mockEmployers.reduce((acc, emp) => acc + (emp.jobs ? emp.jobs.length : 0), 0)}</div>
@@ -58,7 +59,7 @@ const AdminDashboard: React.FC = () => {
         </div>
         <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-xl shadow-lg p-6 border border-yellow-200">
           <div className="flex items-center justify-between mb-4">
-            <span className="text-3xl">⏳</span>
+            <Hourglass className="w-8 h-8 text-yellow-700" />
             <span className="text-sm font-medium text-yellow-600">Pending</span>
           </div>
           <div className="text-2xl font-bold text-yellow-700">{pendingEmployers.length}</div>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
+import PlanPopup from '../../components/common/Plans';
 import { RootState } from '../../store';
 import { addJob } from '../../store/slices/jobSlice';
 import { addNotification } from '../../store/slices/uiSlice';
@@ -38,6 +39,12 @@ const PostJob: React.FC = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [jobPosted, setJobPosted] = useState(false);
+  // Plan logic
+  const [isPlanPopupOpen, setIsPlanPopupOpen] = useState(true);
+  const [selectedPlan, setSelectedPlan] = useState<'free-trial' | 'subscription' | 'yearly' | null>(null);
+  const [freeTrialCount, setFreeTrialCount] = useState(1); // 1 free job post allowed
+  const [subscriptionExpiry, setSubscriptionExpiry] = useState<Date | null>(null);
+  const [yearlyExpiry, setYearlyExpiry] = useState<Date | null>(null);
 
 
   const jobTypes = [
@@ -82,8 +89,30 @@ const PostJob: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    // Plan logic
+    // Only allow valid plan types
+    if (selectedPlan === 'free-trial') {
+      if (freeTrialCount <= 0) {
+        setIsPlanPopupOpen(true);
+        return;
+      }
+      setFreeTrialCount(freeTrialCount - 1);
+    } else if (selectedPlan === 'subscription') {
+      if (!subscriptionExpiry || subscriptionExpiry < new Date()) {
+        setIsPlanPopupOpen(true);
+        return;
+      }
+    } else if (selectedPlan === 'yearly') {
+      if (!yearlyExpiry || yearlyExpiry < new Date()) {
+        setIsPlanPopupOpen(true);
+        return;
+      }
+    } else if (selectedPlan === null) {
+      setIsPlanPopupOpen(true);
+      return;
+    }
     setIsLoading(true);
-    // Create job object with status 'pending' initially
+    // ...existing job post logic...
     const newJob = {
       id: 'JOB' + Math.floor(100000 + Math.random() * 900000),
       title: formData.title,
@@ -113,8 +142,6 @@ const PostJob: React.FC = () => {
     dispatch(addJob(newJob));
     setIsLoading(false);
     setJobPosted(true);
-    // Optionally reset form fields after submit
-    // setFormData({ ... });
     dispatch(addNotification({
       type: 'info',
       message: 'Your job post is under review. It will be posted once approved by admin.'
@@ -153,13 +180,31 @@ const PostJob: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Plan Popup */}
+      {isPlanPopupOpen && (
+        <PlanPopup
+          isOpen={isPlanPopupOpen}
+          onClose={() => setIsPlanPopupOpen(false)}
+          onPlanSelect={planType => {
+            setSelectedPlan(planType);
+            setIsPlanPopupOpen(false);
+            if (planType === 'subscription') {
+              // Set monthly expiry
+              const now = new Date();
+              setSubscriptionExpiry(new Date(now.getFullYear(), now.getMonth() + 1, now.getDate()));
+            } else if (planType === 'yearly') {
+              // Set yearly expiry
+              const now = new Date();
+              setYearlyExpiry(new Date(now.getFullYear() + 1, now.getMonth(), now.getDate()));
+            }
+          }}
+        />
+      )}
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">{t('jobs.postJob')}</h1>
           <p className="text-gray-600">Fill out the form below to post a new job</p>
         </div>
-
-        {/* Removed Stepper UI */}
 
         {/* Single Job Details Form */}
         <div className="bg-white rounded-lg shadow-sm p-6">
