@@ -64,52 +64,53 @@ const PlanPopup: React.FC<PlanPopupProps> = ({
     },
     {
       id: 'subscription',
-      title: 'Continuous Plan',
+      title: 'Monthly Renewal Plan',
       badge: 'RECOMMENDED',
       badgeColor: 'bg-purple-100 text-purple-600',
-      price: '₹99',
-      priceDescription: 'per job post',
-      subtitle: 'Consistent pricing from the start for all job posts',
+      price: '₹299',
+      priceDescription: 'per month',
+      subtitle: 'Unlimited job posts every month with automatic renewal',
       icon: Users,
       iconColor: 'text-purple-500',
       borderColor: 'purple',
       features: [
-        'Predictable pricing structure',
-        'Ideal for regular hiring',
-        'No surprises in billing',
+        'Unlimited job posts per month',
+        'Ideal for ongoing hiring needs',
+        'Simple monthly billing',
         'Advanced candidate analytics',
         'Email support'
       ],
       popular: true,
-      savings: null
+      savings: 'Save more with monthly unlimited access'
     },
     {
       id: 'yearly',
-      title: 'Yearly Plan',
+      title: 'Yearly Renewal Plan',
       badge: 'BEST VALUE',
       badgeColor: 'bg-yellow-100 text-yellow-700',
       price: '₹999',
       priceDescription: 'per year',
-      subtitle: 'Unlimited job posts for 1 year',
+      subtitle: 'Unlimited job posts for 12 months with annual renewal',
       icon: Star,
       iconColor: 'text-yellow-500',
       borderColor: 'yellow',
       features: [
-        'Best value for high volume hiring',
-        'Unlimited posts for 12 months',
+        'Unlimited job posts for 1 year',
+        'Ideal for high volume hiring',
+        'Simple annual billing',
         'Priority support',
         'Advanced analytics dashboard',
         'Custom branding options',
         'Dedicated account manager'
       ],
       popular: false,
-      savings: 'Save up to 75% vs per-post pricing'
+      savings: 'Save up to 75% vs monthly pricing'
     }
   ];
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-2 sm:p-4">
-      <div className={`bg-white rounded-xl sm:rounded-2xl shadow-2xl w-full max-w-xs sm:max-w-sm md:max-w-4xl lg:max-w-5xl xl:max-w-6xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto transition-all duration-300 ${
+      <div className={`bg-white rounded-xl sm:rounded-2xl shadow-2xl w-full max-w-xs sm:max-w-sm md:max-w-4xl lg:max-w-5xl xl:max-w-6xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto transition-all duration-300 scrollbar-hide ${
         isAnimating ? 'scale-100 opacity-100' : 'scale-95 opacity-0'
       }`}>
         
@@ -157,7 +158,7 @@ const PlanPopup: React.FC<PlanPopupProps> = ({
                 <div
                   key={plan.id}
                   onClick={() => handlePlanSelect(plan.id as 'free-trial' | 'subscription' | 'yearly')}
-                  className={`relative border-2 rounded-lg sm:rounded-xl p-4 sm:p-6 transition-all duration-300 cursor-pointer group ${
+                  className={`relative border-2 rounded-lg sm:rounded-xl p-4 sm:p-6 min-h-[400px] sm:min-h-[560px] transition-all duration-300 cursor-pointer group ${
                     isSelected
                       ? `border-${plan.borderColor}-500 bg-${plan.borderColor}-50 shadow-lg scale-105`
                       : 'border-gray-200 hover:border-gray-300 hover:shadow-md'
@@ -222,7 +223,7 @@ const PlanPopup: React.FC<PlanPopupProps> = ({
                   <div className="absolute left-0 bottom-0 w-full p-4">
                     <button
                       onClick={() => handlePlanSelect(plan.id as 'free-trial' | 'subscription' | 'yearly')}
-                      className={`w-full bg-gradient-to-r from-${plan.borderColor}-500 to-${plan.borderColor}-600 text-white py-2 sm:py-3 px-4 sm:px-6 rounded-lg font-semibold hover:from-${plan.borderColor}-600 hover:to-${plan.borderColor}-700 transition-all duration-200 transform hover:scale-105 text-sm sm:text-base flex items-center justify-center gap-2 group-hover:shadow-lg`}
+                      className={`w-full ${plan.id === 'yearly' ? 'bg-yellow-500 hover:bg-yellow-600' : `bg-${plan.borderColor}-600 hover:bg-${plan.borderColor}-700`} text-white py-2 sm:py-3 px-4 sm:px-6 rounded-lg font-semibold transition-all duration-200 transform hover:scale-105 text-sm sm:text-base flex items-center justify-center gap-2 group-hover:shadow-lg`}
                     >
                       <span>
                         {plan.id === 'free-trial' ? 'Start Free Trial' : 
