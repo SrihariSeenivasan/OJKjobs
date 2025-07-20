@@ -10,6 +10,8 @@ const Profile: React.FC = () => {
   const [formData, setFormData] = useState({
     name: user?.name || '',
     email: user?.email || '',
+    location: user?.location || '',
+    role: user?.role || 'Job Seeker',
   });
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -44,23 +46,32 @@ const Profile: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 via-green-100 to-yellow-100 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-2xl w-full">
-        <div className="rounded-2xl shadow-xl bg-white/90 p-8 flex flex-col md:flex-row items-center gap-8 border-t-8 border-blue-500 relative">
-          {/* Avatar and Edit */}
+    <div className="min-h-screen bg-gradient-to-br from-blue-100 via-green-100 to-yellow-100 py-0 px-0">
+      {/* Banner */}
+      <div className="relative w-full h-48 md:h-64 bg-gradient-to-r from-blue-500 via-purple-400 to-pink-400 flex items-center justify-center">
+        <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1200&q=80" alt="Banner" className="absolute inset-0 w-full h-full object-cover opacity-60" />
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-transparent to-pink-600 opacity-40"></div>
+        <div className="relative z-10 text-white text-3xl md:text-4xl font-bold drop-shadow-lg">My Profile</div>
+      </div>
+      {/* Profile Card */}
+      <div className="max-w-3xl mx-auto -mt-20 pb-8">
+        <div className="rounded-2xl shadow-2xl bg-white/90 p-8 flex flex-col md:flex-row items-center gap-8 border-t-8 border-blue-500 relative">
+          {/* Overlapping Avatar */}
           <div className="flex flex-col items-center md:items-start w-full md:w-1/3">
-            <div className="bg-gradient-to-br from-blue-400 to-green-400 rounded-full p-2 mb-2">
-              <UserCircleIcon className="h-28 w-28 text-white drop-shadow-lg" />
+            <div className="relative">
+              <div className="bg-gradient-to-br from-blue-400 to-green-400 rounded-full p-2 mb-2 border-4 border-white shadow-xl -mt-16">
+                <UserCircleIcon className="h-28 w-28 text-white drop-shadow-lg" />
+              </div>
+              <button
+                onClick={handleEdit}
+                className="mt-2 px-4 py-2 bg-blue-600 text-white rounded-full font-semibold shadow hover:bg-blue-700 transition"
+                style={{ display: isEditing ? 'none' : 'block' }}
+              >
+                Edit Profile
+              </button>
             </div>
-            <button
-              onClick={handleEdit}
-              className="mt-2 px-4 py-2 bg-blue-600 text-white rounded-full font-semibold shadow hover:bg-blue-700 transition"
-              style={{ display: isEditing ? 'none' : 'block' }}
-            >
-              Edit Profile
-            </button>
           </div>
-          {/* Info */}
+          {/* User Info Card */}
           <div className="flex-1 w-full">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="bg-blue-50 rounded-xl p-5 flex items-center gap-4 shadow">
@@ -84,6 +95,48 @@ const Profile: React.FC = () => {
                   <div className="text-lg font-bold text-yellow-900">{user.email || <span className="italic text-gray-400">Not Provided</span>}</div>
                 </div>
               </div>
+              <div className="bg-purple-50 rounded-xl p-5 flex items-center gap-4 shadow md:col-span-2">
+                <span className="inline-block h-8 w-8 bg-purple-400 rounded-full text-white flex items-center justify-center font-bold">{user.role ? user.role[0] : 'J'}</span>
+                <div>
+                  <div className="text-xs text-purple-700 font-semibold uppercase">Role</div>
+                  <div className="text-lg font-bold text-purple-900">{user.role || 'Job Seeker'}</div>
+                </div>
+              </div>
+              <div className="bg-pink-50 rounded-xl p-5 flex items-center gap-4 shadow md:col-span-2">
+                <span className="inline-block h-8 w-8 bg-pink-400 rounded-full text-white flex items-center justify-center font-bold">📍</span>
+                <div>
+                  <div className="text-xs text-pink-700 font-semibold uppercase">Location</div>
+                  <div className="text-lg font-bold text-pink-900">{user.location || <span className="italic text-gray-400">Not Provided</span>}</div>
+                </div>
+              </div>
+            </div>
+            {/* Stats Section */}
+            <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+              <div className="bg-blue-100 rounded-xl p-4 shadow">
+                <div className="text-2xl font-bold text-blue-700">12</div>
+                <div className="text-xs text-blue-600">Jobs Applied</div>
+              </div>
+              <div className="bg-green-100 rounded-xl p-4 shadow">
+                <div className="text-2xl font-bold text-green-700">3</div>
+                <div className="text-xs text-green-600">Jobs Posted</div>
+              </div>
+              <div className="bg-yellow-100 rounded-xl p-4 shadow">
+                <div className="text-2xl font-bold text-yellow-700">5</div>
+                <div className="text-xs text-yellow-600">Interviews</div>
+              </div>
+              <div className="bg-pink-100 rounded-xl p-4 shadow">
+                <div className="text-2xl font-bold text-pink-700">2</div>
+                <div className="text-xs text-pink-600">Offers</div>
+              </div>
+            </div>
+            {/* Recent Activity Section */}
+            <div className="mt-8">
+              <div className="font-semibold text-gray-700 mb-2">Recent Activity</div>
+              <ul className="space-y-2">
+                <li className="bg-gray-50 rounded-lg p-3 shadow text-sm text-gray-700">Applied for <span className="font-bold">Textile Worker</span> at <span className="text-blue-600">ABC Textiles</span> <span className="text-xs text-gray-400">2 days ago</span></li>
+                <li className="bg-gray-50 rounded-lg p-3 shadow text-sm text-gray-700">Interview scheduled for <span className="font-bold">Retail Assistant</span> <span className="text-xs text-gray-400">1 day ago</span></li>
+                <li className="bg-gray-50 rounded-lg p-3 shadow text-sm text-gray-700">Received offer for <span className="font-bold">Factory Helper</span> <span className="text-xs text-gray-400">Today</span></li>
+              </ul>
             </div>
           </div>
         </div>
@@ -94,13 +147,21 @@ const Profile: React.FC = () => {
             <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md relative">
               <h3 className="text-xl font-bold mb-6 text-blue-700 text-center">Edit Profile</h3>
               <form className="space-y-6" onSubmit={handleSubmit}>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
-                  <input name="name" type="text" value={formData.name} onChange={handleChange} className="w-full px-3 py-2 border border-gray-300 rounded-md" />
+                <div className="flex items-center gap-2">
+                  <UserCircleIcon className="h-8 w-8 text-blue-500" />
+                  <input name="name" type="text" value={formData.name} onChange={handleChange} placeholder="Name" className="w-full px-3 py-2 border border-gray-300 rounded-md" />
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                  <input name="email" type="email" value={formData.email} onChange={handleChange} className="w-full px-3 py-2 border border-gray-300 rounded-md" />
+                <div className="flex items-center gap-2">
+                  <EnvelopeIcon className="h-8 w-8 text-yellow-500" />
+                  <input name="email" type="email" value={formData.email} onChange={handleChange} placeholder="Email" className="w-full px-3 py-2 border border-gray-300 rounded-md" />
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="inline-block h-8 w-8 bg-pink-400 rounded-full text-white flex items-center justify-center font-bold">📍</span>
+                  <input name="location" type="text" value={formData.location} onChange={handleChange} placeholder="Location" className="w-full px-3 py-2 border border-gray-300 rounded-md" />
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="inline-block h-8 w-8 bg-purple-400 rounded-full text-white flex items-center justify-center font-bold">{formData.role ? formData.role[0] : 'J'}</span>
+                  <input name="role" type="text" value={formData.role} onChange={handleChange} placeholder="Role" className="w-full px-3 py-2 border border-gray-300 rounded-md" />
                 </div>
                 <div className="flex space-x-3 pt-2">
                   <button type="submit" disabled={isLoading} className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-md font-medium hover:bg-blue-700 disabled:opacity-50">{isLoading ? 'Saving...' : 'Save'}</button>
