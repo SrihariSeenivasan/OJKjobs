@@ -1,84 +1,85 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import OtpInput from '../../components/common/OtpInput';
+import { setUser } from '../../store/slices/authSlice';
 
 const JobseekerLogin: React.FC = () => {
   const [mobile, setMobile] = useState('');
-  const [otpSent, setOtpSent] = useState(false);
   const [otp, setOtp] = useState('');
+  const [otpSent, setOtpSent] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const handleSendOtp = async (e: React.FormEvent) => {
+  const handleSendOtp = (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    // Simulate OTP send
     setTimeout(() => {
       setOtpSent(true);
       setIsLoading(false);
     }, 800);
   };
 
-  const handleVerifyOtp = async (e: React.FormEvent) => {
+  const handleVerifyOtp = (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    // Simulate OTP verification
     setTimeout(() => {
+      // Simulate successful OTP verification and set Redux auth state
+      dispatch(setUser({
+        id: 'jobseeker-1',
+        email: 'jobseeker@example.com',
+        name: 'Jobseeker',
+        role: 'jobseeker',
+        isVerified: true,
+        profileComplete: true
+      }));
       setIsLoading(false);
-      navigate('/jobseeker-profile', { state: { mobile } });
+      navigate('/dashboard');
     }, 800);
   };
 
   return (
-    <div className="max-w-md mx-auto py-12 px-4 sm:px-6 lg:px-8">
-      <h2 className="text-center text-3xl font-extrabold text-blue-700 mb-6 tracking-tight drop-shadow">Jobseeker Login</h2>
-      <form onSubmit={otpSent ? handleVerifyOtp : handleSendOtp} className="w-full flex flex-col gap-8 items-center">
-        <div className="w-full">
-          <label htmlFor="mobile" className="block text-base font-semibold text-blue-600 mb-2">Mobile Number</label>
-          <input
-            id="mobile"
-            name="mobile"
-            type="tel"
-            required
-            value={mobile}
-            onChange={e => setMobile(e.target.value)}
-            className="w-full px-4 py-3 border-2 border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-500 text-lg transition disabled:bg-gray-100"
-            placeholder="Enter your mobile number"
-            disabled={otpSent}
-          />
+    <div className="w-full max-w-md mx-auto">
+      <div className="p-8">
+        <div className="flex flex-col items-center mb-6">
+          <div className="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mb-2 shadow-md">
+            <span className="text-3xl">👤</span>
+          </div>
+          <h2 className="text-2xl font-bold text-blue-700">Jobseeker Login</h2>
+          <p className="text-gray-500 text-sm mt-1">Sign in to access your jobseeker dashboard</p>
         </div>
-        {otpSent && (
-          <div className="w-full flex flex-col items-center">
-            <label htmlFor="otp" className="block text-base font-semibold text-blue-600 mb-2">OTP</label>
-            <div className="flex justify-center w-full">
-              <OtpInput
-                value={otp}
-                onChange={setOtp}
-                numInputs={6}
-                isInputNum={true}
-                inputStyle="mx-1 w-12 h-12 text-center text-xl border-2 border-blue-300 rounded-lg focus:ring-2 focus:ring-purple-400 bg-blue-50 shadow-md transition"
-              />
+        <form onSubmit={otpSent ? handleVerifyOtp : handleSendOtp} className="space-y-6">
+          <div>
+            <label className="block text-sm font-semibold text-blue-700 mb-1">Mobile Number</label>
+            <input
+              type="tel"
+              value={mobile}
+              onChange={e => setMobile(e.target.value)}
+              className="w-full px-4 py-2 border-2 border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 rounded-lg transition-all duration-200 outline-none bg-blue-50 text-gray-800 placeholder-gray-400 shadow-sm"
+              placeholder="Enter your mobile number"
+              disabled={otpSent}
+              required
+            />
+          </div>
+          {otpSent && (
+            <div>
+              <label className="block text-sm font-semibold text-blue-700 mb-1">OTP</label>
+              <OtpInput value={otp} onChange={setOtp} numInputs={6} isInputNum inputStyle="w-10 h-10 text-xl border-2 border-blue-200 focus:border-blue-500 rounded-lg text-center mx-1 bg-blue-50 transition-all duration-200 outline-none" />
             </div>
-            <p className="text-xs text-gray-500 mt-2 text-center">Enter the 6-digit OTP sent to your mobile</p>
-          </div>
-        )}
-        <button
-          type="submit"
-          disabled={isLoading || (otpSent && otp.replace(/\D/g, '').length < 6)}
-          className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white py-3 px-4 rounded-lg font-bold text-lg shadow-lg hover:from-blue-600 hover:to-purple-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition"
-        >
-          {isLoading ? 'Please wait...' : otpSent ? 'Verify OTP' : 'Send OTP'}
-        </button>
-      </form>
-      {/* Modal for loading */}
-      {isLoading && (
-        <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl shadow-xl p-8 flex flex-col items-center">
-            <svg className="animate-spin h-8 w-8 text-blue-500 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/></svg>
-            <span className="text-blue-700 font-semibold">Processing...</span>
-          </div>
-        </div>
-      )}
+          )}
+          <button
+            type="submit"
+            disabled={isLoading || (otpSent && otp.length !== 6)}
+            className="w-full bg-gradient-to-r from-blue-600 to-blue-500 text-white py-2.5 px-4 rounded-lg font-semibold hover:from-blue-700 hover:to-blue-600 transition-all duration-200 disabled:opacity-50 shadow-md flex items-center justify-center gap-2"
+          >
+            {isLoading ? (
+              <span className="animate-spin h-5 w-5 mr-2 border-2 border-white border-t-blue-400 rounded-full inline-block"></span>
+            ) : null}
+            {isLoading ? 'Please wait...' : otpSent ? 'Verify OTP' : 'Send OTP'}
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

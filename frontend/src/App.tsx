@@ -17,7 +17,7 @@ import PostJob from './pages/jobs/PostJob';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import RefundPolicy from './pages/RefundPolicy';
 import TermsAndConditions from './pages/TermsAndConditions';
-// import JobseekerLogin from './pages/auth/JobseekerLogin';
+import JobseekerLogin from './pages/auth/JobseekerLogin';
 import EmployeeLogin from './pages/auth/EmployerLogin';
 import EmployerPaymentStep from './pages/auth/EmployerPaymentStep';
 import EmployerProfileSetup from './pages/auth/EmployerProfileSetup';
@@ -38,6 +38,7 @@ function App() {
             <Route path="/browse-jobs" element={<BrowseJobs />} />
             <Route path="/1-day-job" element={<BrowseJobs />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/JobseekerLogin" element={<JobseekerLogin />} />
           <Route path="/EmployeeLogin" element={<EmployeeLogin />} />
           <Route path="/admin" element={<AdminPanel />} />
           <Route path="/EmployerPaymentSetup" element={<EmployerPaymentStep />} />

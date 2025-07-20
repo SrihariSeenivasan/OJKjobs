@@ -35,7 +35,7 @@ const EmployerLogin: React.FC = () => {
         profileComplete: true
       }));
       setIsLoading(false);
-      navigate('/Dashboard');
+      navigate('/dashboard');
     }, 800);
   };
 
