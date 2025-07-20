@@ -7,6 +7,8 @@ import AdminSupport from './AdminSupport';
 import EmployeeManagement from './EmployeeManagement';
 import EmployerManagement from './EmployerManagement';
 import JobManagement from './JobManagement';
+import ManageBlogs from './ManageBlogs';
+import ManageTestimonials from './ManageTestimonials';
 
 const ADMIN_PASSWORD = 'ojkadmin2025';
 
@@ -18,7 +20,7 @@ import ManagePayment from './ManagePayment';
 import { BarChart, Briefcase, Building2, ClipboardList, CreditCard, LifeBuoy, LogOut, Users } from 'lucide-react';
 
 const AdminPanel: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'employers' | 'employees' | 'jobs' | 'support' | 'adminsubscriptionplan' | 'managepayment'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'employers' | 'employees' | 'jobs' | 'support' | 'adminsubscriptionplan' | 'managepayment' | 'manageblogs' | 'managetestimonials'>('dashboard');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState('');
   const [employers, setEmployers] = useState(mockEmployers);
@@ -60,7 +62,7 @@ const AdminPanel: React.FC = () => {
     }
   };
 
-  const handleTabChange = (tab: 'dashboard' | 'employers' | 'employees' | 'jobs' | 'support' | 'adminsubscriptionplan' | 'managepayment') => {
+  const handleTabChange = (tab: 'dashboard' | 'employers' | 'employees' | 'jobs' | 'support' | 'adminsubscriptionplan' | 'managepayment' | 'manageblogs' | 'managetestimonials') => {
     setActiveTab(tab);
     setIsSidebarOpen(false); // Close sidebar on mobile when tab is selected
   };
@@ -178,6 +180,31 @@ const AdminPanel: React.FC = () => {
                   <CreditCard className="w-5 h-5" />
                   <span className="font-semibold">Manage Payment</span>
                 </button>
+                
+                <button 
+                  onClick={() => handleTabChange('manageblogs')} 
+                  className={`w-full text-left px-4 py-3 rounded-xl font-medium transition-all duration-200 flex items-center gap-3 group ${
+                    activeTab === 'manageblogs' 
+                      ? 'bg-white text-blue-700 shadow-lg transform scale-105' 
+                      : 'hover:bg-blue-600 hover:bg-opacity-80 hover:translate-x-2'
+                  }`}
+                >
+                  {/* You can use a blog icon here if available */}
+                  <Building2 className="w-5 h-5" />
+                  <span className="font-semibold">Manage Blogs</span>
+                </button>
+                <button 
+                  onClick={() => handleTabChange('managetestimonials')} 
+                  className={`w-full text-left px-4 py-3 rounded-xl font-medium transition-all duration-200 flex items-center gap-3 group ${
+                    activeTab === 'managetestimonials' 
+                      ? 'bg-white text-blue-700 shadow-lg transform scale-105' 
+                      : 'hover:bg-blue-600 hover:bg-opacity-80 hover:translate-x-2'
+                  }`}
+                >
+                  {/* You can use a testimonial icon here if available */}
+                  <ClipboardList className="w-5 h-5" />
+                  <span className="font-semibold">Manage Testimonials</span>
+                </button>
                 <button 
                   onClick={() => handleTabChange('support')} 
                   className={`w-full text-left px-4 py-3 rounded-xl font-medium transition-all duration-200 flex items-center gap-3 group ${
@@ -189,7 +216,7 @@ const AdminPanel: React.FC = () => {
                   <LifeBuoy className="w-5 h-5" />
                   <span className="font-semibold">Support</span>
                 </button>
-                
+
               </nav>
             )}
 
@@ -291,12 +318,21 @@ const AdminPanel: React.FC = () => {
                 {activeTab === 'managepayment' && (
                   <ManagePayment />
                 )}
+
                 {/* Support Tab */}
                 {activeTab === 'support' && (
                   <AdminSupport />
                 )}
 
-                
+                {/* Manage Blogs Tab */}
+                {activeTab === 'manageblogs' && (
+                  <ManageBlogs />
+                )}
+
+                {/* Manage Testimonials Tab */}
+                {activeTab === 'managetestimonials' && (
+                  <ManageTestimonials />
+                )}
               </div>
             )}
           </div>

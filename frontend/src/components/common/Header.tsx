@@ -215,13 +215,13 @@ const Header: React.FC = () => {
             ) : (
               <div className="flex items-center space-x-2">
                 <Link
-                  to="/login"
+                  to="/authLog"
                   className="text-gray-700 hover:text-blue-600 font-medium transition-colors"
                 >
                   {t('nav.login')}
                 </Link>
                 <Link
-                  to="/auth"
+                  to="/authReg"
                   className="bg-blue-600 text-white px-4 py-2 rounded-md font-medium hover:bg-blue-700 transition-colors"
                 >
                   {t('auth.register')}

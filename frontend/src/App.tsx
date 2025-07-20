@@ -9,7 +9,7 @@ import ProtectedRoute from './components/common/ProtectedRoute';
 import AdminPanel from './pages/admin/AdminPanel';
 
 // Pages
-import AuthGateway from './pages/AuthGateway';
+import AuthGatewayLog from './pages/AuthGatewayLog';
 
 import Home from './pages/Home';
 import BrowseJobs from './pages/jobs/BrowseJobs';
@@ -27,6 +27,10 @@ import ContactUs from './pages/ContactUs';
 import Profile from './pages/Profile';
 import Dashboard from './pages/Dashboard';
 import Blog from './pages/Blog';
+import AuthGatewayReg from './pages/AuthGatewayReg';
+import JobseekerRegister from './pages/auth/JobseekerRegister';
+import EmployerRegister from './pages/auth/EmployerRegister';
+
 function App() {
   return (
     <Provider store={store}>
@@ -34,11 +38,14 @@ function App() {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
-            <Route path="/auth" element={<AuthGateway />} />
+            <Route path="/authLog" element={<AuthGatewayLog />} />
+            <Route path="/authReg" element={<AuthGatewayReg />} />
             <Route path="/jobseeker-profile" element={<JobseekerProfile />} />
             <Route path="/browse-jobs" element={<BrowseJobs />} />
             <Route path="/1-day-job" element={<BrowseJobs />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/JobseekerRegister" element={<JobseekerRegister />} />
+            <Route path="/EmployerRegister" element={< EmployerRegister/>} />
             <Route path="/JobseekerLogin" element={<JobseekerLogin />} />
           <Route path="/EmployeeLogin" element={<EmployeeLogin />} />
           <Route path="/admin" element={<AdminPanel />} />
