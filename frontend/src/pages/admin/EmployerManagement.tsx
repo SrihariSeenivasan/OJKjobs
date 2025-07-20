@@ -1,5 +1,30 @@
 import React, { useEffect, useState } from 'react';
 
+const plans = [
+  {
+    id: 'free-trial',
+    title: 'Starter Plan',
+  },
+  {
+    id: 'subscription',
+    title: 'Continuous Plan',
+  },
+  {
+    id: 'yearly',
+    title: 'Yearly Plan',
+  },
+];
+
+const PLAN_OPTIONS = [
+  'All',
+  ...plans.map(p => p.title)
+];
+
+function getPlanTitle(planId?: string) {
+  if (!planId) return 'N/A';
+  const plan = plans.find(p => p.id === planId);
+  return plan ? plan.title : 'N/A';
+}
 export interface Job {
   id: string;
   title: string;
@@ -30,6 +55,7 @@ export interface Employer {
   companyLogo?: string; // New field
   companyDescription?: string; // New field
   hiringNeeds?: string; // New field
+  currentPlan?: string; // Added field for current plan
 }
 
 interface EmployerManagementProps {
@@ -46,6 +72,7 @@ const EmployerManagement: React.FC<EmployerManagementProps> = ({
   const [popupMessage, setPopupMessage] = useState<string | null>(null);
   const [popupStatus, setPopupStatus] = useState<'approved' | 'rejected' | null>(null);
   const [filter, setFilter] = useState('');
+  const [planFilter, setPlanFilter] = useState('All');
   const [page, setPage] = useState(1);
   const [selectedEmployer, setSelectedEmployer] = useState<Employer | null>(null);
   const [showEmployerModal, setShowEmployerModal] = useState(false);
@@ -63,11 +90,16 @@ const EmployerManagement: React.FC<EmployerManagementProps> = ({
   
   const PAGE_SIZE = 10;
 
-  const filteredEmployers = employers.filter(e => 
-    e.companyName.toLowerCase().includes(filter.toLowerCase()) ||
-    e.contactPerson.toLowerCase().includes(filter.toLowerCase()) ||
-    e.industry.toLowerCase().includes(filter.toLowerCase())
-  );
+  const filterLower = filter.toLowerCase();
+  const filteredEmployers = employers.filter(e => {
+    const matchesText =
+      e.companyName.toLowerCase().includes(filterLower) ||
+      e.contactPerson.toLowerCase().includes(filterLower) ||
+      e.industry.toLowerCase().includes(filterLower);
+    const planTitle = getPlanTitle(e.currentPlan);
+    const matchesPlan = planFilter === 'All' || planTitle === planFilter;
+    return matchesText && matchesPlan;
+  });
   
   const totalPages = Math.ceil(filteredEmployers.length / PAGE_SIZE);
   const paginatedEmployers = filteredEmployers.slice((page-1)*PAGE_SIZE, page*PAGE_SIZE);
@@ -89,6 +121,9 @@ const EmployerManagement: React.FC<EmployerManagementProps> = ({
               </h3>
               <p className="text-xs md:text-sm text-gray-500 mt-1">
                 {employer.industry}
+              </p>
+              <p className="text-xs md:text-sm text-blue-600 mt-1 font-semibold">
+                Plan: {getPlanTitle(employer.currentPlan)}
               </p>
             </div>
             <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full flex-shrink-0 ml-2 ${getStatusColor(employer.status)}`}>
@@ -148,7 +183,7 @@ const EmployerManagement: React.FC<EmployerManagementProps> = ({
   const renderTableView = () => (
     <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
       <div className="overflow-x-auto">
-        <table className="w-full min-w-[800px]">
+        <table className="w-full min-w-[900px]">
           <thead className="bg-gray-50 border-b border-gray-200">
             <tr>
               <th className="px-4 lg:px-6 py-3 lg:py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -159,6 +194,9 @@ const EmployerManagement: React.FC<EmployerManagementProps> = ({
               </th>
               <th className="px-4 lg:px-6 py-3 lg:py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Industry
+              </th>
+              <th className="px-4 lg:px-6 py-3 lg:py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Plan
               </th>
               <th className="px-4 lg:px-6 py-3 lg:py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Status
@@ -197,6 +235,11 @@ const EmployerManagement: React.FC<EmployerManagementProps> = ({
                 <td className="px-4 lg:px-6 py-4">
                   <div className="text-sm lg:text-base text-gray-900 max-w-xs truncate">
                     {employer.industry}
+                  </div>
+                </td>
+                <td className="px-4 lg:px-6 py-4">
+                  <div className="text-sm lg:text-base text-blue-600 font-semibold">
+                    {getPlanTitle(employer.currentPlan)}
                   </div>
                 </td>
                 <td className="px-4 lg:px-6 py-4">
@@ -261,6 +304,18 @@ const EmployerManagement: React.FC<EmployerManagementProps> = ({
               onChange={e => { setFilter(e.target.value); setPage(1); }}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
+          </div>
+          {/* Plan Dropdown */}
+          <div className="max-w-xs">
+            <select
+              value={planFilter}
+              onChange={e => { setPlanFilter(e.target.value); setPage(1); }}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+            >
+              {PLAN_OPTIONS.map(option => (
+                <option key={option} value={option}>{option}</option>
+              ))}
+            </select>
           </div>
         </div>
       </div>
@@ -401,6 +456,7 @@ const EmployerManagement: React.FC<EmployerManagementProps> = ({
                       <div>
                         <label className="text-sm text-gray-600">Company Name</label>
                         <p className="font-medium text-gray-900 text-lg">{selectedEmployer.companyName}</p>
+                        <p className="text-xs text-blue-600 font-semibold mt-1">Current Plan: {getPlanTitle(selectedEmployer.currentPlan)}</p>
                       </div>
                     </div>
                     <div>

@@ -1,6 +1,7 @@
 
 
 import React, { useState } from 'react';
+import { mockEmployers } from '../../constants';
 
 export interface Job {
   id: string;
@@ -17,21 +18,31 @@ export interface Job {
 export interface Employer {
   id: string;
   companyName: string;
+  email: string;
+  mobile: string;
   jobs: Job[];
 }
 
-interface JobManagementProps {
-  employers: Employer[];
-}
+// Removed JobManagementProps, will use mockEmployers directly
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 5;
 
 
-const JobManagement: React.FC<JobManagementProps> = ({ employers }) => {
+const JobManagement: React.FC = () => {
   const [page, setPage] = useState(1);
   const [expandedCompany, setExpandedCompany] = useState<string | null>(null);
   const [expandedJob, setExpandedJob] = useState<string | null>(null);
   const [filter, setFilter] = useState('');
+
+  // Map mockEmployers to Employer[] shape
+  const employers: (Employer & { contactPerson?: string })[] = mockEmployers.map(e => ({
+    id: e.id,
+    companyName: e.companyName,
+    email: e.email,
+    mobile: e.phone,
+    jobs: e.jobs,
+    contactPerson: e.contactPerson,
+  }));
 
   // Filter employers by company name or job title
   const filteredEmployers = employers.filter(employer => {
@@ -85,6 +96,8 @@ const JobManagement: React.FC<JobManagementProps> = ({ employers }) => {
               <thead className="bg-gradient-to-r from-gray-50 to-blue-50 border-b border-gray-200">
                 <tr>
                   <th className="px-6 py-5 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">Company Name</th>
+                  <th className="px-6 py-5 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">Employer Name / Email</th>
+                  <th className="px-6 py-5 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">Mobile</th>
                   <th className="px-6 py-5 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider"># Job Posts</th>
                   <th className="px-6 py-5 text-left text-sm font-semibold text-gray-700 uppercase tracking-wider">Actions</th>
                 </tr>
@@ -98,8 +111,19 @@ const JobManagement: React.FC<JobManagementProps> = ({ employers }) => {
                           <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full flex items-center justify-center text-white font-bold text-sm mr-3">
                             {employer.companyName.charAt(0).toUpperCase()}
                           </div>
-                          <span className="font-semibold text-gray-900">{employer.companyName}</span>
+                          <span className="font-semibold text-gray-900 block">{employer.companyName}</span>
                         </div>
+                      </td>
+                      <td className="px-6 py-5">
+                        <div>
+                          <span className="font-semibold text-gray-900 block">{employer.contactPerson || '-'}</span>
+                          <span className="text-xs text-gray-500 block">{employer.email}</span>
+                        </div>
+                      </td>
+                      <td className="px-6 py-5">
+                        <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800">
+                          {employer.mobile}
+                        </span>
                       </td>
                       <td className="px-6 py-5">
                         <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
@@ -240,42 +264,53 @@ const JobManagement: React.FC<JobManagementProps> = ({ employers }) => {
               </tbody>
             </table>
           </div>
-          
-          {/* Pagination controls */}
-          <div className="flex justify-between items-center p-6 bg-gray-50 border-t border-gray-200">
-            <div className="text-sm text-gray-600 font-medium">
-              Page <span className="font-bold text-gray-800">{page}</span> of <span className="font-bold text-gray-800">{totalPages}</span>
-            </div>
-            <div className="flex gap-3">
-              <button
-                onClick={() => setPage(p => Math.max(1, p-1))}
-                disabled={page === 1}
-                className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
-                  page === 1 
-                    ? 'bg-gray-200 text-gray-400 cursor-not-allowed' 
-                    : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-300 shadow-sm hover:shadow-md'
-                }`}
-              >
-                <svg className="w-4 h-4 mr-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                </svg>
-                Prev
-              </button>
-              <button
-                onClick={() => setPage(p => Math.min(totalPages, p+1))}
-                disabled={page === totalPages}
-                className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
-                  page === totalPages 
-                    ? 'bg-gray-200 text-gray-400 cursor-not-allowed' 
-                    : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-300 shadow-sm hover:shadow-md'
-                }`}
-              >
-                Next
-                <svg className="w-4 h-4 ml-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
-            </div>
+        </div>
+        {/* Pagination controls styled like EmployerManagement, outside the card */}
+        <div className="flex flex-col sm:flex-row justify-between items-center mt-6 gap-4">
+          <div className="text-sm text-gray-600">
+            Page {page} of {totalPages} ({filteredEmployers.length} total results)
+          </div>
+          <div className="flex gap-2">
+            <button
+              onClick={() => setPage(p => Math.max(1, p-1))}
+              disabled={page === 1}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                page === 1 
+                  ? 'bg-gray-200 text-gray-400 cursor-not-allowed' 
+                  : 'bg-blue-100 text-blue-700 hover:bg-blue-200'
+              }`}
+            >
+              Previous
+            </button>
+            {/* Page Numbers (up to 5 at a time) */}
+            {[...Array(Math.min(5, totalPages))].map((_, i) => {
+              const pageNum = Math.max(1, Math.min(totalPages - 4, page - 2)) + i;
+              if (pageNum > totalPages) return null;
+              return (
+                <button
+                  key={pageNum}
+                  onClick={() => setPage(pageNum)}
+                  className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    page === pageNum
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  }`}
+                >
+                  {pageNum}
+                </button>
+              );
+            })}
+            <button
+              onClick={() => setPage(p => Math.min(totalPages, p+1))}
+              disabled={page === totalPages}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                page === totalPages 
+                  ? 'bg-gray-200 text-gray-400 cursor-not-allowed' 
+                  : 'bg-blue-100 text-blue-700 hover:bg-blue-200'
+              }`}
+            >
+              Next
+            </button>
           </div>
         </div>
       </div>

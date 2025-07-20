@@ -10,10 +10,15 @@ import JobManagement from './JobManagement';
 
 const ADMIN_PASSWORD = 'ojkadmin2025';
 
+
 import AdminSubscriptionPlan from './AdminSubscriptionPlan';
+import ManagePayment from './ManagePayment';
+
+// Lucide icons
+import { BarChart, Briefcase, Building2, ClipboardList, CreditCard, LifeBuoy, LogOut, Users } from 'lucide-react';
 
 const AdminPanel: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'employers' | 'employees' | 'jobs' | 'support' | 'adminsubscriptionplan'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'employers' | 'employees' | 'jobs' | 'support' | 'adminsubscriptionplan' | 'managepayment'>('dashboard');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState('');
   const [employers, setEmployers] = useState(mockEmployers);
@@ -55,7 +60,7 @@ const AdminPanel: React.FC = () => {
     }
   };
 
-  const handleTabChange = (tab: 'dashboard' | 'employers' | 'employees' | 'jobs' | 'support' | 'adminsubscriptionplan') => {
+  const handleTabChange = (tab: 'dashboard' | 'employers' | 'employees' | 'jobs' | 'support' | 'adminsubscriptionplan' | 'managepayment') => {
     setActiveTab(tab);
     setIsSidebarOpen(false); // Close sidebar on mobile when tab is selected
   };
@@ -115,7 +120,7 @@ const AdminPanel: React.FC = () => {
                       : 'hover:bg-blue-600 hover:bg-opacity-80 hover:translate-x-2'
                   }`}
                 >
-                  <span className="text-lg">📊</span> 
+                  <BarChart className="w-5 h-5" />
                   <span className="font-semibold">Dashboard</span>
                 </button>
                 <button 
@@ -126,7 +131,7 @@ const AdminPanel: React.FC = () => {
                       : 'hover:bg-blue-600 hover:bg-opacity-80 hover:translate-x-2'
                   }`}
                 >
-                  <span className="text-lg">🏢</span> 
+                  <Building2 className="w-5 h-5" />
                   <span className="font-semibold">Employers</span>
                 </button>
                 <button 
@@ -137,7 +142,7 @@ const AdminPanel: React.FC = () => {
                       : 'hover:bg-blue-600 hover:bg-opacity-80 hover:translate-x-2'
                   }`}
                 >
-                  <span className="text-lg">👥</span> 
+                  <Users className="w-5 h-5" />
                   <span className="font-semibold">Job Seekers</span>
                 </button>
                 <button 
@@ -148,7 +153,7 @@ const AdminPanel: React.FC = () => {
                       : 'hover:bg-blue-600 hover:bg-opacity-80 hover:translate-x-2'
                   }`}
                 >
-                  <span className="text-lg">💼</span> 
+                  <Briefcase className="w-5 h-5" />
                   <span className="font-semibold">Job Posts</span>
                 </button>
                 <button 
@@ -159,8 +164,19 @@ const AdminPanel: React.FC = () => {
                       : 'hover:bg-blue-600 hover:bg-opacity-80 hover:translate-x-2'
                   }`}
                 >
-                  <span className="text-lg">📝</span> 
+                  <ClipboardList className="w-5 h-5" />
                   <span className="font-semibold">Subscription Plans</span>
+                </button>
+                <button 
+                  onClick={() => handleTabChange('managepayment')} 
+                  className={`w-full text-left px-4 py-3 rounded-xl font-medium transition-all duration-200 flex items-center gap-3 group ${
+                    activeTab === 'managepayment' 
+                      ? 'bg-white text-blue-700 shadow-lg transform scale-105' 
+                      : 'hover:bg-blue-600 hover:bg-opacity-80 hover:translate-x-2'
+                  }`}
+                >
+                  <CreditCard className="w-5 h-5" />
+                  <span className="font-semibold">Manage Payment</span>
                 </button>
                 <button 
                   onClick={() => handleTabChange('support')} 
@@ -170,7 +186,7 @@ const AdminPanel: React.FC = () => {
                       : 'hover:bg-blue-600 hover:bg-opacity-80 hover:translate-x-2'
                   }`}
                 >
-                  <span className="text-lg">🛟</span> 
+                  <LifeBuoy className="w-5 h-5" />
                   <span className="font-semibold">Support</span>
                 </button>
                 
@@ -184,7 +200,7 @@ const AdminPanel: React.FC = () => {
                   onClick={handleLogout} 
                   className="w-full bg-red-500 hover:bg-red-600 text-white py-3 px-4 rounded-xl font-semibold transition-all duration-200 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transform hover:scale-105"
                 >
-                  <span>🚪</span> Logout
+                  <LogOut className="w-5 h-5" /> Logout
                 </button>
               </div>
             )}
@@ -263,7 +279,7 @@ const AdminPanel: React.FC = () => {
 
                 {/* Jobs Tab */}
                 {activeTab === 'jobs' && (
-                  <JobManagement employers={employers} />
+                  <JobManagement />
                 )}
 
                 {/* Admin Subscription Plan Tab */}
@@ -271,6 +287,10 @@ const AdminPanel: React.FC = () => {
                   <AdminSubscriptionPlan />
                 )}
 
+                {/* Manage Payment Tab */}
+                {activeTab === 'managepayment' && (
+                  <ManagePayment />
+                )}
                 {/* Support Tab */}
                 {activeTab === 'support' && (
                   <AdminSupport />

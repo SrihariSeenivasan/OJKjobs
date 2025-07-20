@@ -48,10 +48,12 @@ const JobSeekerManagement: React.FC<EmployeeManagementProps> = ({ employees = mo
   }, []);
   const PAGE_SIZE = 10;
 
+  const filterLower = filter.toLowerCase();
   const filteredEmployees = employees.filter(e => 
-    e.name.toLowerCase().includes(filter.toLowerCase()) ||
-    e.email.toLowerCase().includes(filter.toLowerCase()) ||
-    e.location.toLowerCase().includes(filter.toLowerCase())
+    e.name.toLowerCase().includes(filterLower) ||
+    e.email.toLowerCase().includes(filterLower) ||
+    e.location.toLowerCase().includes(filterLower) ||
+    e.phone.toLowerCase().includes(filterLower)
   );
   const totalPages = Math.ceil(filteredEmployees.length / PAGE_SIZE);
   const paginatedEmployees = filteredEmployees.slice((page-1)*PAGE_SIZE, page*PAGE_SIZE);
