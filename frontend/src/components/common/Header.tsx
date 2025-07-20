@@ -82,6 +82,9 @@ const Header: React.FC = () => {
             <Link to="/1-day-job" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
               {t('nav.oneDayJob')}
             </Link>
+            <Link to="/blog" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
+              Blog
+            </Link>
             <Link to="/contactUs" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
               {t('nav.contactUs')}
             </Link>
