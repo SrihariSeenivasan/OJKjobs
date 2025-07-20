@@ -26,6 +26,7 @@ import JobseekerProfile from './pages/auth/JobseekerProfile';
 import ContactUs from './pages/ContactUs';
 import Profile from './pages/Profile';
 import Dashboard from './pages/Dashboard';
+import Blog from './pages/Blog';
 function App() {
   return (
     <Provider store={store}>
@@ -44,6 +45,7 @@ function App() {
           <Route path="/EmployerProfileSetup" element={<EmployerProfileSetup />} />
           <Route path="/EmployerReviewStep" element={<EmployerReviewStep />} />
           <Route path="/ContactUs" element ={<ContactUs />} />
+          <Route path="/Blog" element ={<Blog />} />
             {/* Protected Routes */}
             <Route path="/dashboard" element={
               <ProtectedRoute>
