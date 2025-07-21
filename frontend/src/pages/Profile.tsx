@@ -27,7 +27,12 @@ const Profile: React.FC = () => {
 
   const handleEdit = () => setIsEditing(true);
   const handleCancel = () => {
-    setFormData({ name: user.name, email: user.email });
+    setFormData({
+      name: user.name,
+      email: user.email,
+      location: user.location || '',
+      role: user.role || 'Job Seeker',
+    });
     setIsEditing(false);
   };
 
@@ -39,6 +44,8 @@ const Profile: React.FC = () => {
         ...user,
         name: formData.name,
         email: formData.email,
+        location: formData.location,
+        role: formData.role,
       }));
       setIsEditing(false);
       setIsLoading(false);

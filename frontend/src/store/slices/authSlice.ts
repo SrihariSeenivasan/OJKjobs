@@ -4,7 +4,8 @@ export interface User {
   id: string;
   email: string;
   name: string;
-  role: 'admin' | 'employer' | 'jobseeker';
+  role: string; // e.g. 'admin', 'employer', 'jobseeker', or custom
+  location?: string;
   isVerified: boolean;
   profileComplete: boolean;
   kycVerified?: boolean;
