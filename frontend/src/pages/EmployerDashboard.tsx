@@ -127,7 +127,6 @@ const EmployerDashboard: React.FC = () => {
     { name: 'Manage Jobs', href: '/my-jobs', icon: BriefcaseIcon, color: 'bg-purple-600' }
   ];
 
-  const isVerified = false;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -142,7 +141,7 @@ const EmployerDashboard: React.FC = () => {
           </p>
         </div>
         {/* Company Profile Setup Section for Employer */}
-        <EmployerProfileSection isVerified={isVerified} />
+        <EmployerProfileSection />
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           {stats.map((stat, index) => (
