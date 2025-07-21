@@ -154,18 +154,18 @@ const Testimonials: React.FC = () => {
 
         {/* Testimonials Slider */}
         <div 
-          className="relative mt-16 sm:mt-24 mb-16 sm:mb-24"
+          className="relative mt-12 sm:mt-16 mb-12 sm:mb-16"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
-          <div className="overflow-hidden rounded-[2.5rem]">
+          <div className="overflow-hidden rounded-3xl">
             <div 
-              className="flex transition-transform duration-700 ease-in-out min-h-[420px] sm:min-h-[520px] lg:min-h-[600px]"
+              className="flex transition-transform duration-700 ease-in-out"
               style={{ transform: `translateX(-${currentSlide * 100}%)` }}
             >
               {testimonials.map((testimonial, index) => (
-                <div key={index} className="w-full flex-shrink-0 px-6 sm:px-12">
-                  <div className="bg-white/80 backdrop-blur-sm p-12 sm:p-16 rounded-[2.5rem] shadow-2xl border border-white/50 mx-auto max-w-4xl">
+                <div key={index} className="w-full flex-shrink-0 px-2 sm:px-4">
+                  <div className="bg-white/80 backdrop-blur-sm p-6 sm:p-8 rounded-2xl shadow-lg border border-white/50 mx-auto max-w-2xl">
                     {/* Quote decoration */}
                     <div className="absolute -top-3 -left-3 w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center opacity-80">
                       <Quote className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
