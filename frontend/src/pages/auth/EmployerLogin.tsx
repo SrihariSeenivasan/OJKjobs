@@ -9,9 +9,31 @@ const EmployerLogin: React.FC = () => {
   const [otp, setOtp] = useState('');
   const [otpSent, setOtpSent] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [resendTimer, setResendTimer] = useState(0);
+  const [resendDisabled, setResendDisabled] = useState(false);
   // Removed showForm and formData state
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  React.useEffect(() => {
+    if (!otpSent) return;
+    let timer: number | undefined;
+    if (resendTimer > 0) {
+      timer = setInterval(() => {
+        setResendTimer(prev => {
+          if (prev <= 1) {
+            setResendDisabled(false);
+            if (timer) clearInterval(timer);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    }
+    return () => {
+      if (timer) clearInterval(timer);
+    };
+  });
 
   const handleSendOtp = (e: React.FormEvent) => {
     e.preventDefault();
@@ -19,6 +41,8 @@ const EmployerLogin: React.FC = () => {
     setTimeout(() => {
       setOtpSent(true);
       setIsLoading(false);
+      setResendTimer(300); // 5 minutes
+      setResendDisabled(true);
     }, 800);
   };
 
@@ -54,20 +78,68 @@ const EmployerLogin: React.FC = () => {
         <form onSubmit={otpSent ? handleVerifyOtp : handleSendOtp} className="space-y-6">
           <div>
             <label className="block text-sm font-semibold text-blue-700 mb-1">Mobile Number</label>
-            <input
-              type="tel"
-              value={mobile}
-              onChange={e => setMobile(e.target.value)}
-              className="w-full px-4 py-2 border-2 border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 rounded-lg transition-all duration-200 outline-none bg-blue-50 text-gray-800 placeholder-gray-400 shadow-sm"
-              placeholder="Enter your mobile number"
-              disabled={otpSent}
-              required
-            />
+            <div className="flex gap-2 mt-1">
+              <select
+                id="countryCode"
+                name="countryCode"
+                className="border-2 border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 rounded-lg px-1 py-2 bg-blue-50 text-gray-800 w-24 text-sm"
+                disabled={otpSent}
+                required
+                defaultValue="+91"
+              >
+                <option value="+91">+91 (India)</option>
+                <option value="+1">+1 (USA)</option>
+                <option value="+44">+44 (UK)</option>
+                <option value="+61">+61 (Australia)</option>
+                <option value="+971">+971 (UAE)</option>
+                <option value="+81">+81 (Japan)</option>
+                <option value="+49">+49 (Germany)</option>
+                <option value="+33">+33 (France)</option>
+                <option value="+65">+65 (Singapore)</option>
+                <option value="+880">+880 (Bangladesh)</option>
+                <option value="+94">+94 (Sri Lanka)</option>
+                <option value="+92">+92 (Pakistan)</option>
+                <option value="+86">+86 (China)</option>
+                <option value="+7">+7 (Russia)</option>
+              </select>
+              <input
+                type="tel"
+                value={mobile}
+                onChange={e => setMobile(e.target.value)}
+                className="w-full px-4 py-2 border-2 border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 rounded-lg transition-all duration-200 outline-none bg-blue-50 text-gray-800 placeholder-gray-400 shadow-sm"
+                placeholder="Enter your mobile number (e.g. 9876543210)"
+                pattern="\d{10}"
+                maxLength={10}
+                minLength={10}
+                disabled={otpSent}
+                required
+              />
+            </div>
           </div>
           {otpSent && (
             <div>
               <label className="block text-sm font-semibold text-blue-700 mb-1">OTP</label>
               <OtpInput value={otp} onChange={setOtp} numInputs={6} isInputNum inputStyle="w-10 h-10 text-xl border-2 border-blue-200 focus:border-blue-500 rounded-lg text-center mx-1 bg-blue-50 transition-all duration-200 outline-none" />
+              <div className="flex items-center justify-between mt-2">
+                <button
+                  type="button"
+                  className={`text-blue-600 font-semibold hover:underline disabled:opacity-50`}
+                  onClick={() => {
+                    setIsLoading(true);
+                    setTimeout(() => {
+                      setIsLoading(false);
+                      setResendTimer(300);
+                      setResendDisabled(true);
+                    }, 800);
+                  }}
+                  disabled={resendDisabled}
+                >
+                  Resend OTP
+                </button>
+                {resendDisabled && (
+                  <span className="text-xs text-gray-500 ml-2">Resend available in {Math.floor(resendTimer / 60)}:{(resendTimer % 60).toString().padStart(2, '0')}</span>
+                )}
+              </div>
             </div>
           )}
           <button
@@ -81,6 +153,11 @@ const EmployerLogin: React.FC = () => {
             {isLoading ? 'Please wait...' : otpSent ? 'Verify OTP' : 'Send OTP'}
           </button>
         </form>
+        <div className="mt-4 text-center">
+          <span className="text-sm text-blue-700 cursor-pointer hover:underline" onClick={() => window.location.href = '/authReg'}>
+            I don't have an account !
+          </span>
+          </div>
       </div>
     </div>
   );

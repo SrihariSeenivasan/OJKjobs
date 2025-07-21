@@ -1,6 +1,6 @@
+import { ChatBubbleLeftRightIcon } from '@heroicons/react/24/solid';
 import React, { useState } from 'react';
 import OjkLogo from '../components/common/OjkLogo';
-import { ChatBubbleLeftRightIcon } from '@heroicons/react/24/solid';
 
 const ContactUs: React.FC = () => {
   const [chatInput, setChatInput] = useState('');
@@ -38,6 +38,28 @@ const ContactUs: React.FC = () => {
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-gray-700">Your Email</label>
                 <input type="email" id="email" name="email" className="mt-1 block w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-blue-500" required />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Mobile Number</label>
+                <div className="flex gap-2 mt-1">
+                  <select id="countryCode" name="countryCode" className="border border-gray-300 rounded px-1 py-2 focus:outline-none focus:ring-blue-500 w-24 text-sm" required defaultValue="+91">
+                    <option value="+91">+91 (India)</option>
+                    <option value="+1">+1 (USA)</option>
+                    <option value="+44">+44 (UK)</option>
+                    <option value="+61">+61 (Australia)</option>
+                    <option value="+971">+971 (UAE)</option>
+                    <option value="+81">+81 (Japan)</option>
+                    <option value="+49">+49 (Germany)</option>
+                    <option value="+33">+33 (France)</option>
+                    <option value="+65">+65 (Singapore)</option>
+                    <option value="+880">+880 (Bangladesh)</option>
+                    <option value="+94">+94 (Sri Lanka)</option>
+                    <option value="+92">+92 (Pakistan)</option>
+                    <option value="+86">+86 (China)</option>
+                    <option value="+7">+7 (Russia)</option>
+                  </select>
+                  <input type="tel" id="mobile" name="mobile" placeholder="9876543210" pattern="\d{10}" maxLength={10} minLength={10} className="block w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-blue-500" required />
+                </div>
               </div>
               <div>
                 <label htmlFor="message" className="block text-sm font-medium text-gray-700">Message</label>

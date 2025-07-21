@@ -11,6 +11,7 @@ const AuthGatewayReg: React.FC = () => {
         {!role && (
           <>
             <h2 className="text-center text-2xl font-bold text-gray-900 mb-4">Welcome to OJK Jobs</h2>
+            <h3 className="text-center text-2xl font-bold text-gray-900 mb-4">Registration</h3>
             <div className="flex flex-col gap-4">
               <button onClick={() => setRole('jobseeker')} className="w-full bg-blue-600 text-white py-3 rounded-md font-semibold hover:bg-blue-700 transition">I am a Jobseeker</button>
               <button onClick={() => setRole('employer')} className="w-full bg-green-600 text-white py-3 rounded-md font-semibold hover:bg-green-700 transition">I am an Employer</button>
