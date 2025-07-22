@@ -1,4 +1,5 @@
 import { useState } from "react";
+import ContactPopup from "./Common/ContactPopup";
 
 const mockProfile = {
   gstin: "27AACCM84073M1ZI",
@@ -32,8 +33,46 @@ const Billing = () => {
   const [filter, setFilter] = useState('all');
   const [page, setPage] = useState(1);
   const [showModal, setShowModal] = useState(false);
+  const [showContactPopup, setShowContactPopup] = useState(false);
   const [gstin, setGstin] = useState(mockProfile.gstin);
   const [checkbox, setCheckbox] = useState(false);
+
+  // Handler to open invoice in new window and print as PDF
+  const handleInvoiceClick = (billing: typeof mockBilling[0]) => {
+    const win = window.open('', '_blank', 'width=800,height=900');
+    if (!win) return;
+    win.document.write(`
+      <html>
+        <head>
+          <title>Invoice - ${billing.plan}</title>
+          <style>
+            body { font-family: Arial, sans-serif; padding: 32px; }
+            .header { font-size: 24px; font-weight: bold; margin-bottom: 16px; }
+            .section { margin-bottom: 16px; }
+            .label { font-weight: bold; }
+            .table { width: 100%; border-collapse: collapse; margin-top: 24px; }
+            .table th, .table td { border: 1px solid #ddd; padding: 8px; }
+            .table th { background: #f3f4f6; }
+          </style>
+        </head>
+        <body>
+          <div class="header">Invoice</div>
+          <div class="section"><span class="label">Company:</span> ${mockProfile.company}</div>
+          <div class="section"><span class="label">GSTIN:</span> ${mockProfile.gstin}</div>
+          <div class="section"><span class="label">Address:</span> ${mockProfile.address}</div>
+          <table class="table">
+            <tr><th>Date</th><td>${billing.date}</td></tr>
+            <tr><th>Plan</th><td>${billing.plan}</td></tr>
+            <tr><th>Expires on</th><td>${billing.expires}</td></tr>
+            <tr><th>Amount</th><td>${billing.amount}</td></tr>
+          </table>
+          <div style="margin-top:32px; font-size:12px; color:#888;">This is a system generated invoice.</div>
+          <script>window.onload = function() { window.print(); }</script>
+        </body>
+      </html>
+    `);
+    win.document.close();
+  };
 
   const filtered = mockBilling.filter(b => {
     if (filter === 'all') return true;
@@ -119,8 +158,17 @@ const Billing = () => {
                       {b.status === 'Pending' && <span className="bg-yellow-50 text-yellow-700 px-2 py-1 rounded text-xs font-semibold">Pending</span>}
                     </td>
                     <td className="py-2 px-2">
-                      {b.action === 'Invoice' && <a href="#" className="text-blue-700 underline text-xs flex items-center gap-1"><svg width="14" height="14" fill="none" viewBox="0 0 24 24"><path d="M8 17l4 4 4-4M12 3v18" stroke="#2563eb" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>Invoice</a>}
-                      {b.action === 'Contact us' && <a href="#" className="text-blue-700 underline text-xs flex items-center gap-1"><svg width="14" height="14" fill="none" viewBox="0 0 24 24"><path d="M22 16.92V19a2 2 0 0 1-2.18 2A19.72 19.72 0 0 1 3 5.18 2 2 0 0 1 5 3h2.09a2 2 0 0 1 2 1.72c.13 1.05.37 2.07.73 3.06a2 2 0 0 1-.45 2.11l-.27.27a16 16 0 0 0 6.29 6.29l.27-.27a2 2 0 0 1 2.11-.45c.99.36 2.01.6 3.06.73A2 2 0 0 1 21 16.91z" stroke="#2563eb" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>Contact us</a>}
+                      {b.action === 'Invoice' && (
+                        <button
+                          type="button"
+                          className="text-blue-700 underline text-xs flex items-center gap-1"
+                          onClick={() => handleInvoiceClick(b)}
+                        >
+                          <svg width="14" height="14" fill="none" viewBox="0 0 24 24"><path d="M8 17l4 4 4-4M12 3v18" stroke="#2563eb" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                          Invoice
+                        </button>
+                      )}
+                      {b.action === 'Contact us' && <button type="button" className="text-blue-700 underline text-xs flex items-center gap-1" onClick={() => setShowContactPopup(true)}><svg width="14" height="14" fill="none" viewBox="0 0 24 24"><path d="M22 16.92V19a2 2 0 0 1-2.18 2A19.72 19.72 0 0 1 3 5.18 2 2 0 0 1 5 3h2.09a2 2 0 0 1 2 1.72c.13 1.05.37 2.07.73 3.06a2 2 0 0 1-.45 2.11l-.27.27a16 16 0 0 0 6.29 6.29l.27-.27a2 2 0 0 1 2.11-.45c.99.36 2.01.6 3.06.73A2 2 0 0 1 21 16.91z" stroke="#2563eb" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>Contact us</button>}
                     </td>
                   </tr>
                 ))}
@@ -161,6 +209,9 @@ const Billing = () => {
       </div>
 
       {/* Modal */}
+      {showContactPopup && (
+        <ContactPopup open={showContactPopup} onClose={() => setShowContactPopup(false)} />
+      )}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
           <div className="bg-white rounded-lg shadow-lg w-full max-w-md mx-auto p-6 relative animate-fade-in">

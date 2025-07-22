@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ContactPopup from "./Common/ContactPopup";
 
+
 interface EmployerSideNavProps {
   selected: number | string;
   setSelected: (idx: number | string) => void;
@@ -19,7 +20,9 @@ const EmployerSideNav: React.FC<EmployerSideNavProps> = ({
 }) => {
   const navigate = useNavigate();
   const [dbOpen, setDbOpen] = useState<boolean>(true);
+  const [helpOpen, setHelpOpen] = useState<boolean>(false);
   const [showModal, setShowModal] = useState(false);
+  
 
   const sidebarItems = [
   {
@@ -82,7 +85,50 @@ const EmployerSideNav: React.FC<EmployerSideNavProps> = ({
       <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 21V9"/><path d="M3 9h18"/></svg>
     ),
     label: "Help & Support",
-    onClick: (navigate: ReturnType<typeof useNavigate>) => navigate("Help"),
+    children: [
+      {
+        label: "FAQ",
+        onClick: (navigate: ReturnType<typeof useNavigate>) => navigate("/faq"),
+      },
+      {
+        label: "Contact us",
+        isContact: true,
+        children: [
+          {
+            label: "Chat with us",
+            onClick: () => window.open("#chat", "_blank"),
+            icon: (
+              <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            ),
+          },
+          {
+            label: "Chat on Whatsapp",
+            onClick: () => window.open("https://wa.me/", "_blank"),
+            icon: (
+              <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M16.72 15.47c-.29-.15-1.7-.84-1.96-.94-.26-.1-.45-.15-.64.15-.19.29-.74.94-.91 1.13-.17.19-.34.21-.63.07-.29-.15-1.22-.45-2.33-1.43-.86-.77-1.44-1.72-1.61-2.01-.17-.29-.02-.45.13-.6.13-.13.29-.34.43-.51.14-.17.19-.29.29-.48.1-.19.05-.36-.02-.51-.07-.15-.64-1.54-.88-2.11-.23-.56-.47-.48-.64-.49-.17-.01-.36-.01-.56-.01-.19 0-.5.07-.76.36-.26.29-1 1-1 2.43 0 1.43 1.03 2.81 1.18 3.01.15.19 2.03 3.1 4.93 4.22.69.3 1.23.48 1.65.61.69.22 1.32.19 1.81.12.55-.08 1.7-.7 1.94-1.37.24-.67.24-1.25.17-1.37-.07-.12-.26-.19-.55-.34z"/></svg>
+            ),
+            badge: "Recommended",
+            external: true,
+          },
+          {
+            label: "Schedule Training",
+            onClick: () => window.open("ScheduleTraining", "_blank"),
+            icon: (
+              <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            ),
+            external: true,
+          },
+          {
+            label: "HR Best practices",
+            onClick: () => window.open("/WEBINAR%20Best%20Practices%20-%20Faster%20and%20Efficient%20Hiring%20(2).pdf", "_blank"),
+            icon: (
+              <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 5v14m7-7H5"/></svg>
+            ),
+            download: true,
+          },
+        ],
+      },
+    ],
   },
   { divider: true },
   {
@@ -123,6 +169,7 @@ const EmployerSideNav: React.FC<EmployerSideNavProps> = ({
   return (
     <>
       <ContactPopup open={showModal} onClose={() => setShowModal(false)} />
+      
       {/* Overlay for mobile and tablet */}
       {isMobile && sidebarOpen && (
         <div 
@@ -247,6 +294,90 @@ const EmployerSideNav: React.FC<EmployerSideNavProps> = ({
               );
             }
             
+            // Help & Support dropdown
+            if (item.label === "Help & Support") {
+              return (
+                <div key="Help & Support">
+                  <button
+                    className={`
+                      group flex items-center gap-2 sm:gap-3 px-2 sm:px-3 py-2.5 sm:py-3 rounded-lg w-full
+                      ${sidebarOpen ? 'justify-start' : 'justify-center'}
+                      text-gray-600 hover:bg-[#E6F4F0] hover:text-[#2DC6A8] transition-all duration-200
+                      ${helpOpen && sidebarOpen ? 'bg-[#E6F4F0] text-[#2DC6A8]' : ''}
+                      relative font-medium text-sm sm:text-base
+                      focus:outline-none focus:ring-2 focus:ring-[#2DC6A8] focus:ring-opacity-50
+                    `}
+                    onClick={() => setHelpOpen((open) => !open)}
+                    aria-expanded={helpOpen}
+                    aria-label="Help & Support menu"
+                  >
+                    <span className="w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center flex-shrink-0">
+                      {item.icon}
+                    </span>
+                    {sidebarOpen && (
+                      <>
+                        <span className="font-medium truncate">
+                          {item.label}
+                        </span>
+                        <svg 
+                          className={`ml-auto transition-transform w-4 h-4 flex-shrink-0 ${helpOpen ? '' : '-rotate-90'}`} 
+                          fill="none" 
+                          stroke="currentColor" 
+                          strokeWidth="2" 
+                          viewBox="0 0 24 24"
+                        >
+                          <polyline points="6 9 12 15 18 9"/>
+                        </svg>
+                      </>
+                    )}
+                  </button>
+                  {/* Help & Support Submenu */}
+                  {helpOpen && sidebarOpen && (
+                    <div className="ml-6 sm:ml-8 flex flex-col gap-0.5 sm:gap-1 my-1 sm:my-2">
+                      {/* FAQ */}
+                      <button
+                        className={`text-left px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg w-full text-xs sm:text-sm font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#2DC6A8] focus:ring-opacity-50 text-[#17494D] hover:bg-[#E6F4F0] hover:text-[#2DC6A8]`}
+                        onClick={() => {
+                          setSelected(`help-faq`);
+                          if (item.children?.[0].onClick) item.children[0].onClick(navigate);
+                          if (isMobile) setSidebarOpen(false);
+                        }}
+                      >
+                        FAQ
+                      </button>
+                      {/* Contact us */}
+                      <div className="flex flex-col gap-0.5 sm:gap-1 mt-2">
+                        <div className="text-xs sm:text-sm font-semibold text-[#17494D] mb-1">Contact us <span className="block font-normal text-[10px] sm:text-xs text-gray-500">( Mon to Sun | 9:00 AM - 7:00 PM )</span></div>
+                        {/* Contact sub-options */}
+                        {item.children?.[1]?.children?.map((sub, subIdx) => (
+                          <button
+                            key={sub.label}
+                            className={`flex items-center text-left px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg w-full text-xs sm:text-sm font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#2DC6A8] focus:ring-opacity-50 text-[#17494D] hover:bg-[#E6F4F0] hover:text-[#2DC6A8] relative`}
+                            onClick={() => {
+                              setSelected(`help-contact-${subIdx}`);
+                              if (sub.onClick) sub.onClick();
+                              if (isMobile) setSidebarOpen(false);
+                            }}
+                          >
+                            {sub.icon && <span className="mr-2 flex items-center">{sub.icon}</span>}
+                            <span>{sub.label}</span>
+                            {sub.badge && (
+                              <span className="ml-2 px-1.5 py-0.5 bg-blue-100 text-blue-700 text-[10px] rounded font-semibold">{sub.badge}</span>
+                            )}
+                            {sub.external && (
+                              <svg className="ml-2 w-3 h-3 text-gray-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                            )}
+                            {sub.download && (
+                              <svg className="ml-2 w-3 h-3 text-gray-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 5v14m7-7H5"/></svg>
+                            )}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            }
             // Normal navigation item
             return (
               <button

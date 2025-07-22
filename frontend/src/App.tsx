@@ -28,15 +28,16 @@ import Dashboard from './pages/Dashboard';
 import Billing from './pages/Employer/Billing';
 import ContactPopup from './pages/Employer/Common/ContactPopup';
 import CreditsAndUsage from './pages/Employer/CreditsAndUsage';
+import SavedSearches from './pages/Employer/Database/SavedSearches';
+import SearchCandidates from './pages/Employer/Database/SearchCandidates';
+import SearchList from './pages/Employer/Database/SearchList';
+import UnlockedCandidates from './pages/Employer/Database/UnlockedCandidates';
 import EmployerLayout from './pages/Employer/EmployerLayout';
+
 import Jobs from './pages/Employer/Jobs';
 import ReferAndEarn from './pages/Employer/ReferAndEarn';
 import DownloadApplications from './pages/Employer/Report/DownloadApplications';
 import ReportsDashboard from './pages/Employer/Report/ReportsDashboard';
-import SavedSearches from './pages/Employer/SavedSearches';
-import SearchCandidates from './pages/Employer/SearchCandidates';
-import SearchList from './pages/Employer/SearchList';
-import UnlockedCandidates from './pages/Employer/UnlockedCandidates';
 import Home from './pages/Home';
 import BrowseJobs from './pages/jobs/BrowseJobs';
 import PostJob from './pages/jobs/PostJob';
@@ -44,6 +45,10 @@ import PrivacyPolicy from './pages/PrivacyPolicy';
 import Profile from './pages/Profile';
 import RefundPolicy from './pages/RefundPolicy';
 import TermsAndConditions from './pages/TermsAndConditions';
+import ScheduleTraining from './pages/Employer/Help/ScheduleTraining';
+import SupportHome from './pages/Employer/Help/Support/Home';
+import BuyPackageSelection from './pages/Employer/BuyPackages/BuyPackageSelection';
+import BuyPackageCheckout from './pages/Employer/BuyPackages/BuyPackageCheckout';
 
 function App() {
   return (
@@ -103,14 +108,20 @@ function App() {
             <Route path="/Employer/Reports" element={<ReportsDashboard />} />
             <Route path="/Employer/Reports/Download-Applications" element={<DownloadApplications />} />
             <Route path="/Employer/Refer" element={<ReferAndEarn />} />
-            <Route path="/Employer/Help" element={<ReferAndEarn />} />
             <Route path="/Employer/Credits" element={<CreditsAndUsage />} />
             <Route path="/Employer/Billing" element={<Billing />} />
             <Route path="/Employer/ContactPopup" element={<ContactPopup open={true} onClose={() => window.history.back()} />} />
+            
 
           
           </Route>
+             <Route path="/Employer/ScheduleTraining" element={<ScheduleTraining />} />
+             <Route path="/Employer/SupportHome" element={<SupportHome />} />
+             <Route path="/Employer/BuyPackageSelection" element={<BuyPackageSelection />} />
+             <Route path="/Employer/BuyPackageCheckout" element={<BuyPackageCheckout />} />
 
+             
+             
           
           
           
