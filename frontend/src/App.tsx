@@ -11,25 +11,39 @@ import AdminPanel from './pages/admin/AdminPanel';
 // Pages
 import AuthGatewayLog from './pages/AuthGatewayLog';
 
+import EmployerLogin from './pages/auth/EmployerLogin';
+import EmployerPaymentStep from './pages/auth/EmployerPaymentStep';
+import EmployerProfileSetup from './pages/auth/EmployerProfileSetup';
+import EmployerRegister from './pages/auth/EmployerRegister';
+import EmployerReviewStep from './pages/auth/EmployerReviewStep';
+import JobseekerLogin from './pages/auth/JobseekerLogin';
+import JobseekerProfile from './pages/auth/JobseekerProfile';
+import JobseekerRegister from './pages/auth/JobseekerRegister';
+import AuthGatewayReg from './pages/AuthGatewayReg';
+import Blog from './pages/Blog';
+import ContactUs from './pages/ContactUs';
+import ContestDetails from './pages/Contests/Contests';
+import ContestsListing from './pages/Contests/ContestsListing';
+import Dashboard from './pages/Dashboard';
+import Billing from './pages/Employer/Billing';
+import ContactPopup from './pages/Employer/Common/ContactPopup';
+import CreditsAndUsage from './pages/Employer/CreditsAndUsage';
+import EmployerLayout from './pages/Employer/EmployerLayout';
+import Jobs from './pages/Employer/Jobs';
+import ReferAndEarn from './pages/Employer/ReferAndEarn';
+import DownloadApplications from './pages/Employer/Report/DownloadApplications';
+import ReportsDashboard from './pages/Employer/Report/ReportsDashboard';
+import SavedSearches from './pages/Employer/SavedSearches';
+import SearchCandidates from './pages/Employer/SearchCandidates';
+import SearchList from './pages/Employer/SearchList';
+import UnlockedCandidates from './pages/Employer/UnlockedCandidates';
 import Home from './pages/Home';
 import BrowseJobs from './pages/jobs/BrowseJobs';
 import PostJob from './pages/jobs/PostJob';
 import PrivacyPolicy from './pages/PrivacyPolicy';
+import Profile from './pages/Profile';
 import RefundPolicy from './pages/RefundPolicy';
 import TermsAndConditions from './pages/TermsAndConditions';
-import JobseekerLogin from './pages/auth/JobseekerLogin';
-import EmployeeLogin from './pages/auth/EmployerLogin';
-import EmployerPaymentStep from './pages/auth/EmployerPaymentStep';
-import EmployerProfileSetup from './pages/auth/EmployerProfileSetup';
-import EmployerReviewStep from './pages/auth/EmployerReviewStep';
-import JobseekerProfile from './pages/auth/JobseekerProfile';
-import ContactUs from './pages/ContactUs';
-import Profile from './pages/Profile';
-import Dashboard from './pages/Dashboard';
-import Blog from './pages/Blog';
-import AuthGatewayReg from './pages/AuthGatewayReg';
-import JobseekerRegister from './pages/auth/JobseekerRegister';
-import EmployerRegister from './pages/auth/EmployerRegister';
 
 function App() {
   return (
@@ -47,13 +61,17 @@ function App() {
             <Route path="/JobseekerRegister" element={<JobseekerRegister />} />
             <Route path="/EmployerRegister" element={< EmployerRegister/>} />
             <Route path="/JobseekerLogin" element={<JobseekerLogin />} />
-          <Route path="/EmployeeLogin" element={<EmployeeLogin />} />
+          <Route path="/EmployerLogin" element={<EmployerLogin />} />
           <Route path="/admin" element={<AdminPanel />} />
           <Route path="/EmployerPaymentSetup" element={<EmployerPaymentStep />} />
           <Route path="/EmployerProfileSetup" element={<EmployerProfileSetup />} />
           <Route path="/EmployerReviewStep" element={<EmployerReviewStep />} />
           <Route path="/ContactUs" element ={<ContactUs />} />
           <Route path="/Blog" element ={<Blog />} />
+          <Route path="/ContestsListing" element ={<ContestsListing />} />
+          <Route path="/ContestDetails" element ={<ContestDetails />} />
+          
+          
             {/* Protected Routes */}
             <Route path="/dashboard" element={
               <ProtectedRoute>
@@ -74,6 +92,32 @@ function App() {
             <Route path="/refund-policy" element={<RefundPolicy />} />
             <Route path="/unauthorized" element={<div className="p-8 text-center">Unauthorized access!</div>} />
           </Route>
+
+          {/* Employer Layout with nested routes */}
+          <Route path="/Employer" element={<EmployerLayout />}>
+            <Route path="Jobs" element={<Jobs />} />
+            <Route path="/Employer/SearchCandidates" element={<SearchCandidates />} />
+            <Route path="SearchList" element={<SearchList />} />
+            <Route path="/Employer/SavedSearches" element={<SavedSearches />} />
+            <Route path="/Employer/UnlockedCandidates" element={<UnlockedCandidates />} />
+            <Route path="/Employer/Reports" element={<ReportsDashboard />} />
+            <Route path="/Employer/Reports/Download-Applications" element={<DownloadApplications />} />
+            <Route path="/Employer/Refer" element={<ReferAndEarn />} />
+            <Route path="/Employer/Help" element={<ReferAndEarn />} />
+            <Route path="/Employer/Credits" element={<CreditsAndUsage />} />
+            <Route path="/Employer/Billing" element={<Billing />} />
+            <Route path="/Employer/ContactPopup" element={<ContactPopup open={true} onClose={() => window.history.back()} />} />
+
+          
+          </Route>
+
+          
+          
+          
+          
+          {/* Catch-all route */}
+          
+            
         </Routes>
       </Router>
     </Provider>

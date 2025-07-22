@@ -11,6 +11,10 @@ import { Link } from 'react-router-dom';
 import Testimonials from './Testimonials';
 
 const Home: React.FC = () => {
+  // Simulated auth state (replace with real auth logic)
+  // Example: const user = useSelector((state) => state.auth.user);
+  // For demo, you can set userType to 'employer', 'jobseeker', or null
+  const userType = null; // Change to 'employer' or 'jobseeker' to test
   const { t } = useTranslation();
 
   const features = [
@@ -56,27 +60,70 @@ const Home: React.FC = () => {
               {t('hero.subtitle')}
             </motion.p>
             <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.8, duration: 0.8 }} className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                to="/employer-login"
-                className="bg-blue-500 hover:bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-colors duration-200 flex items-center justify-center space-x-2 shadow-lg hover:scale-105 transform-gpu"
-              >
-                <span>{t('hero.imHiring')}</span>
-                <ArrowRightIcon className="h-5 w-5" />
-              </Link>
-              <Link
-                to="/jobseeker-login"
-                className="bg-green-500 hover:bg-green-600 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-colors duration-200 flex items-center justify-center space-x-2 shadow-lg hover:scale-105 transform-gpu"
-              >
-                <span>{t('hero.ineedJob')}</span>
-                <ArrowRightIcon className="h-5 w-5" />
-              </Link>
-              <Link
-                to="/1-day-job"
-                className="bg-yellow-500 hover:bg-yellow-600 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-colors duration-200 flex items-center justify-center space-x-2 shadow-lg hover:scale-105 transform-gpu"
-              >
-                <span>{t('hero.oneDayWork')}</span>
-                <ArrowRightIcon className="h-5 w-5" />
-              </Link>
+              {/* Show all three buttons if not logged in */}
+              {!userType && (
+                <>
+                  <Link
+                    to="/EmployerLogin"
+                    className="bg-blue-500 hover:bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-colors duration-200 flex items-center justify-center space-x-2 shadow-lg hover:scale-105 transform-gpu"
+                  >
+                    <span>{t('hero.imHiring')}</span>
+                    <ArrowRightIcon className="h-5 w-5" />
+                  </Link>
+                  <Link
+                    to="/JobseekerLogin"
+                    className="bg-green-500 hover:bg-green-600 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-colors duration-200 flex items-center justify-center space-x-2 shadow-lg hover:scale-105 transform-gpu"
+                  >
+                    <span>{t('hero.ineedJob')}</span>
+                    <ArrowRightIcon className="h-5 w-5" />
+                  </Link>
+                  <Link
+                    to="/1-day-job"
+                    className="bg-yellow-500 hover:bg-yellow-600 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-colors duration-200 flex items-center justify-center space-x-2 shadow-lg hover:scale-105 transform-gpu"
+                  >
+                    <span>{t('hero.oneDayWork')}</span>
+                    <ArrowRightIcon className="h-5 w-5" />
+                  </Link>
+                </>
+              )}
+              {/* If employer, show only 'I'm Hiring' and '1-day worker' */}
+              {userType === 'employer' && (
+                <>
+                  <Link
+                    to="/post-job"
+                    className="bg-blue-500 hover:bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-colors duration-200 flex items-center justify-center space-x-2 shadow-lg hover:scale-105 transform-gpu"
+                  >
+                    <span>{t('hero.imHiring')}</span>
+                    <ArrowRightIcon className="h-5 w-5" />
+                  </Link>
+                  <Link
+                    to="/1-day-job"
+                    className="bg-yellow-500 hover:bg-yellow-600 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-colors duration-200 flex items-center justify-center space-x-2 shadow-lg hover:scale-105 transform-gpu"
+                  >
+                    <span>{t('hero.oneDayWork')}</span>
+                    <ArrowRightIcon className="h-5 w-5" />
+                  </Link>
+                </>
+              )}
+              {/* If jobseeker, show only 'I need a job' and '1-day worker' */}
+              {userType === 'jobseeker' && (
+                <>
+                  <Link
+                    to="/browse-jobs"
+                    className="bg-green-500 hover:bg-green-600 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-colors duration-200 flex items-center justify-center space-x-2 shadow-lg hover:scale-105 transform-gpu"
+                  >
+                    <span>{t('hero.ineedJob')}</span>
+                    <ArrowRightIcon className="h-5 w-5" />
+                  </Link>
+                  <Link
+                    to="/1-day-job"
+                    className="bg-yellow-500 hover:bg-yellow-600 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-colors duration-200 flex items-center justify-center space-x-2 shadow-lg hover:scale-105 transform-gpu"
+                  >
+                    <span>{t('hero.oneDayWork')}</span>
+                    <ArrowRightIcon className="h-5 w-5" />
+                  </Link>
+                </>
+              )}
             </motion.div>
           </motion.div>
         </BannerCarousel>
