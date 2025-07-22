@@ -67,8 +67,7 @@ const Header: React.FC = () => {
             }}
             title="Alt+Click for Admin Panel"
           >
-            <OjkLogo className="h-8 w-8" />
-            <span className="text-xl font-bold text-gray-900">OJK Jobs</span>
+            <OjkLogo className="h-10 w-16 drop-shadow-2xl" />
           </span>
 
           {/* Desktop Navigation */}
