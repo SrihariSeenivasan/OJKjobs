@@ -77,7 +77,7 @@ const SearchCandidates = () => {
           </button>
           <button className="px-4 py-2 rounded-t-lg bg-white font-medium text-gray-600 flex items-center gap-2 border-b-2 border-transparent focus:outline-none">
             <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 20v-6m0 0V4m0 10h8m-8 0H4"/></svg>
-            Use apnaAI
+            Use OJK AI
           </button>
         </div>
         {/* Search form */}

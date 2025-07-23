@@ -69,7 +69,7 @@ const ScheduleTraining: React.FC = () => {
                 <div className="flex items-start justify-between">
                   <div>
                     <h1 className="text-2xl lg:text-3xl font-bold mb-2">
-                      Use apna to Hire Faster & Better
+                      Use OJK Jobs to Hire Faster & Better
                     </h1>
                     <div className="bg-white/20 backdrop-blur-sm rounded-full px-4 py-1 text-sm font-medium inline-block">
                       Enterprise Training

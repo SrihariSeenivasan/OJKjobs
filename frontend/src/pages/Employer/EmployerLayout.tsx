@@ -1,12 +1,17 @@
 import type { FC, ReactNode } from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Outlet } from "react-router-dom";
+import AvailableCredits from "./BuyPackages/AvailableCredits";
 import EmployerSideNav from "./EmployerSideNav";
+import ProfilePopup from "./Profiles/ProfilePopup";
 
 const EmployerLayout: FC<{ children?: ReactNode }> = ({ children }) => {
   const [selected, setSelected] = useState<string | number>(0);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [showCreditsPopup, setShowCreditsPopup] = useState(false);
+  const [showProfilePopup, setShowProfilePopup] = useState(false);
+  const creditsBtnRef = useRef<HTMLDivElement>(null);
 
   // Handle responsive behavior
   useEffect(() => {
@@ -75,17 +80,50 @@ const EmployerLayout: FC<{ children?: ReactNode }> = ({ children }) => {
 
         {/* Right: Available Credits + User icon */}
         <div className="flex items-center gap-4">
-          <div className="hidden md:flex items-center gap-2">
+          <div
+            ref={creditsBtnRef}
+            className="hidden md:flex items-center gap-2 cursor-pointer relative"
+            onClick={() => setShowCreditsPopup((v) => !v)}
+          >
             <svg width="24" height="24" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
               <ellipse cx="14" cy="21" rx="10" ry="4" fill="#fff" stroke="#42526E" strokeWidth="1.5"/>
               <ellipse cx="14" cy="9" rx="10" ry="4" fill="#fff" stroke="#42526E" strokeWidth="1.5"/>
               <path d="M4 9v8c0 2.21 4.477 4 10 4s10-1.79 10-4V9" stroke="#42526E" strokeWidth="1.5" fill="none"/>
             </svg>
             <span className="text-sm lg:text-base font-semibold text-[#253858]">Available Credits</span>
+            {showCreditsPopup && (
+              <div
+                style={{ position: 'fixed', top: '60px', right: '40px', zIndex: 100, minWidth: '360px' }}
+                className="drop-shadow-xl"
+              >
+                {/* Pointer arrow */}
+                <div style={{ position: 'absolute', top: '-10px', right: '32px', width: '0', height: '0', borderLeft: '10px solid transparent', borderRight: '10px solid transparent', borderBottom: '10px solid #fff', zIndex: 101 }} />
+                <AvailableCredits open={true} onClose={() => setShowCreditsPopup(false)} />
+              </div>
+            )}
           </div>
-          <div className="bg-blue-900 rounded-full w-8 h-8 flex items-center justify-center font-bold text-white">
+          <div
+            className="bg-blue-900 rounded-full w-8 h-8 flex items-center justify-center font-bold text-white cursor-pointer"
+            onClick={() => setShowProfilePopup(true)}
+          >
             E
           </div>
+          {showProfilePopup && (
+            <div
+              style={{ position: 'fixed', top: '60px', right: '40px', zIndex: 101, minWidth: '320px' }}
+              className="drop-shadow-xl"
+            >
+              <ProfilePopup
+                open={true}
+                onClose={() => setShowProfilePopup(false)}
+                name="Evangelin Gladin"
+                phone="9619905777"
+                onViewProfile={() => {}}
+                onCompanyProfile={() => {}}
+                onSignOut={() => {}}
+              />
+            </div>
+          )}
         </div>
       </header>
 
@@ -137,6 +175,7 @@ const EmployerLayout: FC<{ children?: ReactNode }> = ({ children }) => {
             <div className="max-w-7xl mx-auto">
               {children}
               <Outlet />
+              {/* Remove global popup, now handled as dropdown */}
             </div>
           </div>
         </main>

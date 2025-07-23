@@ -34,7 +34,7 @@ import SearchList from './pages/Employer/Database/SearchList';
 import UnlockedCandidates from './pages/Employer/Database/UnlockedCandidates';
 import EmployerLayout from './pages/Employer/EmployerLayout';
 
-import Jobs from './pages/Employer/Jobs';
+import Jobs from './pages/Employer/Jobs/Jobs';
 import ReferAndEarn from './pages/Employer/ReferAndEarn';
 import DownloadApplications from './pages/Employer/Report/DownloadApplications';
 import ReportsDashboard from './pages/Employer/Report/ReportsDashboard';
@@ -49,6 +49,8 @@ import ScheduleTraining from './pages/Employer/Help/ScheduleTraining';
 import SupportHome from './pages/Employer/Help/Support/Home';
 import BuyPackageSelection from './pages/Employer/BuyPackages/BuyPackageSelection';
 import BuyPackageCheckout from './pages/Employer/BuyPackages/BuyPackageCheckout';
+import EmployerProfile from './pages/Employer/Profiles/Profile';
+import CompanyProfile from './pages/Employer/Profiles/CompanyProfile';
 
 function App() {
   return (
@@ -100,7 +102,7 @@ function App() {
 
           {/* Employer Layout with nested routes */}
           <Route path="/Employer" element={<EmployerLayout />}>
-            <Route path="Jobs" element={<Jobs />} />
+            <Route path="/Employer/Jobs" element={<Jobs />} />
             <Route path="/Employer/SearchCandidates" element={<SearchCandidates />} />
             <Route path="SearchList" element={<SearchList />} />
             <Route path="/Employer/SavedSearches" element={<SavedSearches />} />
@@ -111,6 +113,8 @@ function App() {
             <Route path="/Employer/Credits" element={<CreditsAndUsage />} />
             <Route path="/Employer/Billing" element={<Billing />} />
             <Route path="/Employer/ContactPopup" element={<ContactPopup open={true} onClose={() => window.history.back()} />} />
+            <Route path="/Employer/Profile" element={<EmployerProfile />} />  
+            <Route path="/Employer/CompanyProfile" element={<CompanyProfile />} />  
             
 
           
@@ -119,6 +123,9 @@ function App() {
              <Route path="/Employer/SupportHome" element={<SupportHome />} />
              <Route path="/Employer/BuyPackageSelection" element={<BuyPackageSelection />} />
              <Route path="/Employer/BuyPackageCheckout" element={<BuyPackageCheckout />} />
+             
+
+             
 
              
              
