@@ -1,3 +1,32 @@
+// Component for slow auto-incrementing openings
+const TrendingRoleCard: React.FC<{ role: string }> = ({ role }) => {
+  const [openings, setOpenings] = React.useState(Math.floor(Math.random() * 4000) + 10);
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setOpenings(prev => prev + Math.floor(Math.random() * 3)); // Increase by 0-2 every 1.5s
+    }, 1500);
+    return () => clearInterval(interval);
+  }, []);
+  return (
+    <div className="group bg-white rounded-2xl border border-gray-200 hover:border-blue-400 shadow-sm hover:shadow-md transition-all duration-200 flex flex-col justify-center px-2 py-2 min-h-[70px] max-w-[180px] w-full cursor-pointer mx-auto">
+      <div className="flex items-center gap-3 w-full">
+        {/* Icon placeholder (replace with real icons as needed) */}
+        <div className="flex-shrink-0 w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 text-xl">
+          <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.5" fill="none" /><path d="M12 8v4l2 2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+        </div>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center justify-between w-full">
+            <div className="font-semibold text-gray-900 text-base truncate">{role}</div>
+            <span className="ml-2 text-gray-400 flex-shrink-0">
+              <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
+            </span>
+          </div>
+          <div className="text-sm text-gray-500 mt-1">{openings} openings</div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 
 
@@ -507,26 +536,7 @@ return (
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-10 text-center">Trending Job Roles on OJK</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
             {trendingRoles.slice(0, 8).map((role, i) => (
-              <div
-                key={i + '-' + role}
-                className="group bg-white rounded-2xl border border-gray-200 hover:border-blue-400 shadow-sm hover:shadow-md transition-all duration-200 flex flex-col justify-center px-2 py-2 min-h-[70px] max-w-[180px] w-full cursor-pointer mx-auto"
-              >
-                <div className="flex items-center gap-3 w-full">
-                  {/* Icon placeholder (replace with real icons as needed) */}
-                  <div className="flex-shrink-0 w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 text-xl">
-                    <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.5" fill="none" /><path d="M12 8v4l2 2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between w-full">
-                      <div className="font-semibold text-gray-900 text-base truncate">{role}</div>
-                      <span className="ml-2 text-gray-400 flex-shrink-0">
-                        <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
-                      </span>
-                    </div>
-                    <div className="text-sm text-gray-500 mt-1">{Math.floor(Math.random()*4000)+100} openings</div>
-                  </div>
-                </div>
-              </div>
+              <TrendingRoleCard key={i + '-' + role} role={role} />
             ))}
           </div>
           <div className="flex justify-center mt-8">

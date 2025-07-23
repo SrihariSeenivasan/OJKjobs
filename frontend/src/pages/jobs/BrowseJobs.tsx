@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import { FunnelIcon, ChevronDownIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
+import { useNavigate } from 'react-router-dom';
 
 const filters = [
   {
@@ -52,6 +53,7 @@ const filters = [
 ];
 
 const jobs = [
+  // Page 1
   {
     title: 'Electrical Engineer',
     company: 'Apexe Consultant Private Limited',
@@ -73,7 +75,92 @@ const jobs = [
     salary: '₹60,000 - ₹100,000 monthly',
     tags: ['Field Job', 'Part Time', 'Full Time', 'Any experience', 'No English'],
   },
-  // ...add more jobs as needed for demo
+  {
+    title: 'MD Pathologist',
+    company: 'K Indtech International Limited',
+    location: 'Sahakara Nagar, Bangalore',
+    salary: '₹160,000 - ₹210,000 monthly',
+    tags: ['Work from office', 'Part Time', 'Full Time', 'Min. 1 year', 'Basic English'],
+  },
+  {
+    title: 'Export Manager',
+    company: 'Kimson India Pvt Ltd',
+    location: 'Acher, Ahmedabad',
+    salary: '₹100,000 - ₹100,000 monthly',
+    tags: ['Work from office', 'Part Time', 'Full Time', 'Any experience', 'Data'],
+  },
+  // Page 2
+  {
+    title: 'Financial Advisor',
+    company: 'Max Life Insurance Company Limited',
+    location: 'Work from home',
+    salary: '₹40,000 - ₹110,000 monthly',
+    tags: ['Part Time', 'Any experience', 'Basic English'],
+  },
+  {
+    title: 'Delivery Boy Biker',
+    company: 'Zomato',
+    location: 'Dwarka, New Delhi',
+    salary: '₹60,000 - ₹100,000 monthly',
+    tags: ['Field Job', 'Part Time', 'Full Time', 'Any experience', 'No English'],
+  },
+  {
+    title: 'Delivery Boy Biker',
+    company: 'Zomato',
+    location: 'Malviya Nagar, New Delhi',
+    salary: '₹60,000 - ₹100,000 monthly',
+    tags: ['Field Job', 'Part Time', 'Full Time', 'Any experience', 'No English'],
+  },
+  {
+    title: 'Delivery Boy Biker',
+    company: 'Zomato',
+    location: 'Sector 24, Gurgaon/Gurugram',
+    salary: '₹60,000 - ₹100,000 monthly',
+    tags: ['Field Job', 'Part Time', 'Full Time', 'Any experience', 'No English'],
+  },
+  {
+    title: 'Telugu Conversation Coach',
+    company: 'INRB App',
+    location: 'Work from home',
+    salary: '₹50,000 - ₹100,000 monthly',
+    tags: ['Part Time', 'Full Time', 'Any experience', 'Basic English'],
+  },
+  // Page 3
+  {
+    title: 'Delivery Boy Biker',
+    company: 'Zomato',
+    location: 'Sector 82A, Gurgaon/Gurugram',
+    salary: '₹60,000 - ₹100,000 monthly',
+    tags: ['Field Job', 'Part Time', 'Full Time', 'Any experience', 'No English'],
+  },
+  {
+    title: 'Kannada Listener',
+    company: 'INRB App',
+    location: 'Work from home',
+    salary: '₹50,000 - ₹100,000 monthly',
+    tags: ['Part Time', 'Full Time', 'Any experience', 'Basic English'],
+  },
+  {
+    title: 'Home Tutor',
+    company: 'Indore Home Tutor',
+    location: 'Indore',
+    salary: '₹12,000 - ₹125,000 monthly',
+    tags: ['Field Job', 'Part Time', 'Full Time', 'Any experience', 'Basic English'],
+  },
+  {
+    title: 'Delivery Boy Biker',
+    company: 'Zomato',
+    location: 'Sector 27, Gurgaon/Gurugram',
+    salary: '₹60,000 - ₹100,000 monthly',
+    tags: ['Field Job', 'Part Time', 'Full Time', 'Any experience', 'No English'],
+  },
+  {
+    title: 'Electrical Engineer',
+    company: 'Apexe Consultant Private Limited',
+    location: 'Patparganj, Delhi-NCR',
+    salary: '₹90,000 - ₹125,000 monthly',
+    tags: ['Field Job', 'Part Time', 'Full Time', 'Min. 10 years', 'Basic English'],
+  },
 ];
 
 const faqs = [
@@ -101,6 +188,7 @@ const faqs = [
 
 const BrowseJobs: React.FC = () => {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const navigate = useNavigate();
   // Filter state
   type FilterKeys = 'Date posted' | 'Salary' | 'Work Mode' | 'Work Shift' | 'Department' | 'Sort By';
   const [selectedFilters, setSelectedFilters] = useState<Record<FilterKeys, string[]>>({
@@ -112,27 +200,34 @@ const BrowseJobs: React.FC = () => {
     'Sort By': [],
   });
 
+  // Pagination logic
+  const jobsPerPage = 5;
+  const [currentPage, setCurrentPage] = useState(1);
   // Filtering logic
   const filteredJobs = jobs.filter(job => {
-    // Date posted, Salary, Sort By are not implemented for demo data
-    // Work Mode, Work Shift, Department are demo only
-    // We'll filter by tags for demo
     let pass = true;
-    // Work Mode
     if (selectedFilters['Work Mode'].length > 0) {
       pass = selectedFilters['Work Mode'].some(f => job.tags.includes(f));
     }
-    // Work Shift
     if (pass && selectedFilters['Work Shift'].length > 0) {
       pass = selectedFilters['Work Shift'].some(f => job.tags.includes(f));
     }
-    // Department
     if (pass && selectedFilters['Department'].length > 0) {
       pass = selectedFilters['Department'].some(f => job.tags.includes(f));
     }
-    // You can add more filter logic as needed
     return pass;
   });
+  // Pagination slice
+  const totalPages = Math.ceil(filteredJobs.length / jobsPerPage);
+  const paginatedJobs = filteredJobs.slice((currentPage - 1) * jobsPerPage, currentPage * jobsPerPage);
+
+  // Pagination handlers
+  const handlePageChange = (page: number) => {
+    if (page < 1 || page > totalPages) return;
+    setCurrentPage(page);
+  };
+  const handlePrev = () => handlePageChange(currentPage - 1);
+  const handleNext = () => handlePageChange(currentPage + 1);
 
   // Handle filter change
   const handleFilterChange = (filterLabel: FilterKeys, value: string) => {
@@ -184,7 +279,7 @@ const BrowseJobs: React.FC = () => {
           <div className="flex flex-col lg:flex-row gap-6">
             {/* Jobs List */}
             <section className="flex-1 space-y-4">
-              {filteredJobs.map((job, idx) => (
+              {paginatedJobs.map((job, idx) => (
                 <div key={idx} className="bg-white rounded-xl shadow p-4 flex flex-col gap-2 border border-gray-100 hover:shadow-lg transition-shadow cursor-pointer">
                   <div className="flex items-center justify-between">
                     <div>
@@ -192,7 +287,13 @@ const BrowseJobs: React.FC = () => {
                       <div className="text-gray-500 text-sm">{job.company}</div>
                       <div className="text-gray-400 text-xs">{job.location}</div>
                     </div>
-                    <ChevronRightIcon className="h-6 w-6 text-gray-300" />
+                    <button
+                      className="group"
+                      onClick={() => navigate('/jobs/apply', { state: { job } })}
+                      aria-label="View job details"
+                    >
+                      <ChevronRightIcon className="h-6 w-6 text-gray-300 group-hover:text-blue-500 transition" />
+                    </button>
                   </div>
                   <div className="text-blue-700 font-bold text-base">{job.salary}</div>
                   <div className="flex flex-wrap gap-2 mt-1">
@@ -204,25 +305,42 @@ const BrowseJobs: React.FC = () => {
               ))}
               {/* Pagination */}
               <div className="flex justify-center items-center gap-2 mt-6">
-                <button className="px-2 py-1 rounded bg-white border text-gray-500 hover:bg-blue-50">Prev</button>
-                {[1,2,3,4,5,6,7,8].map(n => (
-                  <button key={n} className="px-3 py-1 rounded bg-white border text-gray-700 hover:bg-blue-100 font-medium">{n}</button>
+                <button
+                  className={`px-2 py-1 rounded bg-white border text-gray-500 hover:bg-blue-50 ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  onClick={handlePrev}
+                  disabled={currentPage === 1}
+                >Prev</button>
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(n => (
+                  <button
+                    key={n}
+                    className={`px-3 py-1 rounded bg-white border text-gray-700 hover:bg-blue-100 font-medium ${currentPage === n ? 'bg-blue-100' : ''}`}
+                    onClick={() => handlePageChange(n)}
+                  >{n}</button>
                 ))}
-                <button className="px-2 py-1 rounded bg-white border text-gray-500 hover:bg-blue-50">Next</button>
+                <button
+                  className={`px-2 py-1 rounded bg-white border text-gray-500 hover:bg-blue-50 ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  onClick={handleNext}
+                  disabled={currentPage === totalPages}
+                >Next</button>
               </div>
             </section>
 
             {/* Right Sidebar */}
             <aside className="w-full lg:w-80 flex-shrink-0">
-              <div className="bg-blue-50 rounded-xl shadow p-4 mb-6 flex flex-col items-center">
-                <h3 className="font-semibold text-blue-900 mb-2 text-center">Know more about Part Time Jobs</h3>
-                <ul className="text-sm text-blue-800 mb-2">
-                  <li>✔️ Personalised job matches</li>
-                  <li>✔️ Direct connect with HRs</li>
-                  <li>✔️ Latest updates on the job</li>
-                </ul>
-                <img src="/assets/social/fb.png" alt="App" className="w-28 h-44 object-contain mx-auto mb-2" />
-                <button className="bg-green-500 text-white px-4 py-2 rounded font-semibold hover:bg-green-600 transition-colors">Create profile »</button>
+              <div className="bg-gradient-to-br from-blue-100 to-blue-50 rounded-2xl shadow-lg p-6 mb-6 flex flex-col items-center border border-blue-200">
+                <div className="flex flex-col items-center w-full">
+                  <div className="mb-3">
+                    <img src="https://ui-avatars.com/api/?name=Profile&background=0D8ABC&color=fff&size=128" alt="Profile" className="w-24 h-24 object-cover rounded-full shadow-lg border border-blue-200" />
+                  </div>
+                  <h3 className="font-bold text-xl text-blue-900 mb-2 text-center">Create Your Profile</h3>
+                  <p className="text-gray-700 text-sm text-center mb-4 px-2">Get personalized job matches, connect directly with HRs, and receive instant updates on new jobs. Stand out to top employers!</p>
+                  <ul className="text-sm text-blue-800 mb-4 w-full px-2 space-y-2">
+                    <li className="flex items-center gap-2"><span className="text-green-500">●</span>Personalized job matches</li>
+                    <li className="flex items-center gap-2"><span className="text-green-500">●</span>Direct connect with HRs</li>
+                    <li className="flex items-center gap-2"><span className="text-green-500">●</span>Instant job updates</li>
+                  </ul>
+                  <button className="w-full bg-gradient-to-r from-green-400 to-blue-500 text-white px-6 py-3 rounded-xl font-bold text-lg shadow hover:scale-105 transition-transform duration-150">Create Profile</button>
+                </div>
               </div>
             </aside>
           </div>

@@ -13,6 +13,7 @@ import AuthGatewayLog from './pages/AuthGatewayLog';
 
 import Home from './pages/Home';
 import BrowseJobs from './pages/jobs/BrowseJobs';
+import ApplyJob from './pages/jobs/ApplyJob';
 import PostJob from './pages/jobs/PostJob';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import RefundPolicy from './pages/RefundPolicy';
@@ -30,6 +31,7 @@ import Blog from './pages/Blog';
 import AuthGatewayReg from './pages/AuthGatewayReg';
 import JobseekerRegister from './pages/auth/JobseekerRegister';
 import EmployerRegister from './pages/auth/EmployerRegister';
+import ApplyViaEmail from './pages/jobs/ApplyViaEmail';
 
 function App() {
   return (
@@ -47,13 +49,15 @@ function App() {
             <Route path="/JobseekerRegister" element={<JobseekerRegister />} />
             <Route path="/EmployerRegister" element={< EmployerRegister/>} />
             <Route path="/JobseekerLogin" element={<JobseekerLogin />} />
-          <Route path="/EmployeeLogin" element={<EmployeeLogin />} />
-          <Route path="/admin" element={<AdminPanel />} />
-          <Route path="/EmployerPaymentSetup" element={<EmployerPaymentStep />} />
-          <Route path="/EmployerProfileSetup" element={<EmployerProfileSetup />} />
-          <Route path="/EmployerReviewStep" element={<EmployerReviewStep />} />
-          <Route path="/ContactUs" element ={<ContactUs />} />
-          <Route path="/Blog" element ={<Blog />} />
+            <Route path="/EmployeeLogin" element={<EmployeeLogin />} />
+            <Route path="/admin" element={<AdminPanel />} />
+            <Route path="/EmployerPaymentSetup" element={<EmployerPaymentStep />} />
+            <Route path="/EmployerProfileSetup" element={<EmployerProfileSetup />} />
+            <Route path="/EmployerReviewStep" element={<EmployerReviewStep />} />
+            <Route path="/ContactUs" element ={<ContactUs />} />
+            <Route path="/Blog" element ={<Blog />} />
+            <Route path="/jobs/apply" element={<ApplyJob />} />
+            <Route path="/apply-via-email" element={<ApplyViaEmail />} />
             {/* Protected Routes */}
             <Route path="/dashboard" element={
               <ProtectedRoute>
@@ -67,7 +71,6 @@ function App() {
             } />
 
             {/* Static Pages */}
-            
             <Route path="/contact-us" element={<div className="p-8 text-center">Contact Us page coming soon!</div>} />
             <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
