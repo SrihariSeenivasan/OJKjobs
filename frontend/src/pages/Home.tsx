@@ -299,11 +299,11 @@ return (
             transition={{ duration: 0.8 }}>
             <h1 className="text-3xl md:text-5xl font-extrabold text-gray-900 leading-tight">{t('hero.title')}</h1>
             <div className="flex items-center gap-2 mt-2 mb-4">
-              <span className="text-blue-700 text-base md:text-xl font-semibold tracking-wide">{t('hero.instantly')}</span>
+              <span className="text-blue-700 text-base md:text-xl font-semibold tracking-wide">{t('Instantly')}</span>
               <span className="text-gray-400 text-lg md:text-2xl font-bold">|</span>
-              <span className="text-blue-700 text-base md:text-xl font-semibold tracking-wide">{t('hero.reliably')}</span>
+              <span className="text-blue-700 text-base md:text-xl font-semibold tracking-wide">{t('Reliably')}</span>
               <span className="text-gray-400 text-lg md:text-2xl font-bold">|</span>
-              <span className="text-blue-700 text-base md:text-xl font-semibold tracking-wide">{t('hero.locally')}</span>
+              <span className="text-blue-700 text-base md:text-xl font-semibold tracking-wide">{t('Locally')}</span>
             </div>
             <div className="bg-blue-50 border border-blue-100 rounded-xl p-5 shadow-sm">
               <p className="text-base md:text-lg text-blue-900 font-semibold mb-2">{t('hero.subtitle')}</p>
