@@ -33,9 +33,9 @@ const TrendingRoleCard: React.FC<{ role: string }> = ({ role }) => {
 
 
 import React, { useRef, useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 // Scroll-to-top button logic
 const ScrollToTopButton: React.FC = () => {
@@ -64,10 +64,6 @@ const ScrollToTopButton: React.FC = () => {
 
 
 const Home: React.FC = () => {
-  // Simulated auth state (replace with real auth logic)
-  // Example: const user = useSelector((state) => state.auth.user);
-  // For demo, you can set userType to 'employer', 'jobseeker', or null
-  const userType = null; // Change to 'employer' or 'jobseeker' to test
   const { t } = useTranslation();
 
 // Features with translation keys
@@ -141,7 +137,7 @@ const cardData = [
   {
     trending: 'TRENDING AT #1',
     title: 'Jobs for Freshers',
-    img: 'https://pngimg.com/d/student_PNG62547.png', // PNGimg transparent
+    img: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=400&h=320&fit=crop', // Young professionals in office
     link: '#',
     color: 'green',
     border: 'border-green-600',
@@ -154,7 +150,7 @@ const cardData = [
   {
     trending: 'TRENDING AT #2',
     title: 'Work from home Jobs',
-    img: 'https://pngimg.com/d/laptop_PNG101889.png',
+    img: 'https://images.unsplash.com/photo-1519241047957-be31d7379a5d?w=400&h=320&fit=crop', // Home office setup
     link: '#',
     color: 'yellow',
     border: 'border-yellow-500',
@@ -167,7 +163,7 @@ const cardData = [
   {
     trending: 'TRENDING AT #3',
     title: 'Part time Jobs',
-    img: 'https://pngimg.com/d/businessman_PNG6567.png',
+    img: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=320&fit=crop', // Teamwork in office
     link: '#',
     color: 'orange',
     border: 'border-orange-500',
@@ -180,7 +176,7 @@ const cardData = [
   {
     trending: 'TRENDING AT #4',
     title: 'Jobs for Women',
-    img: 'https://pngimg.com/d/businesswoman_PNG108.png',
+    img: 'https://images.unsplash.com/photo-1521737852567-6949f3f9f2b5?w=400&h=320&fit=crop', // Women in corporate office
     link: '#',
     color: 'teal',
     border: 'border-teal-600',
@@ -220,11 +216,12 @@ const trendingRoles = [
   "Hardware & Network",
 ];
 const heroImages = [
-  'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?w=1200&h=600&fit=crop',
-  'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1200&h=600&fit=crop',
-  'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?w=1200&h=600&fit=crop',
-  'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1200&h=600&fit=crop',
-  'https://images.unsplash.com/photo-1461344577544-4e5dc9487184?w=1200&h=600&fit=crop',
+  // Corporate/office themed hero images
+  'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1200&h=600&fit=crop', // Team in meeting
+  'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1200&h=600&fit=crop', // Young professionals in office
+  'https://images.unsplash.com/photo-1521737852567-6949f3f9f2b5?w=1200&h=600&fit=crop', // Women in corporate office
+  'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=1200&h=600&fit=crop', // Teamwork in office
+  'https://images.unsplash.com/photo-1519241047957-be31d7379a5d?w=1200&h=600&fit=crop', // Home office setup
 ];
 const [heroIndex, setHeroIndex] = useState(0);
 useEffect(() => {
@@ -302,11 +299,11 @@ return (
             transition={{ duration: 0.8 }}>
             <h1 className="text-3xl md:text-5xl font-extrabold text-gray-900 leading-tight">{t('hero.title')}</h1>
             <div className="flex items-center gap-2 mt-2 mb-4">
-              <span className="text-blue-700 text-base md:text-xl font-semibold tracking-wide">{t('hero.instantly')}</span>
+              <span className="text-blue-700 text-base md:text-xl font-semibold tracking-wide">{t('Instantly')}</span>
               <span className="text-gray-400 text-lg md:text-2xl font-bold">|</span>
-              <span className="text-blue-700 text-base md:text-xl font-semibold tracking-wide">{t('hero.reliably')}</span>
+              <span className="text-blue-700 text-base md:text-xl font-semibold tracking-wide">{t('Reliably')}</span>
               <span className="text-gray-400 text-lg md:text-2xl font-bold">|</span>
-              <span className="text-blue-700 text-base md:text-xl font-semibold tracking-wide">{t('hero.locally')}</span>
+              <span className="text-blue-700 text-base md:text-xl font-semibold tracking-wide">{t('Locally')}</span>
             </div>
             <div className="bg-blue-50 border border-blue-100 rounded-xl p-5 shadow-sm">
               <p className="text-base md:text-lg text-blue-900 font-semibold mb-2">{t('hero.subtitle')}</p>
