@@ -24,7 +24,7 @@ const ContactUs: React.FC = () => {
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 relative">
       <div className="max-w-3xl mx-auto bg-white rounded-lg shadow p-8">
         <div className="flex flex-col items-center mb-8">
-          <OjkLogo className="w-20 h-20 mb-2" />
+          <OjkLogo className="h-12 w-18 drop-shadow-2xl mb-2" />
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Contact Us</h1>
         
         </div>
