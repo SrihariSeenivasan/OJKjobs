@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Stepper from "../../Common/Stepper";
 import PostJobHeader from "./PostJobHeader";
 
 const jobTypes = ["Full Time", "Part Time", "Both (Full-Time And Part-Time)"];
@@ -37,6 +38,7 @@ const NewJobPost: React.FC = () => {
   const [fieldArea, setFieldArea] = useState("");
   const [fieldAreaFocused, setFieldAreaFocused] = useState(false);
   const [jobCity, setJobCity] = useState("");
+  const [showCityDropdown, setShowCityDropdown] = useState(false);
   const cityOptions = ["Bangalore", "Chennai", "Delhi", "Hyderabad", "Mumbai", "Pune", "Other"];
   // Fee details state
   const [feeAmount, setFeeAmount] = useState("");
@@ -51,6 +53,7 @@ const NewJobPost: React.FC = () => {
   const [selectedFeeReason, setSelectedFeeReason] = useState(feeReasons[0]);
   const assetOptions = ["Bag", "Laptop", "Mobile", "SIM Card", "Uniform", "Other"];
   const [selectedAsset, setSelectedAsset] = useState("");
+  const [showAssetDropdown, setShowAssetDropdown] = useState(false);
   const [otherReasonText, setOtherReasonText] = useState("");
   const [feePaidWhen, setFeePaidWhen] = useState("");
   const feePaidOptions = ["Before The Interview", "After Job Confirmation", "Deducted From Salary"];
@@ -67,7 +70,7 @@ const NewJobPost: React.FC = () => {
 
   return (
     <div className="bg-[#F7F7F7] min-h-screen w-full flex flex-col items-center">
-      {/* Header bar */}
+          {/* Header bar */}
       <PostJobHeader/>
       {/* Stepper and Use Templates button */}
       <div className="w-full flex items-center justify-between px-8 pt-6 pb-2 bg-[#F7F7F7]">
@@ -77,44 +80,38 @@ const NewJobPost: React.FC = () => {
           Use Templates
         </button>
       </div>
-      <div className="w-full max-w-4xl bg-white rounded-xl shadow-sm mt-2 mb-8 px-8 pt-6 pb-4">
-        {/* Stepper */}
-        <div className="flex items-center justify-between w-full mb-6">
-          {[1,2,3,4,5].map((step) => (
-            <React.Fragment key={step}>
-              <div className="flex flex-col items-center">
-                <div className={`rounded-full flex items-center justify-center font-semibold ${step === 1 ? 'bg-[#2D2346] text-white' : 'bg-[#A0AEC0] text-white'} w-7 h-7 text-sm`}>{step}</div>
-                <span className={`text-xs mt-2 ${step === 1 ? 'text-[#2D2346] font-semibold' : 'text-[#42526E]'}`}>{step === 1 ? 'Job details' : ''}</span>
-              </div>
-              {step < 5 && <div className="flex-1 h-px bg-[#A0AEC0] mx-2" />}
-            </React.Fragment>
-          ))}
-        </div>
-
-        {/* Job details section */}
+      <div className="w-full max-w-4xl bg-white rounded-xl shadow-sm mt-2 mb-8 px-4 sm:px-8 pt-6 pb-4">
+        {/* Stepper added back as requested */}
         <div className="mb-6">
-          <div className="text-xs text-[#F97316] font-semibold mb-1">Job details<br /><span className="text-[#B91C1C]">*Marked fields are mandatory</span></div>
+          <Stepper
+            steps={["Job Details", "Candidate Requirements", "Interviewer information", "Review & Post"]}
+            activeStep={0}
+          />
+        </div>
+        {/* Job details section */}
+        <div className="bg-white rounded-xl border border-[#fbb040] shadow p-4 sm:p-6 mb-6">
+          <div className="text-xs text-[#fbb040] font-semibold mb-1">Job details<br /><span className="text-[#B91C1C]">*Marked fields are mandatory</span></div>
           <label className="block text-sm font-medium text-[#253858] mb-1">Company you belong to <span className="font-bold">{companyName}</span></label>
           <div className="flex items-center gap-2 mb-3">
             <input type="text" className="border rounded px-3 py-2 w-full text-sm" value={companyName} readOnly />
             <div className="relative">
-              <button className="text-[#12B981] text-base font-semibold px-4 py-2 border rounded bg-white" type="button" onClick={() => setShowCompanyReasonModal(true)}>Change</button>
+              <button className="text-[#fbb040] text-base font-semibold px-4 py-2 border border-[#fbb040] rounded bg-white hover:bg-[#FFF7E0] transition-colors" type="button" onClick={() => setShowCompanyReasonModal(true)}>Change</button>
               {showCompanyReasonModal && (
-                <div className="absolute right-0 top-full mt-2 z-50 w-[400px] bg-white rounded-xl shadow-lg border border-[#E5E7EB] p-6" style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.12)' }}>
+                <div className="absolute right-0 top-full mt-2 z-50 w-[400px] bg-white rounded-xl shadow-lg border border-[#fbb040] p-6" style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.12)' }}>
                   <div className="flex items-center justify-between mb-4">
                     <span className="font-semibold text-lg text-[#253858]">Reason to change the company name</span>
-                    <button className="text-[#253858] text-xl font-bold" type="button" aria-label="Close" onClick={() => setShowCompanyReasonModal(false)}>&times;</button>
+                    <button className="text-[#253858] text-xl font-bold hover:bg-[#FFF7E0] rounded-full w-8 h-8 flex items-center justify-center" type="button" aria-label="Close" onClick={() => setShowCompanyReasonModal(false)}>&times;</button>
                   </div>
                   <div className="flex flex-col gap-3">
                     {companyChangeReasons.map(reason => (
-                      <label key={reason} className="flex items-center gap-3 border rounded-lg px-3 py-3 cursor-pointer hover:border-[#2563EB]">
+                      <label key={reason} className={`flex items-center gap-3 border rounded-lg px-3 py-3 cursor-pointer ${companyChangeReason === reason ? 'border-[#fbb040] bg-[#FFF7E0]' : 'border-[#fbb040] bg-white'} hover:border-[#fbb040]`}>
                         <input
                           type="radio"
                           name="companyChangeReason"
                           value={reason}
                           checked={companyChangeReason === reason}
                           onChange={() => setCompanyChangeReason(reason)}
-                          className="w-5 h-5 accent-[#2563EB]"
+                          className="w-5 h-5 accent-[#fbb040]"
                         />
                         <span className="text-[#253858] text-base">{reason}</span>
                       </label>
@@ -122,7 +119,7 @@ const NewJobPost: React.FC = () => {
                   </div>
                   <div className="flex justify-end mt-6">
                     <button
-                      className="bg-[#2563EB] text-white font-semibold rounded px-6 py-2 disabled:opacity-50"
+                      className={`bg-[#fbb040] text-white font-semibold rounded px-6 py-2 disabled:opacity-50 transition-colors ${!companyChangeReason ? 'opacity-50 cursor-not-allowed' : ''}`}
                       type="button"
                       disabled={!companyChangeReason}
                       onClick={() => {
@@ -161,7 +158,7 @@ const NewJobPost: React.FC = () => {
               <div className="relative mb-3">
                 <input
                   type="text"
-                  className="border rounded px-3 py-2 w-full text-sm focus:border-[#2563EB]"
+                  className="border border-[#fbb040] rounded px-3 py-2 w-full text-sm focus:border-[#fbb040] focus:bg-[#FFF7E0] bg-white"
                   placeholder="Type at least 2 letters for search"
                   value={jobRole}
                   onChange={e => {
@@ -173,20 +170,20 @@ const NewJobPost: React.FC = () => {
                 />
                 <button
                   type="button"
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#42526E] text-base"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#fbb040] text-base bg-white rounded-full border border-[#fbb040] p-1 hover:bg-[#FFF7E0] transition-colors"
                   tabIndex={-1}
                   onClick={() => setShowJobRoleDropdown(v => !v)}
                   aria-label="Toggle dropdown"
                 >
-                  <svg width="18" height="18" fill="none" stroke="#42526E" strokeWidth="2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+                  <svg width="18" height="18" fill="none" stroke="#fbb040" strokeWidth="2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
                 </button>
                 {(showJobRoleDropdown && jobRoleFocused) && (
-                  <div className="absolute left-0 right-0 top-full mt-1 bg-white border border-[#A0AEC0] rounded shadow z-10 max-h-48 overflow-auto">
+                  <div className="absolute left-0 right-0 top-full mt-1 bg-white border border-[#fbb040] rounded-xl shadow-lg z-10 max-h-48 overflow-auto p-2" style={{ boxShadow: '0 2px 8px rgba(251,176,64,0.12)' }}>
                     {jobRoleOptions.filter(opt => opt.toLowerCase().includes(jobRole.toLowerCase())).length > 0 ? (
                       jobRoleOptions.filter(opt => opt.toLowerCase().includes(jobRole.toLowerCase())).map(opt => (
                         <div
                           key={opt}
-                          className="px-3 py-2 cursor-pointer hover:bg-[#F3F4F6] text-[#253858] text-sm"
+                          className="px-3 py-2 cursor-pointer rounded-lg hover:bg-[#FFF7E0] text-[#253858] text-sm border border-transparent hover:border-[#fbb040]"
                           onMouseDown={() => {
                             setJobRole(opt);
                             setShowJobRoleDropdown(false);
@@ -206,7 +203,7 @@ const NewJobPost: React.FC = () => {
           <label className="block text-sm font-medium text-[#253858] mb-1">Type of Job <span className="text-[#B91C1C]">*</span></label>
           <div className="flex gap-2 mb-2">
             {jobTypes.map(type => (
-              <button key={type} type="button" className={`px-3 py-1 rounded-full border text-xs font-semibold ${selectedJobType === type ? 'bg-[#F97316] text-white border-[#F97316]' : 'bg-white text-[#253858] border-[#A0AEC0]'}`} onClick={() => setSelectedJobType(type)}>{type}</button>
+              <button key={type} type="button" className={`px-3 py-1 rounded-full border text-xs font-semibold ${selectedJobType === type ? 'bg-[#fbb040] text-white border-[#fbb040]' : 'bg-white text-[#253858] border-[#fbb040]'}`} onClick={() => setSelectedJobType(type)}>{type}</button>
             ))}
           </div>
           <label className="flex items-center gap-2 text-xs mb-2">
@@ -216,7 +213,7 @@ const NewJobPost: React.FC = () => {
         </div>
 
         {/* Location section */}
-        <div className="mb-6">
+        <div className="bg-white rounded-xl border border-[#fbb040] shadow p-4 sm:p-6 mb-6">
           {/* Location section header - updated to match image */}
           <div className="mb-2">
             <span className="text-[#253858] font-bold text-xl">Location</span>
@@ -228,7 +225,7 @@ const NewJobPost: React.FC = () => {
               <button
                 key={type}
                 type="button"
-                className={`px-3 py-1 rounded-full border text-xs font-semibold flex items-center gap-1 transition-colors duration-150 ${selectedLocationTypes[0] === type ? 'bg-[#2563EB] text-white border-[#2563EB]' : 'bg-white text-[#253858] border-[#A0AEC0]'}`}
+                className={`px-3 py-1 rounded-full border text-xs font-semibold flex items-center gap-1 transition-colors duration-150 ${selectedLocationTypes[0] === type ? 'bg-[#fbb040] text-white border-[#fbb040]' : 'bg-white text-[#253858] border-[#fbb040]'}`}
                 onClick={() => setSelectedLocationTypes([type])}
               >
                 {type}
@@ -266,17 +263,17 @@ const NewJobPost: React.FC = () => {
                 {fieldArea && (
                   <button
                     type="button"
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#42526E] text-xl"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#fbb040] text-xl"
                     onClick={() => setFieldArea("")}
                     aria-label="Clear"
                   >&#10005;</button>
                 )}
               </div>
               {fieldAreaFocused && (
-                <div className="bg-white rounded-lg shadow border mt-2 p-3">
+                <div className="bg-white rounded-lg shadow border border-[#fbb040] mt-2 p-3">
                   <button
                     type="button"
-                    className="flex items-center gap-2 bg-[#158C7E] hover:bg-[#10796C] text-white font-semibold px-3 py-2 rounded text-sm"
+                    className="flex items-center gap-2 bg-[#fbb040] hover:bg-[#e6a900] text-white font-semibold px-3 py-2 rounded text-sm"
                     style={{ minHeight: '32px' }}
                     onClick={() => {
                       if (navigator.geolocation) {
@@ -297,24 +294,40 @@ const NewJobPost: React.FC = () => {
           {selectedLocationTypes[0] === "Work From Home" && (
             <>
               <label className="block text-base font-semibold text-[#253858] mb-2">Job City <span className="text-[#B91C1C]">*</span></label>
-              <select
-                className="border rounded px-3 py-2 w-full text-base mb-3"
-                value={jobCity}
-                onChange={e => {
-                  setJobCity(e.target.value);
-                  setShowCityInfo(!!e.target.value);
-                }}
-              >
-                <option value="">Select City</option>
-                {cityOptions.map(city => (
-                  <option key={city} value={city}>{city} Region</option>
-                ))}
-              </select>
+              <div className="relative mb-3">
+                <button
+                  type="button"
+                  className="border border-[#fbb040] rounded px-3 py-2 w-full text-base bg-white flex justify-between items-center focus:outline-none focus:bg-[#FFF7E0]"
+                  onClick={() => setShowCityDropdown(v => !v)}
+                >
+                  {jobCity || "Select City"}
+                  <span className="ml-2">
+                    <svg width="18" height="18" fill="none" stroke="#fbb040" strokeWidth="2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+                  </span>
+                </button>
+                {showCityDropdown && (
+                  <div className="absolute left-0 right-0 top-full mt-1 bg-[#FFF7E0] border border-[#fbb040] rounded-xl shadow-lg z-10 max-h-48 overflow-auto p-2" style={{ boxShadow: '0 2px 8px rgba(251,176,64,0.12)' }}>
+                    {cityOptions.map(city => (
+                      <div
+                        key={city}
+                        className={`px-3 py-2 cursor-pointer rounded-lg hover:bg-[#fbb040] hover:text-white text-[#253858] text-base border border-transparent hover:border-[#fbb040] ${jobCity === city ? 'bg-[#fbb040] text-white' : ''}`}
+                        onMouseDown={() => {
+                          setJobCity(city);
+                          setShowCityDropdown(false);
+                          setShowCityInfo(true);
+                        }}
+                      >
+                        {city} Region
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
               {showCityInfo && jobCity && (
-                <div className="bg-[#EAF3FF] border border-[#B6D4FE] text-[#0A1733] text-base rounded px-4 py-3 flex items-center gap-2 mt-2">
-                  <svg width="20" height="20" fill="none" stroke="#2563EB" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><circle cx="12" cy="8" r="1"/></svg>
+                <div className="bg-[#FFF7E0] border border-[#fbb040] text-[#253858] text-base rounded px-4 py-3 flex items-center gap-2 mt-2">
+                  <svg width="20" height="20" fill="none" stroke="#fbb040" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><circle cx="12" cy="8" r="1"/></svg>
                   You will be receiving applications from within {jobCity} Region
-                  <span className="ml-1"><svg width="16" height="16" fill="none" stroke="#0A1733" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><circle cx="12" cy="8" r="1"/></svg></span>
+                  <span className="ml-1"><svg width="16" height="16" fill="none" stroke="#253858" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><circle cx="12" cy="8" r="1"/></svg></span>
                 </div>
               )}
             </>
@@ -322,7 +335,7 @@ const NewJobPost: React.FC = () => {
         </div>
 
         {/* Compensation section */}
-        <div className="mb-6">
+        <div className="bg-white rounded-xl border border-[#fbb040] shadow p-4 sm:p-6 mb-6">
           <label className="block text-xl font-semibold text-[#253858] mb-1">Compensation</label>
           <div className="text-sm text-[#42526E] mb-2">Job postings with right salary & incentives will help you find the right candidates.</div>
           <label className="block text-base font-semibold text-[#253858] mb-2">What is the pay type? <span className="text-[#B91C1C]">*</span></label>
@@ -331,7 +344,7 @@ const NewJobPost: React.FC = () => {
               <button
                 key={type}
                 type="button"
-                className={`px-3 py-1 rounded-full border text-xs font-semibold transition-colors duration-150 ${selectedPayType === type ? 'bg-[#2563EB] text-white border-[#2563EB]' : 'bg-white text-[#253858] border-[#A0AEC0]'}`}
+                className={`px-3 py-1 rounded-full border text-xs font-semibold transition-colors duration-150 ${selectedPayType === type ? 'bg-[#fbb040] text-white border-[#fbb040]' : 'bg-white text-[#253858] border-[#fbb040]'}`}
                 onClick={() => setSelectedPayType(type)}
               >
                 {type}
@@ -397,16 +410,16 @@ const NewJobPost: React.FC = () => {
           <label className="block text-sm font-medium text-[#253858] mb-1">Do you offer any additional perks?</label>
           <div className="flex flex-wrap gap-2 mb-2">
             {perks.map(perk => (
-              <button key={perk} type="button" className={`px-2 py-1 rounded-full border text-xs font-medium ${selectedPerks.includes(perk) ? 'bg-[#F97316] text-white border-[#F97316]' : 'bg-white text-[#253858] border-[#A0AEC0]'}`} onClick={() => setSelectedPerks(selectedPerks.includes(perk) ? selectedPerks.filter(p => p !== perk) : [...selectedPerks, perk])}>{perk} +</button>
+              <button key={perk} type="button" className={`px-2 py-1 rounded-full border text-xs font-medium ${selectedPerks.includes(perk) ? 'bg-[#fbb040] text-white border-[#fbb040]' : 'bg-white text-[#253858] border-[#fbb040]'}`} onClick={() => setSelectedPerks(selectedPerks.includes(perk) ? selectedPerks.filter(p => p !== perk) : [...selectedPerks, perk])}>{perk} +</button>
             ))}
             {selectedPerks.filter(p => !perks.includes(p)).map(perk => (
-              <span key={perk} className="px-2 py-1 rounded-full border text-xs font-medium bg-[#F97316] text-white border-[#F97316]">{perk} <button type="button" className="ml-1 text-white" onClick={() => setSelectedPerks(selectedPerks.filter(p => p !== perk))}>&times;</button></span>
+              <span key={perk} className="px-2 py-1 rounded-full border text-xs font-medium bg-[#fbb040] text-white border-[#fbb040]">{perk} <button type="button" className="ml-1 text-white" onClick={() => setSelectedPerks(selectedPerks.filter(p => p !== perk))}>&times;</button></span>
             ))}
           </div>
           {showOtherPerksInput ? (
             <div className="flex gap-2 mb-2">
               <input type="text" className="border rounded px-2 py-1 text-xs" placeholder="Other perk" value={otherPerks} onChange={e => setOtherPerks(e.target.value)} />
-              <button type="button" className="text-[#F97316] text-xs font-semibold" onClick={() => {
+              <button type="button" className="text-[#fbb040] text-xs font-semibold" onClick={() => {
                 if (otherPerks.trim()) {
                   setSelectedPerks([...selectedPerks, otherPerks.trim()]);
                   setOtherPerks("");
@@ -416,12 +429,14 @@ const NewJobPost: React.FC = () => {
               <button type="button" className="text-[#253858] text-xs font-semibold" onClick={() => setShowOtherPerksInput(false)}>Cancel</button>
             </div>
           ) : (
-            <button type="button" className="text-[#16A34A] text-xs font-semibold mb-2" onClick={() => setShowOtherPerksInput(true)}>+ Add other perks</button>
+            <button type="button" className="text-[#fbb040] text-xs font-semibold mb-2" onClick={() => setShowOtherPerksInput(true)}>+ Add other perks</button>
           )}
+        </div>
+        <div className="bg-white rounded-xl border border-[#fbb040] shadow p-4 sm:p-6 mb-6">
           <label className="block text-sm font-medium text-[#253858] mb-1">Is there any joining fee or deposit required from the candidate? <span className="text-[#B91C1C]">*</span></label>
           <div className="flex gap-2 mb-2">
             {['Yes', 'No'].map(opt => (
-              <button key={opt} type="button" className={`px-3 py-1 rounded-full border text-xs font-semibold ${joiningFee === opt ? 'bg-[#F97316] text-white border-[#F97316]' : 'bg-white text-[#253858] border-[#A0AEC0]'}`} onClick={() => setJoiningFee(opt)}>{opt}</button>
+              <button key={opt} type="button" className={`px-3 py-1 rounded-full border text-xs font-semibold ${joiningFee === opt ? 'bg-[#fbb040] text-white border-[#fbb040]' : 'bg-white text-[#253858] border-[#fbb040]'}`} onClick={() => setJoiningFee(opt)}>{opt}</button>
             ))}
           </div>
           {/* Fee details section - show only if Yes is selected */}
@@ -436,7 +451,7 @@ const NewJobPost: React.FC = () => {
                   <button
                     key={reason}
                     type="button"
-                    className={`px-3 py-1 rounded-full border text-xs font-semibold ${selectedFeeReason === reason ? 'bg-[#2563EB] text-white border-[#2563EB]' : 'bg-white text-[#253858] border-[#A0AEC0]'}`}
+                    className={`px-3 py-1 rounded-full border text-xs font-semibold ${selectedFeeReason === reason ? 'bg-[#fbb040] text-white border-[#fbb040]' : 'bg-white text-[#253858] border-[#fbb040]'}`}
                     onClick={() => setSelectedFeeReason(reason)}
                   >
                     {reason}
@@ -448,12 +463,34 @@ const NewJobPost: React.FC = () => {
               {selectedFeeReason === "Asset/ Inventory Charge" && (
                 <>
                   <label className="block text-sm font-medium text-[#253858] mb-1">Mention assets/inventory <span className="text-[#B91C1C]">*</span></label>
-                  <select className="border rounded px-3 py-2 w-full text-sm mb-3" value={selectedAsset} onChange={e => setSelectedAsset(e.target.value)}>
-                    <option value="">Eg. Bag, Laptop, etc.</option>
-                    {assetOptions.map(opt => (
-                      <option key={opt} value={opt}>{opt}</option>
-                    ))}
-                  </select>
+                  <div className="relative mb-3">
+                    <button
+                      type="button"
+                      className="border border-[#fbb040] rounded px-3 py-2 w-full text-sm bg-white flex justify-between items-center focus:outline-none focus:bg-[#FFF7E0]"
+                      onClick={() => setShowAssetDropdown(v => !v)}
+                    >
+                      {selectedAsset || "Eg. Bag, Laptop, etc."}
+                      <span className="ml-2">
+                        <svg width="18" height="18" fill="none" stroke="#fbb040" strokeWidth="2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+                      </span>
+                    </button>
+                    {showAssetDropdown && (
+                      <div className="absolute left-0 right-0 top-full mt-1 bg-[#FFF7E0] border border-[#fbb040] rounded-xl shadow-lg z-10 max-h-48 overflow-auto p-2" style={{ boxShadow: '0 2px 8px rgba(251,176,64,0.12)' }}>
+                        {assetOptions.map(opt => (
+                          <div
+                            key={opt}
+                            className={`px-3 py-2 cursor-pointer rounded-lg hover:bg-[#fbb040] hover:text-white text-[#253858] text-sm border border-transparent hover:border-[#fbb040] ${selectedAsset === opt ? 'bg-[#fbb040] text-white' : ''}`}
+                            onMouseDown={() => {
+                              setSelectedAsset(opt);
+                              setShowAssetDropdown(false);
+                            }}
+                          >
+                            {opt}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </>
               )}
 
@@ -461,7 +498,7 @@ const NewJobPost: React.FC = () => {
               {(selectedFeeReason === "Registration/ Training Fees" || selectedFeeReason === "Other Reason") && (
                 <>
                   <label className="block text-sm font-medium text-[#253858] mb-1">Mention your reason here <span className="text-[#B91C1C]">*</span></label>
-                  <input type="text" className="border rounded px-3 py-2 w-full text-sm mb-3" placeholder="Enter reason" value={otherReasonText} onChange={e => setOtherReasonText(e.target.value)} />
+                  <input type="text" className="border rounded px-3 py-2 w-full text-sm mb-3 border-[#fbb040]" placeholder="Enter reason" value={otherReasonText} onChange={e => setOtherReasonText(e.target.value)} />
                 </>
               )}
 
@@ -471,7 +508,7 @@ const NewJobPost: React.FC = () => {
                   <button
                     key={opt}
                     type="button"
-                    className={`px-3 py-1 rounded-full border text-xs font-semibold ${feePaidWhen === opt ? 'bg-[#2563EB] text-white border-[#2563EB]' : 'bg-white text-[#253858] border-[#A0AEC0]'}`}
+                    className={`px-3 py-1 rounded-full border text-xs font-semibold ${feePaidWhen === opt ? 'bg-[#fbb040] text-white border-[#fbb040]' : 'bg-white text-[#253858] border-[#fbb040]'}`}
                     onClick={() => setFeePaidWhen(opt)}
                   >
                     {opt}
@@ -485,7 +522,7 @@ const NewJobPost: React.FC = () => {
         {/* Continue button */}
         <div className="flex justify-center mt-8">
           <button
-            className="bg-green-600 hover:bg-green-700 text-white font-semibold rounded px-8 py-2"
+            className="bg-[#fbb040] hover:bg-[#e6a900] text-white font-semibold rounded px-8 py-2 shadow transition-colors w-full sm:w-auto"
             type="button"
             disabled={
               !companyName ||

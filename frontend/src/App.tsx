@@ -62,6 +62,8 @@ import CompanyProfile from './pages/Employer/Profiles/CompanyProfile';
 import InterviewerInformation from './pages/Employer/Jobs/PostJobs/InterviewerInformation';
 import EmployerRegistration from './pages/Employer/EmployerRegistration';
 import EmployerRegisterVerifyOtp from './pages/Employer/VerifyOtp';
+import JobPostPreview from './pages/Employer/Jobs/PostJobs/JobPreview';
+import PublishJob from './pages/Employer/Jobs/PostJobs/PublishJob';
 
 function App() {
   return (
@@ -130,6 +132,10 @@ function App() {
              <Route path="/Employer/NewJobPost" element={<NewJobPost />} />
              <Route path="/Employer/CandidateRequirements" element={<CandidateRequirements />} />
              <Route path="/Employer/InterviewerInformation" element={<InterviewerInformation />} />
+             <Route path="/Employer/JobPostPreview" element={<JobPostPreview />} />
+             <Route path="/Employer/PublishJob" element={<PublishJob />} />
+             
+
 
 
              <Route path="/Employer/EmployerRegistration" element={<EmployerRegistration />} />
