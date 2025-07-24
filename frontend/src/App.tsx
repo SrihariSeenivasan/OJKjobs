@@ -51,6 +51,8 @@ import BuyPackageSelection from './pages/Employer/BuyPackages/BuyPackageSelectio
 import BuyPackageCheckout from './pages/Employer/BuyPackages/BuyPackageCheckout';
 import EmployerProfile from './pages/Employer/Profiles/Profile';
 import CompanyProfile from './pages/Employer/Profiles/CompanyProfile';
+import NewJobPost from './pages/Employer/Jobs/PostJobs/NewJobPost';
+import CandidateRequirements from './pages/Employer/Jobs/PostJobs/CandidateRequirements';
 
 function App() {
   return (
@@ -123,6 +125,8 @@ function App() {
              <Route path="/Employer/SupportHome" element={<SupportHome />} />
              <Route path="/Employer/BuyPackageSelection" element={<BuyPackageSelection />} />
              <Route path="/Employer/BuyPackageCheckout" element={<BuyPackageCheckout />} />
+             <Route path="/Employer/NewJobPost" element={<NewJobPost />} />
+             <Route path="/Employer/CandidateRequirements" element={<CandidateRequirements />} />
              
 
              
