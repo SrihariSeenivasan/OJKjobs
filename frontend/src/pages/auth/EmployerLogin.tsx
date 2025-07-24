@@ -59,7 +59,7 @@ const EmployerLogin: React.FC = () => {
         profileComplete: true
       }));
       setIsLoading(false);
-      navigate('/dashboard');
+      navigate('/Employer/Jobs');
     }, 800);
   };
 
@@ -154,7 +154,7 @@ const EmployerLogin: React.FC = () => {
           </button>
         </form>
         <div className="mt-4 text-center">
-          <span className="text-sm text-blue-700 cursor-pointer hover:underline" onClick={() => window.location.href = '/authReg'}>
+          <span className="text-sm text-blue-700 cursor-pointer hover:underline" onClick={() => window.location.href = '/Employer/EmployerRegistration'}>
             I don't have an account !
           </span>
           </div>

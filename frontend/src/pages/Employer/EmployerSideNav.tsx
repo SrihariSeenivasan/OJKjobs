@@ -46,10 +46,10 @@ const EmployerSideNav: React.FC<EmployerSideNavProps> = ({
         label: "Saved Searches",
         onClick: (navigate: ReturnType<typeof useNavigate>) => navigate("SavedSearches"),
       },
-      {
-        label: "Unlocked Candidates",
-        onClick: (navigate: ReturnType<typeof useNavigate>) => navigate("UnlockedCandidates"),
-      },
+      // {
+      //   label: "Unlocked Candidates",
+      //   onClick: (navigate: ReturnType<typeof useNavigate>) => navigate("UnlockedCandidates"),
+      // },
     ],
   },
   {
@@ -88,7 +88,7 @@ const EmployerSideNav: React.FC<EmployerSideNavProps> = ({
     children: [
       {
         label: "FAQ",
-        onClick: (navigate: ReturnType<typeof useNavigate>) => navigate("/faq"),
+        onClick: (navigate: ReturnType<typeof useNavigate>) => navigate("/Employer/SupportHome"),
       },
       {
         label: "Contact us",

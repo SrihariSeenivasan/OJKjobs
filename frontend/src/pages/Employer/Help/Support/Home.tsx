@@ -7,19 +7,19 @@ const helpCards = [
     desc: 'Job Activation',
   },
   {
-    title: 'apnaHire',
+    title: 'OJKHire',
     img: '/public/assets/ojk-logo.png',
-    desc: 'apnaHire',
+    desc: 'OJKHire',
   },
   {
-    title: 'apnaDatabase',
+    title: 'OJKDatabase',
     img: '/public/assets/ojk-logo.png',
-    desc: 'apnaDatabase',
+    desc: 'OJKDatabase',
   },
   {
-    title: 'apnaCredits and Payments',
+    title: 'OJKCredits and Payments',
     img: '/public/assets/ojk-logo.png',
-    desc: 'apnaCredits and Payments',
+    desc: 'OJKCredits and Payments',
   },
   {
     title: 'Enterprise Account',
@@ -48,7 +48,7 @@ const SupportHome: React.FC = () => {
                 <button className="hover:text-[#2DC6A8] bg-transparent border-none p-0" onClick={() => {}}>Start Hiring</button>
                 <button className="hover:text-[#2DC6A8] bg-transparent border-none p-0" onClick={() => {}}>Renew Job</button>
                 <button className="hover:text-[#2DC6A8] bg-transparent border-none p-0" onClick={() => {}}>Job Approval</button>
-                <button className="hover:text-[#2DC6A8] bg-transparent border-none p-0" onClick={() => {}}>Apna for Candidates</button>
+                <button className="hover:text-[#2DC6A8] bg-transparent border-none p-0" onClick={() => {}}>OJK for Candidates</button>
               </div>
             </div>
             <div className="flex items-center">
@@ -72,7 +72,7 @@ const SupportHome: React.FC = () => {
               <button className="hover:text-[#2DC6A8] text-left bg-transparent border-none p-0" onClick={() => {}}>Start Hiring</button>
               <button className="hover:text-[#2DC6A8] text-left bg-transparent border-none p-0" onClick={() => {}}>Renew Job</button>
               <button className="hover:text-[#2DC6A8] text-left bg-transparent border-none p-0" onClick={() => {}}>Job Approval</button>
-              <button className="hover:text-[#2DC6A8] text-left bg-transparent border-none p-0" onClick={() => {}}>Apna for Candidates</button>
+              <button className="hover:text-[#2DC6A8] text-left bg-transparent border-none p-0" onClick={() => {}}>OJK for Candidates</button>
               <button className="bg-[#4B3952] text-white px-6 py-2 rounded-xl font-semibold text-base mt-2 text-left" onClick={() => {}}>Go to OJK JOBS</button>
             </div>
           </div>
@@ -108,7 +108,7 @@ const SupportHome: React.FC = () => {
 
       {/* Footer */}
       <footer className="flex items-center justify-between px-8 py-4 border-t text-gray-500 text-sm bg-white">
-        <span>© 2025 Apna.co</span>
+        <span>© 2025 OJK.co</span>
         <div className="flex gap-4">
           <a href="#" className="hover:underline">Terms</a>
           <a href="#" className="hover:underline">Privacy</a>

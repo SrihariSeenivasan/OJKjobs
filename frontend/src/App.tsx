@@ -59,6 +59,9 @@ import ScheduleTraining from './pages/Employer/Help/ScheduleTraining';
 import SupportHome from './pages/Employer/Help/Support/Home';
 import EmployerProfile from './pages/Employer/Profiles/Profile';
 import CompanyProfile from './pages/Employer/Profiles/CompanyProfile';
+import InterviewerInformation from './pages/Employer/Jobs/PostJobs/InterviewerInformation';
+import EmployerRegistration from './pages/Employer/EmployerRegistration';
+import EmployerRegisterVerifyOtp from './pages/Employer/VerifyOtp';
 
 function App() {
   return (
@@ -126,6 +129,11 @@ function App() {
              <Route path="/Employer/BuyPackageCheckout" element={<BuyPackageCheckout />} />
              <Route path="/Employer/NewJobPost" element={<NewJobPost />} />
              <Route path="/Employer/CandidateRequirements" element={<CandidateRequirements />} />
+             <Route path="/Employer/InterviewerInformation" element={<InterviewerInformation />} />
+
+
+             <Route path="/Employer/EmployerRegistration" element={<EmployerRegistration />} />
+             <Route path="/Employer/verifyOtp" element={<EmployerRegisterVerifyOtp />} />
              
 
              

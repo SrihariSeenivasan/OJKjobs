@@ -1,11 +1,13 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const PostJobPopup: React.FC<{ onClose?: () => void }> = ({ onClose }) => {
+  const navigate = useNavigate();
   return (
     <div className="bg-white rounded-xl shadow-lg w-[400px] sm:w-[480px] p-6 border border-gray-100 min-h-[160px] sm:min-h-[220px] flex flex-col justify-center">
       <div className="flex flex-col gap-2">
         {/* Start with new post */}
-        <button className="flex items-center gap-3 p-3 rounded-lg hover:bg-blue-50 transition group">
+        <button className="flex items-center gap-3 p-3 rounded-lg hover:bg-blue-50 transition group" onClick={() => navigate("/Employer/NewJobPost") }>
           <div className="bg-blue-100 rounded-lg p-2 flex items-center justify-center">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="6" fill="#E0EDFF"/><path d="M12 7v10M7 12h10" stroke="#2563EB" strokeWidth="2" strokeLinecap="round"/></svg>
           </div>

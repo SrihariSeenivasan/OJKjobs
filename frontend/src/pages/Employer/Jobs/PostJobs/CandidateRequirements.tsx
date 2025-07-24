@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import PostJobHeader from "./PostJobHeader";
 
 const educationOptions = [
   "10th or Below 10th", "12th Pass", "Diploma", "ITI", "Graduate", "Post Graduate"
@@ -40,23 +41,7 @@ const CandidateRequirements: React.FC = () => {
   return (
     <div className="bg-gradient-to-br from-[#F7F7F7] via-[#EAF3FF] to-[#F7F7F7] min-h-screen w-full flex flex-col items-center">
       {/* Header bar - themed */}
-      <div className="w-full flex items-center justify-between px-8 pt-6 pb-2 bg-[#2D2346] border-b border-[#E5E7EB] shadow-sm">
-        <div className="flex items-center gap-3">
-          <button className="p-2 rounded-full hover:bg-[#453A5A] transition-colors" aria-label="Back">
-            <svg width="24" height="24" fill="none" stroke="#fff" strokeWidth="2" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg>
-          </button>
-          <span className="font-semibold text-lg text-white">Post job</span>
-        </div>
-        <div className="flex items-center gap-6">
-          <button className="flex items-center gap-1 text-[#A0AEC0] text-sm font-medium" aria-label="Support">
-            <svg width="20" height="20" fill="none" stroke="#A0AEC0" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><circle cx="12" cy="8" r="1"/></svg>
-            Support
-          </button>
-          <button className="p-2 rounded-full hover:bg-[#453A5A] transition-colors" aria-label="Close">
-            <svg width="20" height="20" fill="none" stroke="#fff" strokeWidth="2" viewBox="0 0 24 24"><path d="M6 6l12 12M6 18L18 6"/></svg>
-          </button>
-        </div>
-      </div>
+      <PostJobHeader />
       {/* Stepper - themed */}
       <div className="w-full max-w-4xl bg-white rounded-xl shadow-lg mt-2 mb-8 px-8 pt-6 pb-4 border border-[#E5E7EB]">
         <div className="flex items-center justify-between w-full mb-6">
