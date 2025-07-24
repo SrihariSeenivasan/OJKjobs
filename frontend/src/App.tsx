@@ -12,20 +12,18 @@ import AdminPanel from './pages/admin/AdminPanel';
 // Pages
 import AuthGatewayLog from './pages/AuthGatewayLog';
 
-import EmployerLogin from './pages/auth/EmployerLogin';
+
 import EmployerPaymentStep from './pages/auth/EmployerPaymentStep';
 import EmployerProfileSetup from './pages/auth/EmployerProfileSetup';
 import EmployerRegister from './pages/auth/EmployerRegister';
 import EmployerReviewStep from './pages/auth/EmployerReviewStep';
 import JobseekerLogin from './pages/auth/JobseekerLogin';
-import JobseekerProfile from './pages/auth/JobseekerProfile';
+
 import JobseekerRegister from './pages/auth/JobseekerRegister';
 import AuthGatewayReg from './pages/AuthGatewayReg';
 import Blog from './pages/Blog';
 import ContactUs from './pages/ContactUs';
-import ContestDetails from './pages/Contests/Contests';
-import ContestsListing from './pages/Contests/ContestsListing';
-import Dashboard from './pages/Dashboard';
+
 import Billing from './pages/Employer/Billing';
 import ContactPopup from './pages/Employer/Common/ContactPopup';
 import CreditsAndUsage from './pages/Employer/CreditsAndUsage';
@@ -44,22 +42,23 @@ import BrowseJobs from './pages/jobs/BrowseJobs';
 import ApplyJob from './pages/jobs/ApplyJob';
 import PostJob from './pages/jobs/PostJob';
 import PrivacyPolicy from './pages/PrivacyPolicy';
-import Profile from './pages/Profile';
+
 import RefundPolicy from './pages/RefundPolicy';
 import TermsAndConditions from './pages/TermsAndConditions';
-import JobseekerLogin from './pages/auth/JobseekerLogin';
+
 import EmployeeLogin from './pages/auth/EmployerLogin';
-import EmployerPaymentStep from './pages/auth/EmployerPaymentStep';
-import EmployerProfileSetup from './pages/auth/EmployerProfileSetup';
-import EmployerReviewStep from './pages/auth/EmployerReviewStep';
-//import JobseekerProfile from './pages/auth/JobseekerProfile';
-import ContactUs from './pages/ContactUs';
+
 import JobseekerProfileStepper from './pages/auth/JobseekerProfileStepper';
-import Blog from './pages/Blog';
-import AuthGatewayReg from './pages/AuthGatewayReg';
-import JobseekerRegister from './pages/auth/JobseekerRegister';
-import EmployerRegister from './pages/auth/EmployerRegister';
+
 import ApplyViaEmail from './pages/jobs/ApplyViaEmail';
+import CandidateRequirements from './pages/Employer/Jobs/PostJobs/CandidateRequirements';
+import NewJobPost from './pages/Employer/Jobs/PostJobs/NewJobPost';
+import BuyPackageSelection from './pages/Employer/BuyPackages/BuyPackageSelection';
+import BuyPackageCheckout from './pages/Employer/BuyPackages/BuyPackageCheckout';
+import ScheduleTraining from './pages/Employer/Help/ScheduleTraining';
+import SupportHome from './pages/Employer/Help/Support/Home';
+import EmployerProfile from './pages/Employer/Profiles/Profile';
+import CompanyProfile from './pages/Employer/Profiles/CompanyProfile';
 
 function App() {
   return (
