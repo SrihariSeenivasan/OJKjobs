@@ -9,15 +9,23 @@ import { useLocation } from 'react-router-dom';
 
 const Layout: React.FC = () => {
   const location = useLocation();
-  // Hide header/footer for admin panel route
-  const isAdminPanel = location.pathname.startsWith('/admin');
+  const path = location.pathname.toLowerCase();
+  // Hide header/footer for admin panel, login, register, profile-setup, and all /auth* routes
+  const hideHeaderFooter =
+    path.startsWith('/admin') ||
+    path === '/login' ||
+    path === '/register' ||
+    path === '/profile-setup' ||
+    path.startsWith('/auth') ||
+    path === '/jobseekerlogin' ||
+    path === '/employerlogin';
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
-      {!isAdminPanel && <Header />}
+      {!hideHeaderFooter && <Header />}
       <main className="flex-1">
         <Outlet />
       </main>
-      {!isAdminPanel && <Footer />}
+      {!hideHeaderFooter && <Footer />}
       <Notifications />
     </div>
   );

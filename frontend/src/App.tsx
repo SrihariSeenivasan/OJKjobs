@@ -1,3 +1,4 @@
+import Profile from './pages/Profile';
 import { Provider } from 'react-redux';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import './i18n';
@@ -23,10 +24,9 @@ import EmployeeLogin from './pages/auth/EmployerLogin';
 import EmployerPaymentStep from './pages/auth/EmployerPaymentStep';
 import EmployerProfileSetup from './pages/auth/EmployerProfileSetup';
 import EmployerReviewStep from './pages/auth/EmployerReviewStep';
-import JobseekerProfile from './pages/auth/JobseekerProfile';
+//import JobseekerProfile from './pages/auth/JobseekerProfile';
 import ContactUs from './pages/ContactUs';
-import Profile from './pages/Profile';
-import Dashboard from './pages/Dashboard';
+import JobseekerProfileStepper from './pages/auth/JobseekerProfileStepper';
 import Blog from './pages/Blog';
 import AuthGatewayReg from './pages/AuthGatewayReg';
 import JobseekerRegister from './pages/auth/JobseekerRegister';
@@ -42,10 +42,10 @@ function App() {
             <Route index element={<Home />} />
             <Route path="/authLog" element={<AuthGatewayLog />} />
             <Route path="/authReg" element={<AuthGatewayReg />} />
-            <Route path="/jobseeker-profile" element={<JobseekerProfile />} />
             <Route path="/browse-jobs" element={<BrowseJobs />} />
             <Route path="/1-day-job" element={<BrowseJobs />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/profile-setup" element={<JobseekerProfileStepper />} />
             <Route path="/JobseekerRegister" element={<JobseekerRegister />} />
             <Route path="/EmployerRegister" element={< EmployerRegister/>} />
             <Route path="/JobseekerLogin" element={<JobseekerLogin />} />
@@ -59,11 +59,7 @@ function App() {
             <Route path="/jobs/apply" element={<ApplyJob />} />
             <Route path="/apply-via-email" element={<ApplyViaEmail />} />
             {/* Protected Routes */}
-            <Route path="/dashboard" element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            } />
+            <Route path="/dashboard" element={<JobseekerProfileStepper />} />
             <Route path="/post-job" element={
               <ProtectedRoute requiredRole="employer">
                 <PostJob />
