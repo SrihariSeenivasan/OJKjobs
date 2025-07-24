@@ -1,3 +1,4 @@
+import Profile from './pages/Profile';
 import { Provider } from 'react-redux';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import './i18n';
@@ -40,19 +41,25 @@ import DownloadApplications from './pages/Employer/Report/DownloadApplications';
 import ReportsDashboard from './pages/Employer/Report/ReportsDashboard';
 import Home from './pages/Home';
 import BrowseJobs from './pages/jobs/BrowseJobs';
+import ApplyJob from './pages/jobs/ApplyJob';
 import PostJob from './pages/jobs/PostJob';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import Profile from './pages/Profile';
 import RefundPolicy from './pages/RefundPolicy';
 import TermsAndConditions from './pages/TermsAndConditions';
-import ScheduleTraining from './pages/Employer/Help/ScheduleTraining';
-import SupportHome from './pages/Employer/Help/Support/Home';
-import BuyPackageSelection from './pages/Employer/BuyPackages/BuyPackageSelection';
-import BuyPackageCheckout from './pages/Employer/BuyPackages/BuyPackageCheckout';
-import EmployerProfile from './pages/Employer/Profiles/Profile';
-import CompanyProfile from './pages/Employer/Profiles/CompanyProfile';
-import NewJobPost from './pages/Employer/Jobs/PostJobs/NewJobPost';
-import CandidateRequirements from './pages/Employer/Jobs/PostJobs/CandidateRequirements';
+import JobseekerLogin from './pages/auth/JobseekerLogin';
+import EmployeeLogin from './pages/auth/EmployerLogin';
+import EmployerPaymentStep from './pages/auth/EmployerPaymentStep';
+import EmployerProfileSetup from './pages/auth/EmployerProfileSetup';
+import EmployerReviewStep from './pages/auth/EmployerReviewStep';
+//import JobseekerProfile from './pages/auth/JobseekerProfile';
+import ContactUs from './pages/ContactUs';
+import JobseekerProfileStepper from './pages/auth/JobseekerProfileStepper';
+import Blog from './pages/Blog';
+import AuthGatewayReg from './pages/AuthGatewayReg';
+import JobseekerRegister from './pages/auth/JobseekerRegister';
+import EmployerRegister from './pages/auth/EmployerRegister';
+import ApplyViaEmail from './pages/jobs/ApplyViaEmail';
 
 function App() {
   return (
@@ -63,30 +70,24 @@ function App() {
             <Route index element={<Home />} />
             <Route path="/authLog" element={<AuthGatewayLog />} />
             <Route path="/authReg" element={<AuthGatewayReg />} />
-            <Route path="/jobseeker-profile" element={<JobseekerProfile />} />
             <Route path="/browse-jobs" element={<BrowseJobs />} />
             <Route path="/1-day-job" element={<BrowseJobs />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/profile-setup" element={<JobseekerProfileStepper />} />
             <Route path="/JobseekerRegister" element={<JobseekerRegister />} />
             <Route path="/EmployerRegister" element={< EmployerRegister/>} />
             <Route path="/JobseekerLogin" element={<JobseekerLogin />} />
-          <Route path="/EmployerLogin" element={<EmployerLogin />} />
-          <Route path="/admin" element={<AdminPanel />} />
-          <Route path="/EmployerPaymentSetup" element={<EmployerPaymentStep />} />
-          <Route path="/EmployerProfileSetup" element={<EmployerProfileSetup />} />
-          <Route path="/EmployerReviewStep" element={<EmployerReviewStep />} />
-          <Route path="/ContactUs" element ={<ContactUs />} />
-          <Route path="/Blog" element ={<Blog />} />
-          <Route path="/ContestsListing" element ={<ContestsListing />} />
-          <Route path="/ContestDetails" element ={<ContestDetails />} />
-          
-          
+            <Route path="/EmployeeLogin" element={<EmployeeLogin />} />
+            <Route path="/admin" element={<AdminPanel />} />
+            <Route path="/EmployerPaymentSetup" element={<EmployerPaymentStep />} />
+            <Route path="/EmployerProfileSetup" element={<EmployerProfileSetup />} />
+            <Route path="/EmployerReviewStep" element={<EmployerReviewStep />} />
+            <Route path="/ContactUs" element ={<ContactUs />} />
+            <Route path="/Blog" element ={<Blog />} />
+            <Route path="/jobs/apply" element={<ApplyJob />} />
+            <Route path="/apply-via-email" element={<ApplyViaEmail />} />
             {/* Protected Routes */}
-            <Route path="/dashboard" element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            } />
+            <Route path="/dashboard" element={<JobseekerProfileStepper />} />
             <Route path="/post-job" element={
               <ProtectedRoute requiredRole="employer">
                 <PostJob />
@@ -94,7 +95,6 @@ function App() {
             } />
 
             {/* Static Pages */}
-            
             <Route path="/contact-us" element={<div className="p-8 text-center">Contact Us page coming soon!</div>} />
             <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />

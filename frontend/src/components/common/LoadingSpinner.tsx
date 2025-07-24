@@ -1,5 +1,4 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 
 interface LoadingSpinnerProps {
   size?: 'small' | 'medium' | 'large';
@@ -7,7 +6,6 @@ interface LoadingSpinnerProps {
 }
 
 const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ size = 'medium', text }) => {
-  const { t } = useTranslation();
   
   const sizeClasses = {
     small: 'h-4 w-4',

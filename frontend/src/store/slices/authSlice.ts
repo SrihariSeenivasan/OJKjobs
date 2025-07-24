@@ -1,3 +1,4 @@
+
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface User {
@@ -11,11 +12,46 @@ export interface User {
   kycVerified?: boolean;
 }
 
+// Profile type matches JobseekerProfileStepper
+export interface Experience {
+  title: string;
+  company: string;
+  duration: string;
+  salary: string;
+  skills: string[];
+}
+export interface Education {
+  degree: string;
+  institution: string;
+  batch: string;
+  medium: string;
+}
+export interface Profile {
+  name: string;
+  email: string;
+  mobile: string;
+  dob: string;
+  gender: string;
+  location: string;
+  experience: Experience[];
+  education: Education[];
+  skills: string[];
+  certifications: string[];
+  languages: string[];
+  resume: File | null;
+  preferences: {
+    jobTitle: string;
+    jobType: string[];
+    preferredLocation: string;
+  };
+}
+
 interface AuthState {
   user: User | null;
   isAuthenticated: boolean;
   loading: boolean;
   error: string | null;
+  profile: Profile | null;
 }
 
 const initialState: AuthState = {
@@ -23,6 +59,7 @@ const initialState: AuthState = {
   isAuthenticated: false,
   loading: false,
   error: null,
+  profile: null,
 };
 
 const authSlice = createSlice({
@@ -37,6 +74,9 @@ const authSlice = createSlice({
       state.isAuthenticated = true;
       state.error = null;
     },
+    setProfile: (state, action: PayloadAction<Profile>) => {
+      state.profile = action.payload;
+    },
     setError: (state, action: PayloadAction<string>) => {
       state.error = action.payload;
       state.loading = false;
@@ -45,6 +85,7 @@ const authSlice = createSlice({
       state.user = null;
       state.isAuthenticated = false;
       state.error = null;
+      state.profile = null;
     },
     clearError: (state) => {
       state.error = null;
@@ -52,5 +93,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { setLoading, setUser, setError, logout, clearError } = authSlice.actions;
+export const { setLoading, setUser, setProfile, setError, logout, clearError } = authSlice.actions;
 export default authSlice.reducer;
