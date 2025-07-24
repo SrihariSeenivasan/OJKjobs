@@ -33,6 +33,7 @@ const TrendingRoleCard: React.FC<{ role: string }> = ({ role }) => {
 
 
 import React, { useRef, useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
@@ -63,23 +64,24 @@ const ScrollToTopButton: React.FC = () => {
 
 
 const Home: React.FC = () => {
+  const { t } = useTranslation();
 
-// Old features and industries data
+// Features with translation keys
 const features = [
   {
     icon: () => <svg className="h-12 w-12 text-green-600 mx-auto mb-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2l4 -4" /></svg>,
-    title: 'Verified Jobs',
-    description: 'All jobs are verified for authenticity and safety.'
+    title: t('features.verified.title'),
+    description: t('features.verified.description')
   },
   {
     icon: () => <svg className="h-12 w-12 text-blue-600 mx-auto mb-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3" /></svg>,
-    title: 'Fast Hiring',
-    description: 'Get hired quickly with our streamlined process.'
+    title: t('features.fast.title'),
+    description: t('features.fast.description')
   },
   {
     icon: () => <svg className="h-12 w-12 text-purple-600 mx-auto mb-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 12.414a2 2 0 0 0-2.828 0l-4.243 4.243" /></svg>,
-    title: 'Local Opportunities',
-    description: 'Find jobs near your location easily.'
+    title: t('features.local.title'),
+    description: t('features.local.description')
   }
 ];
 
@@ -294,16 +296,16 @@ return (
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.8 }}>
-            <h1 className="text-3xl md:text-5xl font-extrabold text-gray-900 leading-tight">Bridging the Job Gap in Kongu Nadu</h1>
+            <h1 className="text-3xl md:text-5xl font-extrabold text-gray-900 leading-tight">{t('hero.title')}</h1>
             <div className="flex items-center gap-2 mt-2 mb-4">
-              <span className="text-blue-700 text-base md:text-xl font-semibold tracking-wide">Instantly</span>
+              <span className="text-blue-700 text-base md:text-xl font-semibold tracking-wide">{t('hero.instantly')}</span>
               <span className="text-gray-400 text-lg md:text-2xl font-bold">|</span>
-              <span className="text-blue-700 text-base md:text-xl font-semibold tracking-wide">Reliably</span>
+              <span className="text-blue-700 text-base md:text-xl font-semibold tracking-wide">{t('hero.reliably')}</span>
               <span className="text-gray-400 text-lg md:text-2xl font-bold">|</span>
-              <span className="text-blue-700 text-base md:text-xl font-semibold tracking-wide">Locally</span>
+              <span className="text-blue-700 text-base md:text-xl font-semibold tracking-wide">{t('hero.locally')}</span>
             </div>
             <div className="bg-blue-50 border border-blue-100 rounded-xl p-5 shadow-sm">
-              <p className="text-base md:text-lg text-blue-900 font-semibold mb-2">From UP, Kolkata, and beyond – <span className="text-blue-700 font-bold">OJK JOBS</span> is connecting skilled workers with growing businesses in Kongu Nadu.</p>
+              <p className="text-base md:text-lg text-blue-900 font-semibold mb-2">{t('hero.subtitle')}</p>
             </div>
             {/* Modern Segmented Search Bar */}
             <div className="w-full flex flex-col items-center mt-2">
