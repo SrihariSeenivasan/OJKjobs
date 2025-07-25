@@ -1,21 +1,20 @@
-import {
-  ArrowLeftOnRectangleIcon,
-  Bars3Icon,
-  BellIcon,
-  ChevronDownIcon,
-  CogIcon,
-  UserIcon,
-  XMarkIcon
-} from '@heroicons/react/24/outline';
 import React, { useState, useRef, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
 import { RootState } from '../../store';
 import { logout } from '../../store/slices/authSlice';
 import { setLanguage, toggleMobileMenu } from '../../store/slices/uiSlice';
 import NotificationComponent from './Notification';
 import OjkLogo from './OjkLogo';
+import {
+  ArrowLeftOnRectangleIcon,
+  Bars3Icon,
+  BellIcon,
+  ChevronDownIcon,
+  UserIcon,
+  XMarkIcon
+} from '@heroicons/react/24/outline';
 
 const Header: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -277,14 +276,6 @@ const Header: React.FC = () => {
                       <UserIcon className="h-4 w-4" />
                       <span>{t('nav.profile')}</span>
                     </Link>
-                    <Link
-                      to="/dashboard"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center space-x-2"
-                      onClick={() => setIsProfileMenuOpen(false)}
-                    >
-                      <CogIcon className="h-4 w-4" />
-                      <span>{t('nav.dashboard')}</span>
-                    </Link>
                     <button
                       onClick={handleLogout}
                       className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center space-x-2"
@@ -298,13 +289,13 @@ const Header: React.FC = () => {
             ) : (
               <div className="flex items-center space-x-2">
                 <button
-                  className="bg-blue-600 text-white px-4 py-2 rounded-md font-medium hover:bg-blue-700 transition-colors"
+                  className="bg-[#39b54a] text-white px-4 py-2 rounded-md font-medium hover:bg-green-700 transition-colors"
                   onClick={() => navigate('/JobseekerLogin')}
                 >
                   Candidate Login
                 </button>
                 <button
-                  className="bg-green-600 text-white px-4 py-2 rounded-md font-medium hover:bg-green-700 transition-colors"
+                  className="bg-[#fbb040] text-white px-4 py-2 rounded-md font-medium hover:bg-yellow-500 transition-colors"
                   onClick={() => navigate('/EmployeeLogin')}
                 >
                   Employer Login
