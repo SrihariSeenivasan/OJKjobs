@@ -1,11 +1,36 @@
-
-
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store';
 
 const Profile: React.FC = () => {
   const profile = useSelector((state: RootState) => state.auth.profile);
+  // Resume
+  const [resume, setResume] = React.useState<File | null>(null);
+  const [resumeInput, setResumeInput] = React.useState<File | null>(null);
+  // Preferences
+  const [preferences, setPreferences] = React.useState(profile?.preferences || { jobTitle: '', preferredLocation: '', jobType: [] });
+  const [prefForm, setPrefForm] = React.useState({ jobTitle: '', preferredLocation: '', jobType: '' });
+  // Basic Details
+  const [basicDetails, setBasicDetails] = React.useState({ name: profile?.name || '', email: profile?.email || '', mobile: profile?.mobile || '', gender: profile?.gender || '', dob: profile?.dob || '' });
+  // Modal and local state for each section
+  const [modalSection, setModalSection] = React.useState<string | null>(null);
+  const [editIdx, setEditIdx] = React.useState<{ section: string, idx: number } | null>(null);
+  // Experience
+  const [experienceList, setExperienceList] = React.useState(profile?.experience || []);
+  const [expForm, setExpForm] = React.useState<{ company: string; title: string; salary: string; duration: string; skills: string[] }>({ company: '', title: '', salary: '', duration: '', skills: [] });
+  // Education
+  const [educationList, setEducationList] = React.useState(profile?.education || []);
+  const [eduForm, setEduForm] = React.useState({ degree: '', batch: '', institution: '', medium: '' });
+  // Skills
+  const [skillsList, setSkillsList] = React.useState(profile?.skills || []);
+  const [skillInput, setSkillInput] = React.useState('');
+  // Certifications
+  const [certList, setCertList] = React.useState<{ name: string; file?: File }[]>([]);
+  const [certInput, setCertInput] = React.useState('');
+  const [certFileInput, setCertFileInput] = React.useState<File | null>(null);
+  // Languages
+  const [langList, setLangList] = React.useState(profile?.languages || []);
+  const [langInput, setLangInput] = React.useState('');
 
   if (!profile) {
     return (
@@ -107,20 +132,24 @@ const Profile: React.FC = () => {
           <div className="bg-white rounded-2xl shadow-xl p-6 border border-green-50">
             <div className="flex justify-between items-center mb-3">
               <h3 className="font-semibold text-lg text-green-700 tracking-tight">Work Experience</h3>
-              <button className="text-green-600 text-sm font-medium">+ Add</button>
+              <button className="text-green-600 text-sm font-medium" onClick={() => { setModalSection('experience'); setExpForm({ company: '', title: '', salary: '', duration: '', skills: [] }); setSkillInput(''); }}>+ Add</button>
             </div>
-            {profile.experience?.length > 0 && profile.experience[0].title ? (
-              <div className="mb-2">
-                <div className="font-bold text-gray-800 text-base">{profile.experience[0].title}</div>
-                <div className="text-sm text-gray-600">{profile.experience[0].company}</div>
-                <div className="text-sm text-gray-400">{profile.experience[0].duration}</div>
-                <div className="text-sm text-gray-400">₹{profile.experience[0].salary} / month</div>
-                <div className="mt-2 flex flex-wrap gap-2">
-                  {profile.experience[0].skills.map(skill => (
-                    <span key={skill} className="px-3 py-1 bg-green-100 text-green-700 rounded text-sm font-medium">{skill}</span>
-                  ))}
+            {experienceList.length > 0 ? (
+              experienceList.map((exp, idx) => (
+                <div key={idx} className="mb-2">
+                  <div className="font-bold text-gray-800 text-base">{exp.title}</div>
+                  <div className="text-sm text-gray-600">{exp.company}</div>
+                  <div className="text-sm text-gray-400">{exp.duration}</div>
+                  <div className="text-sm text-gray-400">₹{exp.salary} / month</div>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {exp.skills && exp.skills.map(skill => (
+                      <span key={skill} className="px-3 py-1 bg-green-100 text-green-700 rounded text-sm font-medium">{skill}</span>
+                    ))}
+                  </div>
+                  <button className="text-blue-600 text-xs ml-2" onClick={() => { setModalSection('experience'); setExpForm(exp); setSkillInput(''); setEditIdx({ section: 'experience', idx }); }}>Edit</button>
+                  <button className="text-red-600 text-xs ml-2" onClick={() => { setExperienceList(experienceList.filter((_, i) => i !== idx)); }}>Delete</button>
                 </div>
-              </div>
+              ))
             ) : (
               <div className="text-gray-400 text-sm">No experience added</div>
             )}
@@ -130,15 +159,19 @@ const Profile: React.FC = () => {
           <div className="bg-white rounded-2xl shadow-xl p-6 border border-green-50">
             <div className="flex justify-between items-center mb-3">
               <h3 className="font-semibold text-lg text-green-700 tracking-tight">Education</h3>
-              <button className="text-green-600 text-sm font-medium">+ Add</button>
+              <button className="text-green-600 text-sm font-medium" onClick={() => { setModalSection('education'); setEduForm({ degree: '', batch: '', institution: '', medium: '' }); }}>+ Add</button>
             </div>
-            {profile.education?.length > 0 && profile.education[0].degree ? (
-              <div className="mb-2">
-                <div className="font-bold text-gray-800 text-base">{profile.education[0].degree}</div>
-                <div className="text-sm text-gray-600">{profile.education[0].institution}</div>
-                <div className="text-sm text-gray-400">Batch of {profile.education[0].batch}</div>
-                <div className="text-sm text-gray-400">Medium: {profile.education[0].medium}</div>
-              </div>
+            {educationList.length > 0 ? (
+              educationList.map((edu, idx) => (
+                <div key={idx} className="mb-2">
+                  <div className="font-bold text-gray-800 text-base">{edu.degree}</div>
+                  <div className="text-sm text-gray-600">{edu.institution}</div>
+                  <div className="text-sm text-gray-400">Batch of {edu.batch}</div>
+                  <div className="text-sm text-gray-400">Medium: {edu.medium}</div>
+                  <button className="text-blue-600 text-xs ml-2" onClick={() => { setModalSection('education'); setEduForm(edu); setEditIdx({ section: 'education', idx }); }}>Edit</button>
+                  <button className="text-red-600 text-xs ml-2" onClick={() => { setEducationList(educationList.filter((_, i) => i !== idx)); }}>Delete</button>
+                </div>
+              ))
             ) : (
               <div className="text-gray-400 text-sm">No education added</div>
             )}
@@ -148,11 +181,11 @@ const Profile: React.FC = () => {
           <div className="bg-white rounded-2xl shadow-xl p-6 border border-green-50">
             <div className="flex justify-between items-center mb-3">
               <h3 className="font-semibold text-lg text-green-700 tracking-tight">Skills</h3>
-              <button className="text-green-600 text-sm font-medium">Edit</button>
+              <button className="text-green-600 text-sm font-medium" onClick={() => setModalSection('skills')}>Edit</button>
             </div>
             <div className="flex flex-wrap gap-2">
-              {profile.skills?.length > 0 ? profile.skills.map(skill => (
-                <span key={skill} className="px-3 py-1 bg-green-100 text-green-700 rounded text-sm font-medium">{skill}</span>
+              {skillsList.length > 0 ? skillsList.map((skill, idx) => (
+                <span key={idx} className="px-3 py-1 bg-green-100 text-green-700 rounded text-sm font-medium">{skill}</span>
               )) : <span className="text-gray-400 text-sm">No skills added</span>}
             </div>
           </div>
@@ -161,11 +194,15 @@ const Profile: React.FC = () => {
           <div className="bg-white rounded-2xl shadow-xl p-6 border border-green-50">
             <div className="flex justify-between items-center mb-3">
               <h3 className="font-semibold text-lg text-green-700 tracking-tight">Certifications</h3>
-              <button className="text-green-600 text-sm font-medium">+ Add</button>
+              <button className="text-green-600 text-sm font-medium" onClick={() => setModalSection('certifications')}>+ Add/Upload</button>
             </div>
             <div className="flex flex-wrap gap-2">
-              {profile.certifications?.length > 0 ? profile.certifications.map(cert => (
-                <span key={cert} className="px-3 py-1 bg-green-100 text-green-700 rounded text-sm font-medium">{cert}</span>
+              {certList.length > 0 ? certList.map((cert, idx) => (
+                <span key={idx} className="px-3 py-1 bg-green-100 text-green-700 rounded text-sm font-medium flex items-center gap-2">
+                  {cert.name}
+                  {cert.file && <span className="text-xs text-gray-400">({cert.file.name})</span>}
+                  <button className="text-red-600 text-xs ml-2" onClick={() => setCertList(certList.filter((_, i) => i !== idx))}>Delete</button>
+                </span>
               )) : <span className="text-gray-400 text-sm">No certifications added</span>}
             </div>
           </div>
@@ -174,11 +211,11 @@ const Profile: React.FC = () => {
           <div className="bg-white rounded-2xl shadow-xl p-6 border border-green-50">
             <div className="flex justify-between items-center mb-3">
               <h3 className="font-semibold text-lg text-green-700 tracking-tight">Languages Known</h3>
-              <button className="text-green-600 text-sm font-medium">Edit</button>
+              <button className="text-green-600 text-sm font-medium" onClick={() => setModalSection('languages')}>Edit</button>
             </div>
             <div className="flex flex-wrap gap-2">
-              {profile.languages?.length > 0 ? profile.languages.map(lang => (
-                <span key={lang} className="px-3 py-1 bg-green-100 text-green-700 rounded text-sm font-medium">{lang}</span>
+              {langList.length > 0 ? langList.map((lang, idx) => (
+                <span key={idx} className="px-3 py-1 bg-green-100 text-green-700 rounded text-sm font-medium">{lang}</span>
               )) : <span className="text-gray-400 text-sm">No languages added</span>}
             </div>
           </div>
@@ -187,12 +224,13 @@ const Profile: React.FC = () => {
           <div className="bg-white rounded-2xl shadow-xl p-6 border border-green-50">
             <div className="flex justify-between items-center mb-3">
               <h3 className="font-semibold text-lg text-green-700 tracking-tight">Resume</h3>
-              <button className="text-green-600 text-sm font-medium">Edit</button>
+              <button className="text-green-600 text-sm font-medium" onClick={() => setModalSection('resume')}>Upload/Edit</button>
             </div>
-            {profile.resume ? (
+            {resume ? (
               <div className="flex items-center gap-2">
-                <span className="bg-red-100 text-red-700 px-3 py-1 rounded text-sm font-medium">{profile.resume.name}</span>
+                <span className="bg-red-100 text-red-700 px-3 py-1 rounded text-sm font-medium">{resume.name}</span>
                 <span className="text-sm text-gray-400">Last updated: {new Date().toLocaleDateString()}</span>
+                <button className="text-red-600 text-xs ml-2" onClick={() => setResume(null)}>Delete</button>
               </div>
             ) : <span className="text-gray-400 text-sm">No resume uploaded</span>}
           </div>
@@ -201,18 +239,226 @@ const Profile: React.FC = () => {
           <div className="bg-white rounded-2xl shadow-xl p-6 border border-green-50">
             <div className="flex justify-between items-center mb-3">
               <h3 className="font-semibold text-lg text-green-700 tracking-tight">Preferences</h3>
-              <button className="text-green-600 text-sm font-medium">Edit</button>
+              <button className="text-green-600 text-sm font-medium" onClick={() => setModalSection('preferences')}>Edit</button>
             </div>
-            <div className="mb-2 text-base text-gray-700">Preferred Job Title/Role: <span className="font-medium">{profile.preferences?.jobTitle || 'Not added'}</span></div>
-            <div className="mb-2 text-base text-gray-700">Preferred Location: <span className="font-medium">{profile.preferences?.preferredLocation || 'Not added'}</span></div>
-            <div className="mb-2 text-base text-gray-700">Job Type: <span className="font-medium">{profile.preferences?.jobType?.join(', ') || 'Not added'}</span></div>
+            <div className="mb-2 text-base text-gray-700">Preferred Job Title/Role: <span className="font-medium">{preferences.jobTitle || 'Not added'}</span></div>
+            <div className="mb-2 text-base text-gray-700">Preferred Location: <span className="font-medium">{preferences.preferredLocation || 'Not added'}</span></div>
+            <div className="mb-2 text-base text-gray-700">Job Type: <span className="font-medium">{Array.isArray(preferences.jobType) ? preferences.jobType.join(', ') : preferences.jobType || 'Not added'}</span></div>
           </div>
 
           {/* Basic Details */}
           <div className="bg-white rounded-2xl shadow-xl p-6 border border-green-50 text-base text-gray-500">
-            <div>Basic details: {profile.name} • <span className="text-green-700">Verify your email</span> • {profile.mobile} • {profile.gender} • {profile.dob}</div>
+            <div>Basic details: {basicDetails.name} • <span className="text-green-700">Verify your email</span> • {basicDetails.mobile} • {basicDetails.gender} • {basicDetails.dob}</div>
+            <button className="text-green-600 text-sm font-medium mt-2" onClick={() => setModalSection('basicDetails')}>Edit</button>
           </div>
         </div>
+      {/* Modal for Add/Edit Section */}
+      {modalSection && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+          <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md relative">
+            <button className="absolute top-3 right-3 text-gray-400 hover:text-gray-700 text-2xl font-bold" onClick={() => { setModalSection(null); setEditIdx(null); }} aria-label="Close">&times;</button>
+            <h3 className="text-xl font-bold text-gray-900 mb-4">{modalSection === 'profile' ? 'Edit Profile' : `Add/Edit ${modalSection.charAt(0).toUpperCase() + modalSection.slice(1)}`}</h3>
+            <form className="flex flex-col gap-4" onSubmit={e => {
+              e.preventDefault();
+              if (modalSection === 'experience') {
+                if (editIdx && editIdx.section === 'experience') {
+                  const updated = [...experienceList];
+                  updated[editIdx.idx] = expForm;
+                  setExperienceList(updated);
+                } else {
+                  setExperienceList([...experienceList, expForm]);
+                }
+              } else if (modalSection === 'education') {
+                if (editIdx && editIdx.section === 'education') {
+                  const updated = [...educationList];
+                  updated[editIdx.idx] = eduForm;
+                  setEducationList(updated);
+                } else {
+                  setEducationList([...educationList, eduForm]);
+                }
+              } else if (modalSection === 'skills') {
+                if (skillInput.trim()) {
+                  setSkillsList([...skillsList, skillInput]);
+                  setSkillInput('');
+                }
+              } else if (modalSection === 'certifications') {
+                // No-op: handled by Add button in modal
+              } else if (modalSection === 'languages') {
+                if (langInput.trim()) {
+                  setLangList([...langList, langInput]);
+                  setLangInput('');
+                }
+              } else if (modalSection === 'resume') {
+                if (resumeInput) {
+                  setResume(resumeInput);
+                  setResumeInput(null);
+                }
+              } else if (modalSection === 'preferences') {
+                setPreferences({
+                  jobTitle: prefForm.jobTitle,
+                  preferredLocation: prefForm.preferredLocation,
+                  jobType: prefForm.jobType.split(',').map(j => j.trim()).filter(Boolean)
+                });
+              } else if (modalSection === 'basicDetails') {
+                setBasicDetails({
+                  name: basicDetails.name,
+                  email: basicDetails.email,
+                  mobile: basicDetails.mobile,
+                  gender: basicDetails.gender,
+                  dob: basicDetails.dob
+                });
+              }
+              setModalSection(null);
+              setEditIdx(null);
+            }}>
+              {modalSection === 'experience' ? (
+                <>
+                  <input type="text" className="border rounded-lg px-4 py-2" placeholder="Company Name" value={expForm.company} onChange={e => setExpForm({ ...expForm, company: e.target.value })} />
+                  <input type="text" className="border rounded-lg px-4 py-2" placeholder="Role/Designation" value={expForm.title} onChange={e => setExpForm({ ...expForm, title: e.target.value })} />
+                  <input type="number" className="border rounded-lg px-4 py-2" placeholder="Salary" value={expForm.salary} onChange={e => setExpForm({ ...expForm, salary: e.target.value })} />
+                  <input type="text" className="border rounded-lg px-4 py-2" placeholder="Duration (e.g. Jan 2022 - Dec 2023)" value={expForm.duration} onChange={e => setExpForm({ ...expForm, duration: e.target.value })} />
+                  <div>
+                    <label className="block mb-1 font-medium">Skills Used</label>
+                    {expForm.skills && expForm.skills.map((skill, i) => (
+                      <div key={i} className="flex items-center gap-2 mb-2">
+                        <input type="text" className="border rounded-lg px-4 py-2" value={skill} onChange={e => {
+                          const newSkills = [...expForm.skills];
+                          newSkills[i] = e.target.value;
+                          setExpForm({ ...expForm, skills: newSkills });
+                        }} />
+                        <button type="button" className="text-red-600" onClick={() => {
+                          setExpForm({ ...expForm, skills: expForm.skills.filter((_, idx) => idx !== i) });
+                        }}>Remove</button>
+                      </div>
+                    ))}
+                    <div className="flex items-center gap-2 mb-2">
+                      <input type="text" className="border rounded-lg px-4 py-2" placeholder="Add Skill" value={skillInput} onChange={e => setSkillInput(e.target.value)} />
+                      <button type="button" className="bg-green-500 text-white px-3 py-1 rounded" onClick={() => {
+                        if (skillInput.trim()) {
+                          setExpForm({ ...expForm, skills: [...(expForm.skills || []), skillInput] });
+                          setSkillInput('');
+                        }
+                      }}>Add</button>
+                    </div>
+                  </div>
+                </>
+              ) : modalSection === 'education' ? (
+                <>
+                  <input type="text" className="border rounded-lg px-4 py-2" placeholder="Degree" value={eduForm.degree} onChange={e => setEduForm({ ...eduForm, degree: e.target.value })} />
+                  <input type="text" className="border rounded-lg px-4 py-2" placeholder="Batch" value={eduForm.batch} onChange={e => setEduForm({ ...eduForm, batch: e.target.value })} />
+                  <input type="text" className="border rounded-lg px-4 py-2" placeholder="Institution" value={eduForm.institution} onChange={e => setEduForm({ ...eduForm, institution: e.target.value })} />
+                  <input type="text" className="border rounded-lg px-4 py-2" placeholder="Medium" value={eduForm.medium} onChange={e => setEduForm({ ...eduForm, medium: e.target.value })} />
+                </>
+              ) : modalSection === 'skills' ? (
+                <>
+                  <label className="block mb-1 font-medium">Skills</label>
+                  {skillsList.map((skill, i) => (
+                    <div key={i} className="flex items-center gap-2 mb-2">
+                      <input type="text" className="border rounded-lg px-4 py-2" value={skill} onChange={e => {
+                        const newSkills = [...skillsList];
+                        newSkills[i] = e.target.value;
+                        setSkillsList(newSkills);
+                      }} />
+                      <button type="button" className="text-red-600" onClick={() => setSkillsList(skillsList.filter((_, idx) => idx !== i))}>Remove</button>
+                    </div>
+                  ))}
+                  <div className="flex items-center gap-2 mb-2">
+                    <input type="text" className="border rounded-lg px-4 py-2" placeholder="Add Skill" value={skillInput} onChange={e => setSkillInput(e.target.value)} />
+                    <button type="button" className="bg-green-500 text-white px-3 py-1 rounded" onClick={() => {
+                      if (skillInput.trim()) {
+                        setSkillsList([...skillsList, skillInput]);
+                        setSkillInput('');
+                      }
+                    }}>Add</button>
+                  </div>
+                </>
+              ) : modalSection === 'certifications' ? (
+                <>
+                  <label className="block mb-1 font-medium">Add/Upload Certification</label>
+                  <div className="flex flex-col gap-2 w-full">
+                    {certList.map((cert, i) => (
+                      <div key={i} className="flex flex-wrap items-center gap-2 mb-2 w-full">
+                        <input type="text" className="border rounded-lg px-4 py-2 flex-1 min-w-0" value={cert.name} onChange={e => {
+                          const newCerts = [...certList];
+                          newCerts[i].name = e.target.value;
+                          setCertList(newCerts);
+                        }} />
+                        {cert.file && <span className="text-xs text-gray-400 break-all">({cert.file.name})</span>}
+                        <button type="button" className="text-red-600" onClick={() => setCertList(certList.filter((_, idx) => idx !== i))}>Delete</button>
+                      </div>
+                    ))}
+                    <div className="flex flex-wrap items-center gap-2 mb-2 w-full">
+                      <input type="text" className="border rounded-lg px-4 py-2 flex-1 min-w-0" placeholder="Certification Name" value={certInput} onChange={e => setCertInput(e.target.value)} />
+                      <input type="file" accept=".pdf,.jpg,.png,.jpeg" className="border rounded-lg px-4 py-2" style={{ maxWidth: '180px' }} onChange={e => {
+                        if (e.target.files && e.target.files[0]) {
+                          setCertFileInput(e.target.files[0]);
+                        }
+                      }} />
+                      <button type="button" className="bg-green-500 text-white px-3 py-1 rounded" style={{ whiteSpace: 'nowrap' }} onClick={() => {
+                        if (certInput.trim() || certFileInput) {
+                          setCertList([...certList, { name: certInput, file: certFileInput || undefined }]);
+                          setCertInput('');
+                          setCertFileInput(null);
+                        }
+                      }}>Add</button>
+                    </div>
+                  </div>
+                </>
+              ) : modalSection === 'languages' ? (
+                <>
+                  <label className="block mb-1 font-medium">Languages</label>
+                  {langList.map((lang, i) => (
+                    <div key={i} className="flex items-center gap-2 mb-2">
+                      <input type="text" className="border rounded-lg px-4 py-2" value={lang} onChange={e => {
+                        const newLangs = [...langList];
+                        newLangs[i] = e.target.value;
+                        setLangList(newLangs);
+                      }} />
+                      <button type="button" className="text-red-600" onClick={() => setLangList(langList.filter((_, idx) => idx !== i))}>Remove</button>
+                    </div>
+                  ))}
+                  <div className="flex items-center gap-2 mb-2">
+                    <input type="text" className="border rounded-lg px-4 py-2" placeholder="Add Language" value={langInput} onChange={e => setLangInput(e.target.value)} />
+                    <button type="button" className="bg-green-500 text-white px-3 py-1 rounded" onClick={() => {
+                      if (langInput.trim()) {
+                        setLangList([...langList, langInput]);
+                        setLangInput('');
+                      }
+                    }}>Add</button>
+                  </div>
+                </>
+              ) : modalSection === 'resume' ? (
+                <>
+                  <label className="block mb-1 font-medium">Upload Resume</label>
+                  <input type="file" accept=".pdf,.doc,.docx" className="border rounded-lg px-4 py-2" onChange={e => {
+                    if (e.target.files && e.target.files[0]) {
+                      setResumeInput(e.target.files[0]);
+                    }
+                  }} />
+                  {resumeInput && <div className="text-sm text-gray-600">Selected: {resumeInput.name}</div>}
+                </>
+              ) : modalSection === 'preferences' ? (
+                <>
+                  <input type="text" className="border rounded-lg px-4 py-2" placeholder="Preferred Job Title/Role" value={prefForm.jobTitle} onChange={e => setPrefForm({ ...prefForm, jobTitle: e.target.value })} />
+                  <input type="text" className="border rounded-lg px-4 py-2" placeholder="Preferred Location" value={prefForm.preferredLocation} onChange={e => setPrefForm({ ...prefForm, preferredLocation: e.target.value })} />
+                  <input type="text" className="border rounded-lg px-4 py-2" placeholder="Job Type (comma separated)" value={prefForm.jobType} onChange={e => setPrefForm({ ...prefForm, jobType: e.target.value })} />
+                </>
+              ) : modalSection === 'basicDetails' ? (
+                <>
+                  <input type="text" className="border rounded-lg px-4 py-2" placeholder="Name" value={basicDetails.name} onChange={e => setBasicDetails({ ...basicDetails, name: e.target.value })} />
+                  <input type="email" className="border rounded-lg px-4 py-2" placeholder="Email" value={basicDetails.email} onChange={e => setBasicDetails({ ...basicDetails, email: e.target.value })} />
+                  <input type="text" className="border rounded-lg px-4 py-2" placeholder="Mobile" value={basicDetails.mobile} onChange={e => setBasicDetails({ ...basicDetails, mobile: e.target.value })} />
+                  <input type="text" className="border rounded-lg px-4 py-2" placeholder="Gender" value={basicDetails.gender} onChange={e => setBasicDetails({ ...basicDetails, gender: e.target.value })} />
+                  <input type="date" className="border rounded-lg px-4 py-2" placeholder="Date of Birth" value={basicDetails.dob} onChange={e => setBasicDetails({ ...basicDetails, dob: e.target.value })} />
+                </>
+              ) : (
+                <input type="text" className="border rounded-lg px-4 py-2" placeholder={`Enter details for ${modalSection}`} />
+              )}
+              <button type="submit" className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2 rounded-lg shadow transition-all text-base">Save</button>
+            </form>
+          </div>
+        </div>
+      )}
       </div>
     </div>
   );

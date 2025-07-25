@@ -27,8 +27,10 @@ const Layout: React.FC = () => {
       </main>
       {!hideHeaderFooter && <Footer />}
       <Notifications />
+      <Chatbot />
     </div>
   );
 };
 
+import Chatbot from './Chatbot';
 export default Layout;

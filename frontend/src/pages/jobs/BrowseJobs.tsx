@@ -24,6 +24,10 @@ const filters = [
       { label: 'Work from home', value: 'home' },
       { label: 'Work from office', value: 'office' },
       { label: 'Work from field', value: 'field' },
+      { label: 'Jobs for Women', value: 'women' },
+      { label: 'One Day Job', value: 'oneday' },
+      { label: 'Part Time Job', value: 'parttime' },
+      { label: 'Job for Fresher', value: 'fresher' },
     ],
   },
   {
