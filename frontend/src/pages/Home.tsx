@@ -1,3 +1,55 @@
+
+
+// Testimonial type definition
+type Testimonial = {
+  name: string;
+  role: string;
+  rating: number;
+  photo: string; // can be a URL or data URL
+  text: string;
+};
+
+// Train effect carousel for testimonials
+function TestimonialTrain({ testimonials }: { testimonials: Testimonial[] }) {
+  const [trainX, setTrainX] = React.useState(0);
+  const cardWidth = 340 + 24; // px
+  React.useEffect(() => {
+    let frame: number;
+    const animate = () => {
+      setTrainX(prev => {
+        const next = prev - 1.2;
+        if (Math.abs(next) >= testimonials.length * cardWidth) {
+          return 0;
+        }
+        return next;
+      });
+      frame = requestAnimationFrame(animate);
+    };
+    frame = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(frame);
+  }, [testimonials.length, cardWidth]);
+  return (
+    <div className="flex gap-6" style={{ transform: `translateX(${trainX}px)`, willChange: 'transform' }}>
+      {[...testimonials, ...testimonials].map((t, idx) => (
+        <div key={idx} className="bg-white rounded-2xl shadow-lg p-8 flex flex-col gap-3 border border-green-100 relative min-w-[320px] max-w-[340px]" style={{scrollSnapAlign:'start'}}>
+          <div className="flex items-center gap-4 mb-2">
+            <img src={t.photo} alt={t.name} className="h-14 w-14 rounded-full object-cover border-2 border-green-200" />
+            <div>
+              <div className="font-semibold text-gray-900 text-lg">{t.name}</div>
+              <div className="text-sm text-gray-500 font-medium">{t.role}</div>
+              <div className="flex items-center gap-1 text-yellow-400 text-base">
+                {Array.from({ length: t.rating }).map((_, i) => (
+                  <svg key={i} width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.122-6.545L.488 6.91l6.561-.955L10 0l2.951 5.955 6.561.955-4.756 4.635 1.122 6.545z" /></svg>
+                ))}
+              </div>
+            </div>
+          </div>
+          <div className="text-gray-700 italic text-base">"{t.text}"</div>
+        </div>
+      ))}
+    </div>
+  );
+}
 // Component for slow auto-incrementing openings
 const TrendingRoleCard: React.FC<{ role: string }> = ({ role }) => {
   const [openings, setOpenings] = React.useState(Math.floor(Math.random() * 4000) + 10);
@@ -189,17 +241,48 @@ const cardData = [
 ];
 
 // Testimonial modal/notification state and handlers
+type Testimonial = {
+  name: string;
+  role: string;
+  rating: number;
+  photo: string;
+  text: string;
+};
+
 const [showTestimonialModal, setShowTestimonialModal] = useState(false);
 const [testimonialName, setTestimonialName] = useState("");
+const [testimonialRole, setTestimonialRole] = useState("");
+const [testimonialRating, setTestimonialRating] = useState(5);
+// Removed unused testimonialPhoto state
+const [testimonialPhotoPreview, setTestimonialPhotoPreview] = useState<string>("");
 const [testimonialText, setTestimonialText] = useState("");
 const [showTestimonialNotification, setShowTestimonialNotification] = useState(false);
+const [testimonials] = useState<Testimonial[]>([{
+  name: "Shivangi Singh",
+  role: "Software Engineer",
+  rating: 5,
+  photo: "https://images.unsplash.com/photo-1519340333755-c1aa5571fd46?w=80&h=80&fit=crop",
+  text: "Thanks OJK, finding a corporate job is so smooth now. Highly recommended!"
+}, {
+  name: "Rahul Kumar",
+  role: "Marketing Executive",
+  rating: 5,
+  photo: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=80&h=80&fit=crop",
+  text: "OJK helped me get a job in my city within days. The process was easy and fast!"
+}]);
 
 function handleTestimonialSubmit(e: React.FormEvent) {
   e.preventDefault();
+  // Do not add testimonial to the list immediately
   setShowTestimonialModal(false);
   setTestimonialName("");
+  setTestimonialRole("");
+  setTestimonialRating(5);
+  // Removed unused testimonialPhoto state reset
+  setTestimonialPhotoPreview("");
   setTestimonialText("");
   setShowTestimonialNotification(true);
+  setTimeout(() => setShowTestimonialNotification(false), 3000);
 }
 
 // Hero carousel images
@@ -303,7 +386,7 @@ return (
               <span className="text-gray-400 text-lg md:text-2xl font-bold">|</span>
               <span className="text-blue-700 text-base md:text-xl font-semibold tracking-wide">{t('Reliably')}</span>
               <span className="text-gray-400 text-lg md:text-2xl font-bold">|</span>
-              <span className="text-blue-700 text-base md:text-xl font-semibold tracking-wide">{t('Locally')}</span>
+              <span className="text-blue-700 text-base md:text-xl font-semibold tracking-wide">{t('L ocally')}</span>
             </div>
             <div className="bg-blue-50 border border-blue-100 rounded-xl p-5 shadow-sm">
               <p className="text-base md:text-lg text-blue-900 font-semibold mb-2">{t('hero.subtitle')}</p>
@@ -572,28 +655,9 @@ return (
               Add your testimonial
             </button>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Example testimonials (static) */}
-            <div className="bg-white rounded-2xl shadow-lg p-8 flex flex-col gap-3 border border-green-100 relative">
-              <div className="flex items-center gap-4 mb-2">
-                <img src="https://images.unsplash.com/photo-1519340333755-c1aa5571fd46?w=80&h=80&fit=crop" alt="User" className="h-14 w-14 rounded-full object-cover border-2 border-green-200" />
-                <div>
-                  <div className="font-semibold text-gray-900 text-lg">Shivangi Singh</div>
-                  <div className="flex items-center gap-1 text-yellow-400 text-base">{'★★★★★'}</div>
-                </div>
-              </div>
-              <div className="text-gray-700 italic text-base">"Thanks OJK, finding a corporate job is so smooth now. Highly recommended!"</div>
-            </div>
-            <div className="bg-white rounded-2xl shadow-lg p-8 flex flex-col gap-3 border border-green-100 relative">
-              <div className="flex items-center gap-4 mb-2">
-                <img src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=80&h=80&fit=crop" alt="User" className="h-14 w-14 rounded-full object-cover border-2 border-green-200" />
-                <div>
-                  <div className="font-semibold text-gray-900 text-lg">Rahul Kumar</div>
-                  <div className="flex items-center gap-1 text-yellow-400 text-base">{'★★★★★'}</div>
-                </div>
-              </div>
-              <div className="text-gray-700 italic text-base">"OJK helped me get a job in my city within days. The process was easy and fast!"</div>
-            </div>
+          {/* Train effect carousel for testimonials */}
+          <div className="w-full overflow-hidden py-4">
+            <TestimonialTrain testimonials={testimonials} />
           </div>
 
           {/* Modal for Add Testimonial */}
@@ -617,6 +681,51 @@ return (
                     onChange={e => setTestimonialName(e.target.value)}
                     required
                   />
+                  <input
+                    type="text"
+                    placeholder="Your Role (e.g. Designer, Engineer)"
+                    className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-200"
+                    value={testimonialRole}
+                    onChange={e => setTestimonialRole(e.target.value)}
+                    required
+                  />
+                  <div className="flex items-center gap-2">
+                    <span className="font-medium text-gray-700">Rating:</span>
+                    {[1,2,3,4,5].map(star => (
+                      <button
+                        key={star}
+                        type="button"
+                        className={star <= testimonialRating ? "text-yellow-400" : "text-gray-300"}
+                        onClick={() => setTestimonialRating(star)}
+                        aria-label={`Rate ${star} star${star > 1 ? 's' : ''}`}
+                      >
+                        <svg width="24" height="24" fill="currentColor" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.122-6.545L.488 6.91l6.561-.955L10 0l2.951 5.955 6.561.955-4.756 4.635 1.122 6.545z" /></svg>
+                      </button>
+                    ))}
+                  </div>
+                  <div>
+                    <label className="block font-medium text-gray-700 mb-1">Photo (optional)</label>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-200"
+                      onChange={e => {
+                        const file = e.target.files && e.target.files[0];
+                        if (file) {
+                          const reader = new FileReader();
+                          reader.onloadend = () => {
+                            setTestimonialPhotoPreview(reader.result as string);
+                          };
+                          reader.readAsDataURL(file);
+                        } else {
+                          setTestimonialPhotoPreview("");
+                        }
+                      }}
+                    />
+                    {testimonialPhotoPreview && (
+                      <img src={testimonialPhotoPreview} alt="Preview" className="mt-2 h-16 w-16 rounded-full object-cover border-2 border-green-200" />
+                    )}
+                  </div>
                   <textarea
                     placeholder="Your Testimonial"
                     className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-200 min-h-[80px]"
@@ -638,7 +747,7 @@ return (
           {/* Notification */}
           {showTestimonialNotification && (
             <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg animate-fadeIn">
-              Your testimonial is submitted. Thanks for your valuable time!
+              Your feedback is submitted and will be displayed once the admin approves.
             </div>
           )}
         </div>
@@ -689,7 +798,10 @@ return (
               <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span> Fast, easy posting process</li>
               <li className="flex items-center gap-2"><span className="text-green-500">&#10003;</span> Dedicated employer support</li>
             </ul>
-            <button className="bg-gradient-to-r from-blue-600 to-green-500 hover:from-blue-700 hover:to-green-600 text-white px-8 py-3 rounded-lg font-bold shadow-lg transition-all text-lg flex items-center gap-2">
+            <button
+              className="bg-gradient-to-r from-blue-600 to-green-500 hover:from-blue-700 hover:to-green-600 text-white px-8 py-3 rounded-lg font-bold shadow-lg transition-all text-lg flex items-center gap-2"
+              onClick={() => window.location.href = '/EmployeeLogin'}
+            >
               <svg width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg>
               Post a Job Now
             </button>

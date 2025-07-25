@@ -181,26 +181,26 @@ const JobseekerProfileStepper: React.FC = () => {
         return (
           <div className="space-y-7">
             <div>
-              <label className="block font-semibold text-green-700 mb-2 text-base">Role / Job Title</label>
-              <select className="w-full px-4 py-3 border-2 border-green-300 focus:border-green-500 rounded-xl bg-green-50 text-lg mb-2" value={profile.experience[0].title} onChange={e => setProfileState({ ...profile, experience: [{ ...profile.experience[0], title: e.target.value }] })} required>
+              <label className="block font-semibold text-green-700 mb-2 text-base">Role / Job Title <span className='text-gray-400 text-xs'>(optional)</span></label>
+              <select className="w-full px-4 py-3 border-2 border-green-300 focus:border-green-500 rounded-xl bg-green-50 text-lg mb-2" value={profile.experience[0].title} onChange={e => setProfileState({ ...profile, experience: [{ ...profile.experience[0], title: e.target.value }] })}>
                 <option value="">Select Role</option>
                 {roleOptions.map(role => <option key={role} value={role}>{role}</option>)}
               </select>
-              <label className="block font-semibold text-green-700 mb-2 text-base">Company Name</label>
-              <input type="text" className="w-full px-4 py-3 border-2 border-green-300 focus:border-green-500 rounded-xl bg-green-50 text-lg mb-2" placeholder="Company Name" value={profile.experience[0].company} onChange={e => setProfileState({ ...profile, experience: [{ ...profile.experience[0], company: e.target.value }] })} required />
-              <label className="block font-semibold text-green-700 mb-2 text-base">Duration</label>
-              <select className="w-full px-4 py-3 border-2 border-green-300 focus:border-green-500 rounded-xl bg-green-50 text-lg mb-2" value={profile.experience[0].duration} onChange={e => setProfileState({ ...profile, experience: [{ ...profile.experience[0], duration: e.target.value }] })} required>
+              <label className="block font-semibold text-green-700 mb-2 text-base">Company Name <span className='text-gray-400 text-xs'>(optional)</span></label>
+              <input type="text" className="w-full px-4 py-3 border-2 border-green-300 focus:border-green-500 rounded-xl bg-green-50 text-lg mb-2" placeholder="Company Name" value={profile.experience[0].company} onChange={e => setProfileState({ ...profile, experience: [{ ...profile.experience[0], company: e.target.value }] })} />
+              <label className="block font-semibold text-green-700 mb-2 text-base">Duration <span className='text-gray-400 text-xs'>(optional)</span></label>
+              <select className="w-full px-4 py-3 border-2 border-green-300 focus:border-green-500 rounded-xl bg-green-50 text-lg mb-2" value={profile.experience[0].duration} onChange={e => setProfileState({ ...profile, experience: [{ ...profile.experience[0], duration: e.target.value }] })}>
                 <option value="">Select Duration</option>
                 {durationOptions.map(d => <option key={d} value={d}>{d}</option>)}
               </select>
-              <label className="block font-semibold text-green-700 mb-2 text-base">Location</label>
-              <select className="w-full px-4 py-3 border-2 border-green-300 focus:border-green-500 rounded-xl bg-green-50 text-lg mb-2" value={profile.location} onChange={e => setProfileState({ ...profile, location: e.target.value })} required>
+              <label className="block font-semibold text-green-700 mb-2 text-base">Location <span className='text-gray-400 text-xs'>(optional)</span></label>
+              <select className="w-full px-4 py-3 border-2 border-green-300 focus:border-green-500 rounded-xl bg-green-50 text-lg mb-2" value={profile.location} onChange={e => setProfileState({ ...profile, location: e.target.value })}>
                 <option value="">Select Location</option>
                 {locationOptions.map(loc => <option key={loc} value={loc}>{loc}</option>)}
               </select>
-              <label className="block font-semibold text-green-700 mb-2 text-base">Monthly Salary</label>
+              <label className="block font-semibold text-green-700 mb-2 text-base">Monthly Salary <span className='text-gray-400 text-xs'>(optional)</span></label>
               <input type="text" className="w-full px-4 py-3 border-2 border-green-300 focus:border-green-500 rounded-xl bg-green-50 text-lg mb-2" placeholder="Monthly Salary" value={profile.experience[0].salary} onChange={e => setProfileState({ ...profile, experience: [{ ...profile.experience[0], salary: e.target.value }] })} />
-              <label className="block font-semibold text-green-700 mb-2 text-base">Skills</label>
+              <label className="block font-semibold text-green-700 mb-2 text-base">Skills <span className='text-gray-400 text-xs'>(optional)</span></label>
               <div className="flex flex-wrap items-center gap-2 mb-2 min-h-[48px] bg-white border border-green-200 rounded-xl px-2 py-1">
                 {profile.experience[0].skills.map((skill: string) => (
                   <span key={skill} className="px-3 py-1 bg-green-100 text-green-700 rounded text-sm font-medium flex items-center gap-1">
@@ -312,7 +312,7 @@ const JobseekerProfileStepper: React.FC = () => {
         return (
           <div className="space-y-7">
             <div>
-              <label className="block font-semibold text-green-700 mb-2 text-base">Certifications</label>
+              <label className="block font-semibold text-green-700 mb-2 text-base">Certifications <span className='text-gray-400 text-xs'>(optional)</span></label>
               <div className="flex gap-2 mb-2">
                 <input type="text" className="flex-1 px-4 py-3 border-2 border-green-300 focus:border-green-500 rounded-xl bg-green-50 text-lg" placeholder="Add a certification" value={certInput} onChange={e => setCertInput(e.target.value)} />
                 <button type="button" className="px-3 py-2 bg-green-600 text-white rounded-lg font-bold text-lg shadow hover:bg-green-700" onClick={() => {
@@ -349,7 +349,7 @@ const JobseekerProfileStepper: React.FC = () => {
         return (
           <div className="space-y-6">
             <div>
-              <label className="block font-semibold text-gray-700 mb-2">Resume (PDF)</label>
+              <label className="block font-semibold text-gray-700 mb-2">Resume (PDF) <span className='text-gray-400 text-xs'>(optional)</span></label>
               <input type="file" accept="application/pdf" className="w-full px-4 py-2 border-2 border-green-400 rounded-lg bg-gray-50" onChange={e => setProfileState({ ...profile, resume: e.target.files?.[0] || null })} />
             </div>
           </div>
@@ -400,7 +400,7 @@ const JobseekerProfileStepper: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-white flex flex-col items-center justify-center py-8">
       <div className="w-full max-w-2xl bg-white rounded-3xl shadow-2xl p-8 md:p-12 border border-green-100">
-        <h2 className="text-2xl md:text-3xl font-bold text-green-700 mb-2 text-center tracking-tight">Complete Your Profile</h2>
+        <h2 className="text-2xl md:text-3xl font-bold text-green-700 mb-2  text-center tracking-tight">Complete Your Profile</h2>
         <p className="text-gray-500 text-center mb-8">Let employers know more about you. Fill in your details step by step.</p>
         <StepIndicator />
         <form className="space-y-8" onSubmit={e => { e.preventDefault(); handleNext(); }}>
