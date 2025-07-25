@@ -1,8 +1,8 @@
 
-import React, { useState } from 'react';
-import { FunnelIcon, ChevronDownIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
+import { ChevronDownIcon, ChevronRightIcon, FunnelIcon } from '@heroicons/react/24/outline';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import { FAQ, getFAQs } from '../admin/faqStore';
 const filters = [
   {
     label: 'Date posted',
@@ -40,6 +40,7 @@ const filters = [
       { label: 'Advertising / Communication', value: 'ad' },
       { label: 'Aviation / Aerospace', value: 'aviation' },
       { label: 'Beauty, Fitness & Personal Care', value: 'beauty' },
+
     ],
   },
   {
@@ -163,30 +164,12 @@ const jobs = [
   },
 ];
 
-const faqs = [
-  {
-    q: 'Explore Best Part-time Jobs in India',
-    a: 'Find the best part-time jobs across India for students, freshers, and experienced professionals.',
-  },
-  {
-    q: 'What are Some of the Most Popular Part-time Jobs?',
-    a: 'Popular part-time jobs include delivery, tutoring, data entry, and more.',
-  },
-  {
-    q: 'What are Some Companies Offering Part-time Jobs in India?',
-    a: 'Companies like Zomato, Swiggy, and others offer part-time opportunities.',
-  },
-  {
-    q: 'What are the Key Benefits of Having a Part-time Job?',
-    a: 'Flexibility, extra income, and skill development are key benefits.',
-  },
-  {
-    q: 'What is the Easiest Way to Find a Part-time Job in India?',
-    a: 'Use OJK Jobs to browse and apply for the latest part-time jobs easily.',
-  },
-];
 
 const BrowseJobs: React.FC = () => {
+  const [faqs, setFaqs] = useState<FAQ[]>([]);
+  useEffect(() => {
+    setFaqs(getFAQs('jobseeker'));
+  }, []);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const navigate = useNavigate();
   // Filter state

@@ -1,7 +1,157 @@
 
 
 import React, { useState } from 'react';
-import { mockEmployers } from '../../constants';
+
+// Extended Job and Employer interfaces to include all fields from employer job posting flow
+export interface Job {
+  id: string;
+  title: string;
+  description: string;
+  location: string;
+  salary: string;
+  postedDate: string;
+  employerId: string;
+  requirements: string[];
+  status: string;
+  // Extended fields from employer job post flow
+  companyName: string;
+  jobCategory?: string;
+  jobType?: string;
+  workType?: string;
+  jobCity?: string;
+  additionalPerks?: string;
+  joiningFee?: string;
+  education?: string;
+  experience?: string;
+  english?: string;
+  age?: string;
+  gender?: string;
+  skills?: string;
+  degree?: string;
+  interviewCommPref?: string;
+  walkIn?: string;
+  interviewAddress?: string;
+  interviewInstructions?: string;
+}
+
+export interface Employer {
+  id: string;
+  companyName: string;
+  email: string;
+  mobile: string;
+  jobs: Job[];
+  contactPerson?: string;
+}
+
+// Example mock data with all fields filled from employer job post flow
+const mockEmployers: Employer[] = [
+  {
+    id: 'emp1',
+    companyName: 'Bot Digital Solutions Private Limited',
+    email: 'hr@botdigitals.com',
+    mobile: '9876543210',
+    contactPerson: 'Rahul Sharma',
+    jobs: [
+      {
+        id: 'job1',
+        title: 'Designer',
+        description: 'Design marketing materials and digital assets for our clients.',
+        location: 'All Areas in Chennai Region',
+        salary: '₹ 2,000 - ₹ 4,200 per month (Fixed + incentives)',
+        postedDate: '2025-07-20',
+        employerId: 'emp1',
+        requirements: ['Graduate', 'Fresher Only', 'No English Required'],
+        status: 'active',
+        // Extended fields
+        companyName: 'Bot Digital Solutions Private Limited',
+        jobCategory: 'Advertising / Communication',
+        jobType: 'Full Time | Day shift',
+        workType: 'Work from home',
+        jobCity: 'All Areas in Chennai Region',
+        additionalPerks: 'Weekly Payout, Annual Bonus, PF, Laptop',
+        joiningFee: '₹ 1000',
+        education: 'Graduate',
+        experience: 'Fresher Only',
+        english: 'No English Required',
+        age: '18 - 60 yrs',
+        gender: 'Both genders allowed',
+        skills: 'None',
+        degree: 'No input selected',
+        interviewCommPref: 'Myself',
+        walkIn: 'No',
+        interviewAddress: '',
+        interviewInstructions: '',
+      },
+      {
+        id: 'job2',
+        title: 'Sales Executive',
+        description: 'Drive sales and manage client relationships.',
+        location: 'Bangalore',
+        salary: '₹ 3,000 - ₹ 5,000 per month',
+        postedDate: '2025-07-22',
+        employerId: 'emp1',
+        requirements: ['12th Pass', 'Experienced Only', 'Basic English'],
+        status: 'pending',
+        companyName: 'Bot Digital Solutions Private Limited',
+        jobCategory: 'Sales',
+        jobType: 'Full Time',
+        workType: 'Work from office',
+        jobCity: 'Bangalore',
+        additionalPerks: 'Travel Allowance, Incentives',
+        joiningFee: 'No',
+        education: '12th Pass',
+        experience: 'Experienced Only',
+        english: 'Basic English',
+        age: '21 - 35 yrs',
+        gender: 'Both',
+        skills: 'Sales, Communication',
+        degree: 'Any',
+        interviewCommPref: 'Other recruiter',
+        walkIn: 'Yes',
+        interviewAddress: 'Bot Digital, 2nd Floor, Bangalore',
+        interviewInstructions: 'Bring resume and ID proof.',
+      },
+    ],
+  },
+  {
+    id: 'emp2',
+    companyName: 'Acme Corp',
+    email: 'contact@acmecorp.com',
+    mobile: '9123456789',
+    contactPerson: 'Priya Verma',
+    jobs: [
+      {
+        id: 'job3',
+        title: 'Accountant',
+        description: 'Manage company accounts and financial records.',
+        location: 'Mumbai',
+        salary: '₹ 4,000 - ₹ 6,000 per month',
+        postedDate: '2025-07-23',
+        employerId: 'emp2',
+        requirements: ['Graduate', 'Experienced Only', 'Good English'],
+        status: 'active',
+        companyName: 'Acme Corp',
+        jobCategory: 'Finance',
+        jobType: 'Part Time',
+        workType: 'Work from office',
+        jobCity: 'Mumbai',
+        additionalPerks: 'PF, Health Insurance',
+        joiningFee: 'No',
+        education: 'Graduate',
+        experience: 'Experienced Only',
+        english: 'Good English',
+        age: '25 - 40 yrs',
+        gender: 'Both',
+        skills: 'Accounting, Tally',
+        degree: 'B.Com',
+        interviewCommPref: 'Myself',
+        walkIn: 'No',
+        interviewAddress: '',
+        interviewInstructions: '',
+      },
+    ],
+  },
+];
 
 export interface Job {
   id: string;
@@ -34,15 +184,8 @@ const JobManagement: React.FC = () => {
   const [expandedJob, setExpandedJob] = useState<string | null>(null);
   const [filter, setFilter] = useState('');
 
-  // Map mockEmployers to Employer[] shape
-  const employers: (Employer & { contactPerson?: string })[] = mockEmployers.map(e => ({
-    id: e.id,
-    companyName: e.companyName,
-    email: e.email,
-    mobile: e.phone,
-    jobs: e.jobs,
-    contactPerson: e.contactPerson,
-  }));
+  // Use the extended mockEmployers directly
+  const employers: Employer[] = mockEmployers;
 
   // Filter employers by company name or job title
   const filteredEmployers = employers.filter(employer => {
@@ -191,6 +334,30 @@ const JobManagement: React.FC = () => {
                                   <div className="mt-4 space-y-3 border-t pt-4">
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                       <div>
+                                        <label className="block text-sm font-semibold text-gray-700 mb-1">Job Title</label>
+                                        <div className="text-gray-900">{job.title}</div>
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-semibold text-gray-700 mb-1">Company Name</label>
+                                        <div className="text-gray-900">{job.companyName}</div>
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-semibold text-gray-700 mb-1">Job Category</label>
+                                        <div className="text-gray-900">{job.jobCategory}</div>
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-semibold text-gray-700 mb-1">Job Type</label>
+                                        <div className="text-gray-900">{job.jobType}</div>
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-semibold text-gray-700 mb-1">Work Type</label>
+                                        <div className="text-gray-900">{job.workType}</div>
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-semibold text-gray-700 mb-1">Job City</label>
+                                        <div className="text-gray-900">{job.jobCity}</div>
+                                      </div>
+                                      <div>
                                         <label className="block text-sm font-semibold text-gray-700 mb-1">Location</label>
                                         <div className="flex items-center text-gray-900">
                                           <svg className="w-4 h-4 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -224,6 +391,44 @@ const JobManagement: React.FC = () => {
                                           {job.status}
                                         </span>
                                       </div>
+                                      <div>
+                                        <label className="block text-sm font-semibold text-gray-700 mb-1">Additional Perks</label>
+                                        <div className="text-gray-900">{job.additionalPerks}</div>
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-semibold text-gray-700 mb-1">Joining Fee</label>
+                                        <div className="text-gray-900">{job.joiningFee}</div>
+                                      </div>
+                                    </div>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                      <div>
+                                        <label className="block text-sm font-semibold text-gray-700 mb-1">Education</label>
+                                        <div className="text-gray-900">{job.education}</div>
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-semibold text-gray-700 mb-1">Experience</label>
+                                        <div className="text-gray-900">{job.experience}</div>
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-semibold text-gray-700 mb-1">English</label>
+                                        <div className="text-gray-900">{job.english}</div>
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-semibold text-gray-700 mb-1">Age</label>
+                                        <div className="text-gray-900">{job.age}</div>
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-semibold text-gray-700 mb-1">Gender</label>
+                                        <div className="text-gray-900">{job.gender}</div>
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-semibold text-gray-700 mb-1">Skills</label>
+                                        <div className="text-gray-900">{job.skills}</div>
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-semibold text-gray-700 mb-1">Degree</label>
+                                        <div className="text-gray-900">{job.degree}</div>
+                                      </div>
                                     </div>
                                     <div>
                                       <label className="block text-sm font-semibold text-gray-700 mb-1">Description</label>
@@ -237,6 +442,24 @@ const JobManagement: React.FC = () => {
                                             {req}
                                           </span>
                                         ))}
+                                      </div>
+                                    </div>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                      <div>
+                                        <label className="block text-sm font-semibold text-gray-700 mb-1">Interview Communication Preference</label>
+                                        <div className="text-gray-900">{job.interviewCommPref}</div>
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-semibold text-gray-700 mb-1">Walk-in Interview</label>
+                                        <div className="text-gray-900">{job.walkIn}</div>
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-semibold text-gray-700 mb-1">Interview Address</label>
+                                        <div className="text-gray-900">{job.interviewAddress}</div>
+                                      </div>
+                                      <div>
+                                        <label className="block text-sm font-semibold text-gray-700 mb-1">Interview Instructions</label>
+                                        <div className="text-gray-900">{job.interviewInstructions}</div>
                                       </div>
                                     </div>
                                   </div>

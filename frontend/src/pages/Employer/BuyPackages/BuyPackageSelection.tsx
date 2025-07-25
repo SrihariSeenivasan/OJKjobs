@@ -237,7 +237,7 @@ const BuyPackageSelection: React.FC = () => {
               <div className="text-2xl font-bold text-[#253858] mb-1 text-center">Save up to 53% OFF</div>
               <div className="text-[#b97a13] text-center mb-4 text-base">Complete your purchase and get up to 53% OFF on credit plans to hire top talent.</div>
               <button className="bg-[#fbb040] hover:bg-orange-500 text-white font-semibold rounded-xl w-full py-2 mb-2 text-base shadow transition-all duration-200" onClick={() => setShowOfferModal(false)}>Continue buying now</button>
-              <button className="text-[#b97a13] underline text-sm" onClick={() => setShowOfferModal(false)}>No thanks</button>
+              <button className="text-[#b97a13] underline text-sm" onClick={() => navigate("/Employer/Jobs")}>No thanks</button>
             </div>
           </div>
         </div>

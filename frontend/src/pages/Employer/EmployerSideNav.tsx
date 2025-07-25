@@ -198,24 +198,7 @@ const EmployerSideNav: React.FC<EmployerSideNavProps> = ({
         style={{height: isMobile ? undefined : 'calc(100vh - 4rem)'}}
         onKeyDown={handleKeyDown}
       >
-        {/* Mobile/Tablet header in sidebar */}
-        {isMobile && sidebarOpen && (
-          <div className="flex items-center justify-between p-3 sm:p-4 border-b bg-white lg:hidden">
-            <span className="text-lg sm:text-xl font-bold text-[#2DC6A8]">
-              apna<span className="text-gray-900">Hire</span>
-            </span>
-            <button 
-              onClick={() => setSidebarOpen(false)}
-              className="p-1.5 sm:p-2 hover:bg-gray-100 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-[#2DC6A8] focus:ring-opacity-50"
-              aria-label="Close sidebar"
-            >
-              <svg width="18" height="18" className="sm:w-5 sm:h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                <line x1="18" y1="6" x2="6" y2="18"/>
-                <line x1="6" y1="6" x2="18" y2="18"/>
-              </svg>
-            </button>
-          </div>
-        )}
+        
         
         {/* Sidebar navigation */}
         <nav className="flex flex-col gap-0.5 sm:gap-1 w-full px-2 sm:px-3 lg:px-2 mt-3 sm:mt-4 flex-1 overflow-y-auto">

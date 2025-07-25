@@ -60,10 +60,11 @@ import SupportHome from './pages/Employer/Help/Support/Home';
 import EmployerProfile from './pages/Employer/Profiles/Profile';
 import CompanyProfile from './pages/Employer/Profiles/CompanyProfile';
 import InterviewerInformation from './pages/Employer/Jobs/PostJobs/InterviewerInformation';
-import EmployerRegistration from './pages/Employer/EmployerRegistration';
-import EmployerRegisterVerifyOtp from './pages/Employer/VerifyOtp';
+import EmployerRegistration from './pages/Employer/EmployerAuth/EmployerRegistration';
+import EmployerRegisterVerifyOtp from './pages/Employer/EmployerAuth/VerifyOtp';
 import JobPostPreview from './pages/Employer/Jobs/PostJobs/JobPreview';
 import PublishJob from './pages/Employer/Jobs/PostJobs/PublishJob';
+import EmployerSignup from './pages/Employer/EmployerAuth/EmployerSignup';
 
 function App() {
   return (
@@ -90,6 +91,7 @@ function App() {
             <Route path="/Blog" element ={<Blog />} />
             <Route path="/jobs/apply" element={<ApplyJob />} />
             <Route path="/apply-via-email" element={<ApplyViaEmail />} />
+
             {/* Protected Routes */}
             <Route path="/dashboard" element={<JobseekerProfileStepper />} />
             <Route path="/post-job" element={
@@ -135,9 +137,9 @@ function App() {
              <Route path="/Employer/JobPostPreview" element={<JobPostPreview />} />
              <Route path="/Employer/PublishJob" element={<PublishJob />} />
              
-
-
-
+            {/* {EmployerRegistration} */}
+            
+             <Route path="/Employer/OJKHireSignup" element={<EmployerSignup />} />
              <Route path="/Employer/EmployerRegistration" element={<EmployerRegistration />} />
              <Route path="/Employer/verifyOtp" element={<EmployerRegisterVerifyOtp />} />
              
