@@ -86,7 +86,7 @@ const TrendingRoleCard: React.FC<{ role: string }> = ({ role }) => {
 
 import React, { useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+// Removed unused Link import
 import { useTranslation } from 'react-i18next';
 
 // Scroll-to-top button logic
@@ -344,12 +344,12 @@ const cardList = cardData.map((item, i) => (
         <div className={`text-2xl font-extrabold text-gray-900 mb-4 transition-colors`}>{item.title}</div>
       </div>
       <div className="flex justify-start w-full">
-        <Link
-          to={item.link}
+        <button
           className={`inline-block mt-4 mb-0 px-4 py-2 rounded-lg border transition-all duration-200 text-base bg-white font-bold ${item.btn} ${item.btnHover} group-hover:scale-105 group-hover:shadow-lg`}
+          onClick={() => { window.location.href = '/browse-jobs'; }}
         >
           View all <span className="ml-1">&#8594;</span>
-        </Link>
+        </button>
       </div>
     </div>
     {/* Card image bottom right, Unsplash PNG with transparent bg */}
@@ -492,7 +492,7 @@ return (
 
 
 
-      {/* POPULAR JOB SEARCHES (apna style) with left carousel */}
+      {/* POPULAR JOB SEARCHES with left carousel */}
       <motion.section 
         className="w-full bg-gray-50 py-16 relative"
         initial={{ opacity: 0, y: 40 }}
@@ -626,7 +626,7 @@ return (
             ))}
           </div>
           <div className="flex justify-center mt-8">
-            <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-lg shadow transition-all text-base">View all roles</button>
+            <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-lg shadow transition-all text-base" onClick={() => { window.location.href = '/browse-jobs'; }}>View all roles</button>
           </div>
         </div>
         {/* Angled divider to next section */}
