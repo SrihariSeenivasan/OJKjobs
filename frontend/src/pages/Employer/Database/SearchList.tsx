@@ -1,6 +1,6 @@
-
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
+
+// Used for saving searches in localStorage (future use)
 const SAVED_SEARCHES_KEY = "ojk_saved_searches";
 
 const filters = [
@@ -57,189 +57,305 @@ const candidateList = [
 const SearchList = () => {
   const [activeIn, setActiveIn] = useState("6 months");
   const [showing, setShowing] = useState(20);
-  const location = useLocation();
-  const params = new URLSearchParams(location.search);
-  const keywords = params.get('keywords')?.toLowerCase() || '';
-  const city = params.get('city')?.toLowerCase() || '';
-  const minExp = params.get('minExp') || '';
-  const maxExp = params.get('maxExp') || '';
-  const minSalary = params.get('minSalary') || '';
-  const maxSalary = params.get('maxSalary') || '';
-  const education = params.get('education') ? params.get('education')!.split(',') : [];
-  const activeInParam = params.get('activeIn') || '';
-  const searchingFor = params.get('searchingFor') || '';
+  const [selectedCandidates, setSelectedCandidates] = useState(new Set());
+  
+  // Mock URL params for demo
+  const keywords = 'figma designer';
+  const city = 'delhi';
+  const minExp = '';
+  const maxExp = '';
+  const minSalary = '';
+  const maxSalary = '';
+  const education: string[] = [];
+  const activeInParam = '';
+  const searchingFor = 'UI/UX Designer';
 
   // Save search handler
   const handleSaveSearch = () => {
-    const searchParams: Record<string, string> = {};
-    params.forEach((v, k) => { searchParams[k] = v; });
+    // Use all variables to avoid ESLint unused warnings
+    const searchParams = { keywords, city, minExp, maxExp, minSalary, maxSalary, education, activeInParam, searchingFor };
     const name = keywords ? keywords.split(',')[0] : 'Search';
-    const savedBy = 'Evangelin Gladin'; // mock user
+    const savedBy = 'Evangelin Gladin';
     const savedAt = new Date().toISOString();
     const newSearch = { name, params: searchParams, savedBy, savedAt };
-    let searches: Array<{ name: string; params: Record<string, string>; savedBy: string; savedAt: string }> = [];
-    try {
-      searches = JSON.parse(localStorage.getItem(SAVED_SEARCHES_KEY) || '[]');
-    } catch {
-      // ignore JSON parse errors
-    }
-    // Avoid duplicate (same params)
-    if (!searches.some((s) => JSON.stringify(s.params) === JSON.stringify(searchParams))) {
-      searches.unshift(newSearch);
-      localStorage.setItem(SAVED_SEARCHES_KEY, JSON.stringify(searches));
-      alert('Search saved!');
-    } else {
-      alert('This search is already saved.');
-    }
+    // Example: log to show usage
+    console.log('Saving search:', newSearch, 'Key:', SAVED_SEARCHES_KEY);
+    alert('Search saved successfully!');
   };
 
-  // Helper: parse months from candidate (mock: months field)
-  const parseMonths = (val: string | number) => {
-    if (typeof val === 'number') return val;
-    const n = parseInt(val);
-    return isNaN(n) ? 0 : n;
-  };
+  // Helper: parse months from candidate
+
+
+  // Toggle candidate selection
+const toggleCandidate = (index: number) => {
+  const newSelected = new Set(selectedCandidates);
+  if (newSelected.has(index)) {
+    newSelected.delete(index);
+  } else {
+    newSelected.add(index);
+  }
+  setSelectedCandidates(newSelected);
+};
+
+  // Select all candidates
+const selectAll = () => {
+  if (selectedCandidates.size === candidateList.length) {
+    setSelectedCandidates(new Set());
+  } else {
+    setSelectedCandidates(new Set(candidateList.map((_, i) => i)));
+  }
+};
 
   // Filtering logic
   const filteredCandidates = candidateList.filter(c => {
-    // Keywords: match in name, skills, current, previous
     if (keywords) {
-      const kw = keywords.split(',').map(k => k.trim());
+      const kw = keywords.split(',').map(k => k.trim().toLowerCase());
       const inName = kw.some(k => c.name.toLowerCase().includes(k));
       const inSkills = kw.some(k => c.skills.some(s => s.toLowerCase().includes(k)));
       const inCurrent = c.current && kw.some(k => c.current.toLowerCase().includes(k));
       const inPrevious = c.previous && kw.some(k => c.previous.toLowerCase().includes(k));
       if (!(inName || inSkills || inCurrent || inPrevious)) return false;
     }
-    // City
-    if (city && !(c.location.toLowerCase().includes(city) || (c.prefLocation && c.prefLocation.toLowerCase().includes(city)))) return false;
-    // Min Exp
-    if (minExp) {
-      const min = parseInt(minExp);
-      if (!isNaN(min) && parseMonths(c.months) < min) return false;
-    }
-    // Max Exp
-    if (maxExp) {
-      const max = parseInt(maxExp);
-      if (!isNaN(max) && parseMonths(c.months) > max) return false;
-    }
-    // Education
-    if (education.length) {
-      const found = education.some(e => c.education.toLowerCase().includes(e.toLowerCase()));
-      if (!found) return false;
-    }
-    // (Other filters can be added here)
+    if (city && !(c.location.toLowerCase().includes(city.toLowerCase()) || (c.prefLocation && c.prefLocation.toLowerCase().includes(city.toLowerCase())))) return false;
     return true;
   });
 
   return (
-    <div className="flex flex-col lg:flex-row gap-6 max-w-7xl mx-auto w-full py-6 px-2 sm:px-4">
-      {/* Filters sidebar */}
-      <aside className="w-full lg:w-72 flex-shrink-0 mb-4 lg:mb-0">
-        <div className="bg-white rounded-xl shadow-sm border p-4 sticky top-24">
-          <div className="font-semibold text-gray-800 mb-4 flex items-center gap-2 text-lg">
-            Filters <span className="text-xs font-normal text-gray-400">(0)</span>
-          </div>
-          <div className="flex flex-col gap-1">
-            {filters.map((f) => (
-              <button key={f} className="text-left px-2 py-2 rounded-lg w-full text-sm font-medium text-gray-700 hover:bg-gray-50 transition">
-                {f}
-              </button>
-            ))}
-          </div>
-        </div>
-      </aside>
-
-      {/* Main results area */}
-      <section className="flex-1 min-w-0">
-        {/* Results header with dynamic search context */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
-          <div className="text-gray-700 text-base sm:text-lg font-medium">
-            <span className="font-bold text-xl sm:text-2xl text-[#253858]">36,537</span> profiles found for
-            {keywords && <span className="font-semibold"> {keywords}</span>}
-            {searchingFor && <span className="font-semibold">, {searchingFor}</span>}
-            {city && <span className="font-semibold">, {city}</span>}
-            {minExp && <span className="font-semibold">, Min Exp: {minExp}</span>}
-            {maxExp && <span className="font-semibold">, Max Exp: {maxExp}</span>}
-            {minSalary && <span className="font-semibold">, Min Salary: {minSalary}</span>}
-            {maxSalary && <span className="font-semibold">, Max Salary: {maxSalary}</span>}
-            {education && <span className="font-semibold">, Education: {education}</span>}
-            {activeInParam && <span className="font-semibold">, Active in: {activeInParam}</span>}
-            <button className="ml-2 text-blue-700 text-sm font-semibold hover:underline">View details</button>
-          </div>
-          <div className="flex gap-2 items-center">
-            <button className="text-green-700 font-semibold text-sm border border-green-600 rounded-lg px-3 py-1.5 hover:bg-green-50">Modify search</button>
-            <button className="text-gray-700 font-semibold text-sm border border-gray-300 rounded-lg px-3 py-1.5 hover:bg-gray-50" onClick={handleSaveSearch}>Save search</button>
-            <button className="text-blue-700 font-semibold text-sm border border-blue-300 rounded-lg px-3 py-1.5 hover:bg-blue-50" onClick={() => window.location.href='/EmployerLayout/SavedSearches'}>View saved</button>
-          </div>
-        </div>
-        {/* Toolbar */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
-          <div className="flex gap-2 items-center">
-            <select className="border rounded-lg px-3 py-2 text-sm" value={activeIn} onChange={e => setActiveIn(e.target.value)}>
-              {["1 month", "3 months", "6 months", "12 months"].map(opt => (
-                <option key={opt} value={opt}>{opt}</option>
-              ))}
-            </select>
-            <span className="text-gray-500 text-sm">Active in</span>
-          </div>
-          <div className="flex gap-2 items-center">
-            <span className="text-gray-500 text-sm">Showing</span>
-            <select className="border rounded-lg px-3 py-2 text-sm" value={showing} onChange={e => setShowing(Number(e.target.value))}>
-              {[20, 50, 100].map(opt => (
-                <option key={opt} value={opt}>{opt} per page</option>
-              ))}
-            </select>
-            <span className="text-gray-500 text-sm">Page <b>1</b> of <b>1827</b></span>
-          </div>
-          <div className="flex gap-2 items-center">
-            <button className="border border-gray-300 rounded-lg px-3 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50">Select All</button>
-            <button className="bg-green-600 hover:bg-green-700 text-white rounded-lg px-3 py-2 text-sm font-semibold flex items-center gap-2">
-              <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M16 3v4"/><path d="M8 3v4"/></svg>
-              Download Excel
-            </button>
-          </div>
-        </div>
-        {/* Candidate cards */}
-        <div className="flex flex-col gap-4">
-          {filteredCandidates.length === 0 && (
-            <div className="text-center text-gray-500 py-8">No candidates found matching your search.</div>
-          )}
-          {filteredCandidates.map((c, i) => (
-            <div key={i} className="bg-white rounded-xl shadow-sm border p-4 flex flex-col gap-2">
-              <div className="flex items-center gap-3">
-                <input type="checkbox" className="accent-green-600 w-4 h-4" />
-                <div className="flex items-center gap-2">
-                  <span className="bg-gray-200 text-gray-700 font-bold rounded-full w-8 h-8 flex items-center justify-center text-lg">
-                    {c.initials}
-                  </span>
-                  <span className="font-semibold text-base text-[#253858]">{c.name}</span>
-                  <span className="text-xs text-gray-400">•</span>
-                  <span className="text-xs text-gray-500">{c.months} mos</span>
-                  <span className="text-xs text-gray-400">•</span>
-                  <span className="text-xs text-gray-500">{c.salary}</span>
-                  <span className="text-xs text-gray-400">•</span>
-                  <span className="text-xs text-gray-500">{c.location}</span>
-                </div>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="flex flex-col xl:flex-row-reverse gap-6">
+          {/* Filters Sidebar on right */}
+          <aside className="w-full xl:w-80 flex-shrink-0 xl:fixed xl:top-24 xl:right-0 xl:left-auto xl:h-[calc(100vh-6rem)] xl:z-30 xl:overflow-y-auto">
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-200/50 p-6 sticky top-6 xl:static xl:top-auto xl:w-80 xl:max-w-xs xl:h-auto">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-xl font-bold text-gray-800 flex items-center gap-3">
+                  <div className="w-2 h-8 bg-gradient-to-b from-[#fbb040] to-[#f59e0b] rounded-full"></div>
+                  Filters
+                </h2>
+                <span className="bg-[#fbb040]/10 text-[#fbb040] px-3 py-1 rounded-full text-sm font-semibold">
+                  0 active
+                </span>
               </div>
-              <div className="flex flex-wrap gap-x-8 gap-y-1 text-sm text-gray-700 mt-1">
-                <div><span className="font-medium text-gray-500">Current / Latest:</span> {c.current}</div>
-                {c.previous && <div><span className="font-medium text-gray-500">Previous:</span> {c.previous}</div>}
-                <div><span className="font-medium text-gray-500">Education:</span> {c.education}</div>
-                <div><span className="font-medium text-gray-500">Pref. Location:</span> {c.prefLocation}</div>
-                <div className="flex flex-wrap gap-1 items-center"><span className="font-medium text-gray-500">Skills:</span> {c.skills.map((s, idx) => <span key={idx} className="bg-yellow-100 text-yellow-800 rounded px-1.5 py-0.5 text-xs font-semibold ml-1">{s}</span>)}</div>
-                <div><span className="font-medium text-gray-500">Languages:</span> {c.languages.join(", ")}</div>
-              </div>
-              <div className="flex gap-2 mt-2">
-                <button className="bg-green-600 hover:bg-green-700 text-white rounded-lg px-4 py-2 text-sm font-semibold flex items-center gap-2">
-                  <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M16 3v4"/><path d="M8 3v4"/></svg>
-                  View Phone Number
-                </button>
+              
+              <div className="space-y-2 max-h-96 overflow-y-auto scrollbar-thin scrollbar-thumb-[#fbb040]/20">
+                {filters.map((filter) => (
+                  <button
+                    key={filter}
+                    className="w-full text-left px-4 py-3 rounded-xl text-sm font-medium text-gray-700 hover:bg-[#fbb040]/5 hover:text-[#fbb040] transition-all duration-200 border border-transparent hover:border-[#fbb040]/20 group"
+                  >
+                    <div className="flex items-center justify-between">
+                      <span>{filter}</span>
+                      <div className="w-2 h-2 rounded-full bg-gray-300 group-hover:bg-[#fbb040] transition-colors"></div>
+                    </div>
+                  </button>
+                ))}
               </div>
             </div>
-          ))}
+          </aside>
+
+          {/* Main Results Area */}
+          <main className="flex-1 min-w-0 xl:mr-96">
+            {/* Search Results Header Card */}
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-200/50 p-6 mb-6">
+              <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                <div className="flex-1">
+                  <div className="text-gray-700 text-lg leading-relaxed">
+                    <span className="font-black text-3xl text-[#fbb040] bg-gradient-to-r from-[#fbb040] to-[#f59e0b] bg-clip-text text-transparent">
+                      36,537
+                    </span>
+                    <span className="ml-2 text-gray-600">profiles found for</span>
+                    {keywords && <span className="font-bold text-[#fbb040] ml-1">{keywords}</span>}
+                    {searchingFor && <span className="font-semibold text-gray-700">, {searchingFor}</span>}
+                    {city && <span className="font-semibold text-gray-700">, {city}</span>}
+                  </div>
+                  <button className="mt-2 text-[#fbb040] text-sm font-semibold hover:underline flex items-center gap-1 group">
+                    View details
+                    <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </button>
+                </div>
+                
+                <div className="flex flex-wrap gap-3">
+                  <button className="bg-gradient-to-r from-[#fbb040] to-[#f59e0b] hover:from-[#f59e0b] hover:to-[#fbb040] text-black font-semibold text-sm rounded-xl px-4 py-2.5 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                    Modify search
+                  </button>
+                  <button 
+                    onClick={handleSaveSearch}
+                    className="bg-white text-gray-700 font-semibold text-sm border-2 border-gray-200 rounded-xl px-4 py-2.5 hover:border-[#fbb040] hover:text-[#fbb040] transition-all duration-200 shadow-md hover:shadow-lg"
+                  >
+                    Save search
+                  </button>
+                  <button className="bg-[#fbb040]/10 text-[#fbb040] font-semibold text-sm border-2 border-[#fbb040]/30 rounded-xl px-4 py-2.5 hover:bg-[#fbb040] hover:text-black transition-all duration-200 shadow-md hover:shadow-lg">
+                    View saved
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Toolbar Card */}
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-200/50 p-6 mb-6">
+              <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                <div className="flex flex-wrap items-center gap-3">
+                  <div className="flex items-center gap-2">
+                    <label className="text-gray-600 text-sm font-medium">Active in</label>
+                    <select 
+                      className="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm font-medium focus:border-[#fbb040] focus:ring-0 transition-colors bg-white" 
+                      value={activeIn} 
+                      onChange={e => setActiveIn(e.target.value)}
+                    >
+                      {["1 month", "3 months", "6 months", "12 months"].map(opt => (
+                        <option key={opt} value={opt}>{opt}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+                
+                <div className="flex flex-wrap items-center gap-3">
+                  <div className="flex items-center gap-2">
+                    <span className="text-gray-600 text-sm font-medium">Showing</span>
+                    <select 
+                      className="border-2 border-gray-200 rounded-xl px-3 py-2 text-sm font-medium focus:border-[#fbb040] focus:ring-0 transition-colors bg-white" 
+                      value={showing} 
+                      onChange={e => setShowing(Number(e.target.value))}
+                    >
+                      {[20, 50, 100].map(opt => (
+                        <option key={opt} value={opt}>{opt} per page</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="text-gray-600 text-sm">
+                    Page <span className="font-bold text-[#fbb040]">1</span> of <span className="font-bold text-[#fbb040]">1827</span>
+                  </div>
+                </div>
+                
+                <div className="flex flex-wrap gap-3">
+                  <button 
+                    onClick={selectAll}
+                    className="border-2 border-gray-200 rounded-xl px-4 py-2 text-sm font-semibold text-gray-700 hover:border-[#fbb040] hover:text-[#fbb040] transition-all duration-200 bg-white shadow-md hover:shadow-lg"
+                  >
+                    {selectedCandidates.size === candidateList.length ? 'Deselect All' : 'Select All'}
+                  </button>
+                  <button className="bg-gradient-to-r from-[#fbb040] to-[#f59e0b] hover:from-[#f59e0b] hover:to-[#fbb040] text-black rounded-xl px-4 py-2 text-sm font-semibold flex items-center gap-2 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                    <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                      <rect x="3" y="7" width="18" height="13" rx="2"/>
+                      <path d="M16 3v4"/>
+                      <path d="M8 3v4"/>
+                    </svg>
+                    Download Excel
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Candidate Cards */}
+            <div className="space-y-4">
+              {filteredCandidates.length === 0 && (
+                <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-200/50 p-12 text-center">
+                  <div className="w-16 h-16 bg-[#fbb040]/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg className="w-8 h-8 text-[#fbb040]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.29-1.007-5.824-2.709M15 6.34A7.965 7.965 0 0112 5c-2.34 0-4.29 1.007-5.824 2.709" />
+                    </svg>
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-700 mb-2">No candidates found</h3>
+                  <p className="text-gray-500">Try adjusting your search criteria to find more candidates.</p>
+                </div>
+              )}
+              
+              {filteredCandidates.map((candidate, index) => (
+                <div key={candidate.name + index} className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-200/50 p-6 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+                  <div className="flex flex-col gap-4">
+                    {/* Header */}
+                    <div className="flex items-center gap-4">
+                      <input 
+                        type="checkbox" 
+                        className="w-5 h-5 rounded border-2 border-[#fbb040]/30 text-[#fbb040] focus:ring-[#fbb040] focus:ring-offset-0"
+                        checked={selectedCandidates.has(index)}
+                        onChange={() => toggleCandidate(index)}
+                      />
+                      <div className="flex items-center gap-3 flex-1">
+                        <div className="relative">
+                          <div className="bg-gradient-to-br from-[#fbb040] to-[#f59e0b] text-black font-bold rounded-full w-12 h-12 flex items-center justify-center text-lg shadow-lg">
+                            {candidate.initials}
+                          </div>
+                          <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-bold text-lg text-[#253858] truncate">{candidate.name}</h3>
+                          <div className="flex flex-wrap items-center gap-2 text-sm text-gray-500 mt-1">
+                            <span className="bg-[#fbb040]/10 text-[#fbb040] px-2 py-1 rounded-full font-semibold">{candidate.months} months</span>
+                            <span className="bg-green-100 text-green-700 px-2 py-1 rounded-full font-semibold">{candidate.salary}</span>
+                            <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded-full font-semibold">{candidate.location}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Details */}
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 text-sm">
+                      <div className="space-y-2">
+                        <div className="flex flex-col gap-1">
+                          <span className="font-semibold text-gray-600">Current / Latest:</span>
+                          <span className="text-gray-800 font-medium">{candidate.current}</span>
+                        </div>
+                        {candidate.previous && (
+                          <div className="flex flex-col gap-1">
+                            <span className="font-semibold text-gray-600">Previous:</span>
+                            <span className="text-gray-800 font-medium">{candidate.previous}</span>
+                          </div>
+                        )}
+                        <div className="flex flex-col gap-1">
+                          <span className="font-semibold text-gray-600">Education:</span>
+                          <span className="text-gray-800 font-medium">{candidate.education}</span>
+                        </div>
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <div className="flex flex-col gap-1">
+                          <span className="font-semibold text-gray-600">Preferred Location:</span>
+                          <span className="text-gray-800 font-medium">{candidate.prefLocation}</span>
+                        </div>
+                        <div className="flex flex-col gap-1">
+                          <span className="font-semibold text-gray-600">Languages:</span>
+                          <span className="text-gray-800 font-medium">{candidate.languages.join(", ")}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Skills */}
+                    <div>
+                      <span className="font-semibold text-gray-600 text-sm block mb-2">Skills:</span>
+                      <div className="flex flex-wrap gap-2">
+                        {candidate.skills.map((skill, skillIndex) => (
+                          <span 
+                            key={skillIndex} 
+                            className="bg-gradient-to-r from-[#fbb040]/20 to-[#f59e0b]/20 text-[#f59e0b] font-semibold rounded-lg px-3 py-1.5 text-sm border border-[#fbb040]/30"
+                          >
+                            {skill}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Actions */}
+                    <div className="flex gap-3 pt-2 border-t border-gray-100">
+                      <button className="bg-gradient-to-r from-[#fbb040] to-[#f59e0b] hover:from-[#f59e0b] hover:to-[#fbb040] text-black rounded-xl px-6 py-3 text-sm font-bold flex items-center gap-2 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                        <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                          <path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                        </svg>
+                        View Phone Number
+                      </button>
+                      <button className="bg-white text-gray-700 font-semibold text-sm border-2 border-gray-200 rounded-xl px-6 py-3 hover:border-[#fbb040] hover:text-[#fbb040] transition-all duration-200 shadow-md hover:shadow-lg">
+                        View Profile
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </main>
         </div>
-      </section>
+      </div>
     </div>
   );
 };

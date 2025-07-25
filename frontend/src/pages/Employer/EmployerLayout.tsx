@@ -43,41 +43,38 @@ const EmployerLayout: FC<{ children?: ReactNode }> = ({ children }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div className="min-h-screen bg-white flex flex-col">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between sticky top-0 z-40 w-full shadow-sm">
+      <header className="bg-white border-b border-[#fbb040] px-4 py-3 flex items-center justify-between sticky top-0 z-40 w-full shadow-sm">
         {/* Left: Hamburger + Logo */}
         <div className="flex items-center gap-3">
           <button 
-            className="p-2 -ml-2 hover:bg-gray-100 rounded-lg transition-colors lg:hidden" 
+            className="p-2 -ml-2 hover:bg-[#fbb040]/10 rounded-lg transition-colors lg:hidden focus:outline-none focus:ring-2 focus:ring-[#fbb040] focus:ring-opacity-50" 
             onClick={toggleSidebar}
             aria-label="Toggle sidebar"
           >
-            <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+            <svg width="24" height="24" fill="none" stroke="#fbb040" strokeWidth="2" viewBox="0 0 24 24">
               <line x1="4" y1="7" x2="20" y2="7"/>
               <line x1="4" y1="12" x2="20" y2="12"/>
               <line x1="4" y1="17" x2="20" y2="17"/>
             </svg>
           </button>
-          
           {/* Desktop hamburger - always visible */}
           <button 
-            className="hidden lg:block p-2 -ml-2 hover:bg-gray-100 rounded-lg transition-colors" 
+            className="hidden lg:block p-2 -ml-2 hover:bg-[#fbb040]/10 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-[#fbb040] focus:ring-opacity-50" 
             onClick={toggleSidebar}
             aria-label="Toggle sidebar"
           >
-            <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+            <svg width="24" height="24" fill="none" stroke="#fbb040" strokeWidth="2" viewBox="0 0 24 24">
               <line x1="4" y1="7" x2="20" y2="7"/>
               <line x1="4" y1="12" x2="20" y2="12"/>
               <line x1="4" y1="17" x2="20" y2="17"/>
             </svg>
           </button>
-
-          <span className="text-xl sm:text-2xl font-bold text-[#2DC6A8]">
+          <span className="text-xl sm:text-2xl font-bold text-[#fbb040]">
             OJK<span className="text-gray-900">Hire</span>
           </span>
         </div>
-
         {/* Right: Available Credits + User icon */}
         <div className="flex items-center gap-4">
           <div
@@ -86,24 +83,24 @@ const EmployerLayout: FC<{ children?: ReactNode }> = ({ children }) => {
             onClick={() => setShowCreditsPopup((v) => !v)}
           >
             <svg width="24" height="24" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <ellipse cx="14" cy="21" rx="10" ry="4" fill="#fff" stroke="#42526E" strokeWidth="1.5"/>
-              <ellipse cx="14" cy="9" rx="10" ry="4" fill="#fff" stroke="#42526E" strokeWidth="1.5"/>
-              <path d="M4 9v8c0 2.21 4.477 4 10 4s10-1.79 10-4V9" stroke="#42526E" strokeWidth="1.5" fill="none"/>
+              <ellipse cx="14" cy="21" rx="10" ry="4" fill="#FFF7E0" stroke="#fbb040" strokeWidth="1.5"/>
+              <ellipse cx="14" cy="9" rx="10" ry="4" fill="#FFF7E0" stroke="#fbb040" strokeWidth="1.5"/>
+              <path d="M4 9v8c0 2.21 4.477 4 10 4s10-1.79 10-4V9" stroke="#fbb040" strokeWidth="1.5" fill="none"/>
             </svg>
-            <span className="text-sm lg:text-base font-semibold text-[#253858]">Available Credits</span>
+            <span className="text-sm lg:text-base font-semibold text-[#fbb040]">Available Credits</span>
             {showCreditsPopup && (
               <div
                 style={{ position: 'fixed', top: '60px', right: '40px', zIndex: 100, minWidth: '360px' }}
                 className="drop-shadow-xl"
               >
                 {/* Pointer arrow */}
-                <div style={{ position: 'absolute', top: '-10px', right: '32px', width: '0', height: '0', borderLeft: '10px solid transparent', borderRight: '10px solid transparent', borderBottom: '10px solid #fff', zIndex: 101 }} />
+                <div style={{ position: 'absolute', top: '-10px', right: '32px', width: '0', height: '0', borderLeft: '10px solid transparent', borderRight: '10px solid transparent', borderBottom: '10px solid #FFF7E0', zIndex: 101 }} />
                 <AvailableCredits open={true} onClose={() => setShowCreditsPopup(false)} />
               </div>
             )}
           </div>
           <div
-            className="bg-blue-900 rounded-full w-8 h-8 flex items-center justify-center font-bold text-white cursor-pointer"
+            className="bg-[#fbb040] rounded-full w-8 h-8 flex items-center justify-center font-bold text-white cursor-pointer shadow-md border-2 border-white"
             onClick={() => setShowProfilePopup(true)}
           >
             E
@@ -126,7 +123,6 @@ const EmployerLayout: FC<{ children?: ReactNode }> = ({ children }) => {
           )}
         </div>
       </header>
-
       {/* Main layout container */}
       <div className="flex flex-1 min-h-0 relative">
         {/* Mobile overlay */}
@@ -137,7 +133,6 @@ const EmployerLayout: FC<{ children?: ReactNode }> = ({ children }) => {
             aria-label="Close sidebar overlay"
           />
         )}
-
         {/* Sidebar */}
         <aside className={`
           ${isMobile 
@@ -148,7 +143,7 @@ const EmployerLayout: FC<{ children?: ReactNode }> = ({ children }) => {
                 sidebarOpen ? 'w-80' : 'w-16'
               }`
           }
-          bg-white border-r border-gray-200 shadow-lg lg:shadow-none
+          bg-[#FFF7E0] border-r border-[#fbb040] shadow-lg lg:shadow-none
         `}>
           <div className={`
             h-full overflow-hidden
@@ -164,18 +159,19 @@ const EmployerLayout: FC<{ children?: ReactNode }> = ({ children }) => {
             />
           </div>
         </aside>
-
         {/* Main content */}
         <main className={`
-          flex-1 min-h-0 bg-gray-50 overflow-auto
+          flex-1 min-h-0 bg-[#FFF7E0] overflow-auto
           ${!isMobile && !sidebarOpen ? 'ml-0' : ''}
           transition-all duration-300 ease-in-out
         `}>
-          <div className="p-4 sm:p-6 lg:p-8">
-            <div className="max-w-7xl mx-auto">
-              {children}
-              <Outlet />
-              {/* Remove global popup, now handled as dropdown */}
+          <div className="p-2 sm:p-4 lg:p-8">
+            <div className="max-w-7xl mx-auto grid gap-4 sm:gap-6 lg:gap-8">
+              {/* Card wrapper for children and Outlet */}
+              <div className="bg-white rounded-xl shadow-md border border-[#fbb040]/30 p-4 sm:p-6 lg:p-8 w-full">
+                {children}
+                <Outlet />
+              </div>
             </div>
           </div>
         </main>

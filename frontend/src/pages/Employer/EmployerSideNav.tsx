@@ -183,17 +183,19 @@ const EmployerSideNav: React.FC<EmployerSideNavProps> = ({
       {/* Sidebar */}
       <aside 
         className={`
-          ${isMobile ? 'fixed lg:relative' : 'relative'} 
-          ${isMobile ? 'h-full lg:h-auto' : 'h-auto'}
+          fixed left-0 z-40 top-16
+          ${isMobile ? 'lg:relative' : ''}
+          ${isMobile ? 'h-full lg:h-auto' : 'h-[calc(100vh-4rem)]'}
           ${sidebarOpen 
             ? (isMobile ? 'w-64 sm:w-72 lg:w-64' : 'w-64') 
             : (isMobile ? '-translate-x-full w-64 sm:w-72 lg:w-16' : 'w-16')
           }
           transition-all duration-300 ease-in-out
-          bg-white border-r border-gray-200 flex flex-col py-0 z-30
+          bg-white border-r  flex flex-col py-0
           ${isMobile ? 'left-0 top-0 shadow-xl lg:shadow-none' : ''}
-          min-h-screen lg:min-h-0
+          min-h-[calc(100vh-4rem)] lg:min-h-0
         `}
+        style={{height: isMobile ? undefined : 'calc(100vh - 4rem)'}}
         onKeyDown={handleKeyDown}
       >
         {/* Mobile/Tablet header in sidebar */}
@@ -222,7 +224,7 @@ const EmployerSideNav: React.FC<EmployerSideNavProps> = ({
               return (
                 <hr 
                   key={idx} 
-                  className="my-2 sm:my-3 border-gray-200 mx-1 sm:mx-2" 
+                  className="my-2 sm:my-3 border-[#fbb040]/30 mx-1 sm:mx-2" 
                 />
               );
             }
@@ -234,10 +236,10 @@ const EmployerSideNav: React.FC<EmployerSideNavProps> = ({
                     className={`
                       group flex items-center gap-2 sm:gap-3 px-2 sm:px-3 py-2.5 sm:py-3 rounded-lg w-full
                       ${sidebarOpen ? 'justify-start' : 'justify-center'}
-                      text-gray-600 hover:bg-[#E6F4F0] hover:text-[#2DC6A8] transition-all duration-200
-                      ${dbOpen && sidebarOpen ? 'bg-[#E6F4F0] text-[#2DC6A8]' : ''}
+                      text-[#253858] hover:bg-[#FFF7E0] hover:text-[#fbb040] transition-all duration-200
+                      ${dbOpen && sidebarOpen ? 'bg-[#FFF7E0] text-[#fbb040]' : ''}
                       relative font-medium text-sm sm:text-base
-                      focus:outline-none focus:ring-2 focus:ring-[#2DC6A8] focus:ring-opacity-50
+                      focus:outline-none focus:ring-2 focus:ring-[#fbb040] focus:ring-opacity-50
                     `}
                     onClick={() => setDbOpen((open) => !open)}
                     aria-expanded={dbOpen}
@@ -273,10 +275,10 @@ const EmployerSideNav: React.FC<EmployerSideNavProps> = ({
                           className={`
                             text-left px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg w-full text-xs sm:text-sm font-medium
                             transition-colors duration-200
-                            focus:outline-none focus:ring-2 focus:ring-[#2DC6A8] focus:ring-opacity-50
+                            focus:outline-none focus:ring-2 focus:ring-[#fbb040] focus:ring-opacity-50
                             ${selected === `database-${subIdx}` 
-                              ? 'bg-[#E6F4F0] text-[#2DC6A8] font-semibold' 
-                              : 'text-[#17494D] hover:bg-[#E6F4F0] hover:text-[#2DC6A8]'
+                              ? 'bg-[#FFF7E0] text-[#fbb040] font-semibold' 
+                              : 'text-[#253858] hover:bg-[#FFF7E0] hover:text-[#fbb040]'
                             }
                           `}
                           onClick={() => {
@@ -302,10 +304,10 @@ const EmployerSideNav: React.FC<EmployerSideNavProps> = ({
                     className={`
                       group flex items-center gap-2 sm:gap-3 px-2 sm:px-3 py-2.5 sm:py-3 rounded-lg w-full
                       ${sidebarOpen ? 'justify-start' : 'justify-center'}
-                      text-gray-600 hover:bg-[#E6F4F0] hover:text-[#2DC6A8] transition-all duration-200
-                      ${helpOpen && sidebarOpen ? 'bg-[#E6F4F0] text-[#2DC6A8]' : ''}
+                      text-[#253858] hover:bg-[#FFF7E0] hover:text-[#fbb040] transition-all duration-200
+                      ${helpOpen && sidebarOpen ? 'bg-[#FFF7E0] text-[#fbb040]' : ''}
                       relative font-medium text-sm sm:text-base
-                      focus:outline-none focus:ring-2 focus:ring-[#2DC6A8] focus:ring-opacity-50
+                      focus:outline-none focus:ring-2 focus:ring-[#fbb040] focus:ring-opacity-50
                     `}
                     onClick={() => setHelpOpen((open) => !open)}
                     aria-expanded={helpOpen}
@@ -336,7 +338,7 @@ const EmployerSideNav: React.FC<EmployerSideNavProps> = ({
                     <div className="ml-6 sm:ml-8 flex flex-col gap-0.5 sm:gap-1 my-1 sm:my-2">
                       {/* FAQ */}
                       <button
-                        className={`text-left px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg w-full text-xs sm:text-sm font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#2DC6A8] focus:ring-opacity-50 text-[#17494D] hover:bg-[#E6F4F0] hover:text-[#2DC6A8]`}
+                        className={`text-left px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg w-full text-xs sm:text-sm font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#fbb040] focus:ring-opacity-50 text-[#253858] hover:bg-[#FFF7E0] hover:text-[#fbb040]`}
                         onClick={() => {
                           setSelected(`help-faq`);
                           if (item.children?.[0].onClick) item.children[0].onClick(navigate);
@@ -352,7 +354,7 @@ const EmployerSideNav: React.FC<EmployerSideNavProps> = ({
                         {item.children?.[1]?.children?.map((sub, subIdx) => (
                           <button
                             key={sub.label}
-                            className={`flex items-center text-left px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg w-full text-xs sm:text-sm font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#2DC6A8] focus:ring-opacity-50 text-[#17494D] hover:bg-[#E6F4F0] hover:text-[#2DC6A8] relative`}
+                            className={`flex items-center text-left px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg w-full text-xs sm:text-sm font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#fbb040] focus:ring-opacity-50 text-[#253858] hover:bg-[#FFF7E0] hover:text-[#fbb040] relative`}
                             onClick={() => {
                               setSelected(`help-contact-${subIdx}`);
                               if (sub.onClick) sub.onClick();
@@ -385,10 +387,10 @@ const EmployerSideNav: React.FC<EmployerSideNavProps> = ({
                 className={`
                   group flex items-center gap-2 sm:gap-3 px-2 sm:px-3 py-2.5 sm:py-3 rounded-lg w-full
                   ${sidebarOpen ? 'justify-start' : 'justify-center'}
-                  text-gray-600 hover:bg-[#E6F4F0] hover:text-[#2DC6A8] transition-all duration-200
-                  ${selected === idx ? 'bg-[#E6F4F0] text-[#2DC6A8]' : ''}
+                  text-[#253858] hover:bg-[#FFF7E0] hover:text-[#fbb040] transition-all duration-200
+                  ${selected === idx ? 'bg-[#FFF7E0] text-[#fbb040]' : ''}
                   relative font-medium text-sm sm:text-base
-                  focus:outline-none focus:ring-2 focus:ring-[#2DC6A8] focus:ring-opacity-50
+                  focus:outline-none focus:ring-2 focus:ring-[#fbb040] focus:ring-opacity-50
                 `}
                 onClick={() => {
                   setSelected(idx);
@@ -406,7 +408,7 @@ const EmployerSideNav: React.FC<EmployerSideNavProps> = ({
                   </span>
                 )}
                 {selected === idx && sidebarOpen && (
-                  <span className="absolute right-2 sm:right-3 w-1.5 h-1.5 sm:w-2 sm:h-2 bg-[#2DC6A8] rounded-full flex-shrink-0"></span>
+                  <span className="absolute right-2 sm:right-3 w-1.5 h-1.5 sm:w-2 sm:h-2 bg-[#fbb040] rounded-full flex-shrink-0"></span>
                 )}
               </button>
             );
@@ -420,43 +422,41 @@ const EmployerSideNav: React.FC<EmployerSideNavProps> = ({
             <>
               {/* Credits warning */}
               <div 
-                className="bg-yellow-50 border border-yellow-200 text-yellow-900 text-xs sm:text-sm rounded-lg px-2.5 sm:px-3 py-2.5 sm:py-3 mb-2 sm:mb-3 mx-1 sm:mx-2" 
-                style={{boxShadow:'0 1px 2px 0 rgba(16,24,40,.05)'}}
+                className="bg-[#FFF7E0] border border-[#fbb040] text-[#fbb040] text-xs sm:text-sm rounded-lg px-2.5 sm:px-3 py-2.5 sm:py-3 mb-2 sm:mb-3 mx-1 sm:mx-2 shadow"
               >
                 <div className="flex items-start mb-1 sm:mb-2">
-                  <svg className="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2 text-yellow-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <svg className="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2 text-[#fbb040] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                     <path d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                   </svg>
                   <span className="font-semibold leading-tight text-xs sm:text-sm">
                     Oh no! You've run out of credits.
                   </span>
                 </div>
-                <button className="text-green-700 font-semibold text-xs sm:text-sm hover:text-green-800 transition-colors focus:outline-none focus:underline">
+                <button className="text-[#fbb040] font-semibold text-xs sm:text-sm hover:text-[#fbb040]/80 transition-colors focus:outline-none focus:underline">
                   Upgrade now →
                 </button>
               </div>
-              
               {/* Discount badge */}
               <div className="relative flex flex-col items-center mb-2 sm:mb-3">
-                <span className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-semibold rounded-full px-2.5 sm:px-3 py-1 flex items-center gap-1 shadow-sm">
+                <span className="bg-gradient-to-r from-[#fbb040] to-[#f59e0b] text-white text-xs font-semibold rounded-full px-2.5 sm:px-3 py-1 flex items-center gap-1 shadow-sm">
                   <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                     <path d="M12 17v-1m0-4v-1m0-4V7m0 10a5 5 0 1 0 0-10 5 5 0 0 0 0 10z"/>
                   </svg>
                   Up to 53% OFF
                 </span>
-                <span className="w-2 h-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-bl-lg rotate-45 absolute left-1/2 -translate-x-1/2 -bottom-0.5"></span>
+                <span className="w-2 h-2 bg-gradient-to-r from-[#fbb040] to-[#f59e0b] rounded-bl-lg rotate-45 absolute left-1/2 -translate-x-1/2 -bottom-0.5"></span>
               </div>
             </>
           )}
           
           {/* Buy credits button */}
-          <button className="flex items-center justify-center gap-1.5 sm:gap-2 border border-gray-300 text-gray-800 font-semibold rounded-lg px-2.5 sm:px-3 py-2 sm:py-2.5 mx-1 sm:mx-2 hover:bg-gray-50 transition-colors text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-[#2DC6A8] focus:ring-opacity-50">
+          <button className="flex items-center justify-center gap-1.5 sm:gap-2 border border-[#fbb040] text-[#fbb040] font-semibold rounded-lg px-2.5 sm:px-3 py-2 sm:py-2.5 mx-1 sm:mx-2 hover:bg-[#FFF7E0] transition-colors text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-[#fbb040] focus:ring-opacity-50">
             <svg 
               width="16" 
               height="16" 
               className="sm:w-[18px] sm:h-[18px]"
               fill="none" 
-              stroke="#2DC6A8" 
+              stroke="#fbb040" 
               strokeWidth="2" 
               viewBox="0 0 24 24"
             >

@@ -1,3 +1,4 @@
+import { Building2, LogOut, User, X } from "lucide-react";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -15,50 +16,76 @@ const ProfilePopup: React.FC<ProfilePopupProps> = ({ open, onClose, name, phone,
   const navigate = useNavigate();
   if (!open) return null;
   return (
-    <div className="bg-white rounded-xl shadow-lg max-w-xs w-full relative" style={{ position: 'absolute', top: '4px', right: '0', zIndex: 100 }}>
+    <div
+      className="bg-white backdrop-blur-md border border-[#fbb040]/30 rounded-2xl shadow-2xl max-w-xs w-full relative"
+      style={{ position: 'absolute', top: '4px', right: '0', zIndex: 100 }}
+    >
       {/* Pointer triangle */}
-      <div style={{ position: 'absolute', top: '-12px', right: '32px', width: 0, height: 0, borderLeft: '12px solid transparent', borderRight: '12px solid transparent', borderBottom: '12px solid #fff', zIndex: 101 }} />
+      <div
+        style={{
+          position: 'absolute',
+          top: '-12px',
+          right: '32px',
+          width: 0,
+          height: 0,
+          borderLeft: '12px solid transparent',
+          borderRight: '12px solid transparent',
+          borderBottom: '12px solid #FFF7E0',
+          zIndex: 101,
+        }}
+      />
       <button
-        className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center border border-blue-500 rounded bg-white text-xl text-gray-700 hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center border border-[#fbb040] rounded-full bg-[#FFF7E0] text-xl text-[#b97a13] hover:bg-[#fbb040] hover:text-white focus:outline-none focus:ring-2 focus:ring-[#fbb040] transition-all duration-200"
         onClick={onClose}
         aria-label="Close"
       >
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <line x1="5" y1="5" x2="15" y2="15" stroke="#2563eb" strokeWidth="2" strokeLinecap="round" />
-          <line x1="15" y1="5" x2="5" y2="15" stroke="#2563eb" strokeWidth="2" strokeLinecap="round" />
-        </svg>
+        <X size={20} stroke="currentColor" strokeWidth={2} />
       </button>
-      <div className="flex flex-col items-center pt-6 pb-2">
-        <div className="bg-[#4B234A] rounded-full w-12 h-12 flex items-center justify-center font-bold text-white text-xl mb-2">E</div>
-        <div className="font-semibold text-lg text-[#253858]">{name}</div>
-        <div className="text-gray-500 text-sm mb-2">{phone}</div>
+      <div className="flex flex-col items-center pt-8 pb-3 px-4">
+        <div className="bg-gradient-to-br from-[#fbb040] to-orange-400 shadow-lg rounded-full w-16 h-16 flex items-center justify-center font-bold text-white text-2xl mb-2 border-4 border-white">
+          {name?.[0] || 'E'}
+        </div>
+        <div className="font-semibold text-lg text-[#253858] text-center break-words w-full">{name}</div>
+        <div className="text-gray-500 text-sm mb-2 text-center w-full">{phone}</div>
       </div>
-      <hr className="mb-2" />
-      <div className="flex flex-col gap-1 px-4 pb-4">
+      <hr className="mb-2 border-[#fbb040]/20" />
+      <div className="flex flex-col gap-2 px-2 sm:px-4 pb-4">
         <button
-          className="flex items-center gap-2 py-2 text-[#253858] hover:bg-gray-100 rounded font-medium text-base"
+          className="flex items-center gap-2 py-2 px-2 sm:px-3 text-[#253858] hover:bg-[#FFF7E0] active:bg-[#fbb040]/20 rounded-xl font-medium text-base transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#fbb040]"
           onClick={() => {
             onViewProfile?.();
             navigate("/Employer/Profile");
             onClose();
           }}
         >
-          <svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="#253858"/></svg>
-          View profile
+          <User size={20} stroke="#253858" strokeWidth={2} />
+          <span className="truncate">View profile</span>
         </button>
-        <button className="flex items-center gap-2 py-2 text-[#253858] hover:bg-gray-100 rounded font-medium text-base" onClick={() => {
+        <button
+          className="flex items-center gap-2 py-2 px-2 sm:px-3 text-[#253858] hover:bg-[#FFF7E0] active:bg-[#fbb040]/20 rounded-xl font-medium text-base transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#fbb040]"
+          onClick={() => {
             onCompanyProfile?.();
             navigate("/Employer/CompanyProfile");
             onClose();
-          }}>
-          <svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm4 0h2v-2H7v2zm0-4h2v-2H7v2zm4 4h2v-2h-2v2zm0-4h2v-2h-2v2zm4 4h2v-2h-2v2zm0-4h2v-2h-2v2z" fill="#253858"/><path d="M21 7V5c0-1.1-.9-2-2-2H5C3.9 3 3 3.9 3 5v2c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2z" fill="#253858"/></svg>
-          Company profile
+          }}
+        >
+          <Building2 size={20} stroke="#253858" strokeWidth={2} />
+          <span className="truncate">Company profile</span>
         </button>
-        <button className="flex items-center gap-2 py-2 text-red-600 hover:bg-red-50 rounded font-medium text-base" onClick={onSignOut}>
-          <svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path d="M16 13v-2H7v2h9zm-1-9h-6c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h6c1.1 0 2-.9 2-2v-4h-2v4H7V6h8v4h2V6c0-1.1-.9-2-2-2z" fill="#e11d48"/></svg>
-          Sign out
+        <button
+          className="flex items-center gap-2 py-2 px-2 sm:px-3 text-red-600 hover:bg-red-50 active:bg-red-100 rounded-xl font-medium text-base transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-red-200"
+          onClick={onSignOut}
+        >
+          <LogOut size={20} stroke="#e11d48" strokeWidth={2} />
+          <span className="truncate">Sign out</span>
         </button>
       </div>
+      {/* Responsive adjustments */}
+      <style>{`
+        @media (max-width: 480px) {
+          .max-w-xs { max-width: 95vw !important; }
+        }
+      `}</style>
     </div>
   );
 };

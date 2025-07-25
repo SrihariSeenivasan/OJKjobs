@@ -93,41 +93,41 @@ const CreditsAndUsage = () => {
   };
 
   return (
-    <div className="bg-[#fafaf7] min-h-screen py-6 px-2 sm:px-6">
+    <div className="bg-[#FFF7E0] min-h-screen py-6 px-2 sm:px-6">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-xl sm:text-2xl font-bold mb-2">Credits & Usage</h1>
-        <div className="bg-yellow-100 border border-yellow-300 rounded flex items-center justify-between px-4 py-3 mb-4">
-          <div className="flex items-center gap-2 text-yellow-900 text-sm">
+        <h1 className="text-xl sm:text-2xl font-bold mb-2 text-[#253858]">Credits & Usage</h1>
+        <div className="bg-[#FFF7E0] border border-[#fbb040] rounded-2xl flex flex-col md:flex-row items-center justify-between px-4 py-4 mb-4 shadow-sm">
+          <div className="flex items-center gap-2 text-[#b97a13] text-sm">
             <span className="text-lg">⚠️</span>
             Evangelin, You’ve run out of credits <span className="font-bold">😔</span>
-            <span className="hidden sm:inline">Your credit balance is exhausted. But no sweat – we’ve got a deal you cannot overlook! <span className="font-semibold text-blue-700">Upgrade now to save upto ₹7800</span></span>
+            <span className="hidden sm:inline">Your credit balance is exhausted. But no sweat – we’ve got a deal you cannot overlook! <span className="font-semibold text-[#fbb040]">Upgrade now to save upto ₹7800</span></span>
           </div>
-          <button className="bg-green-700 text-white rounded px-4 py-1 text-sm font-semibold ml-2">Buy Now</button>
+          <button className="bg-[#fbb040] hover:bg-orange-500 text-white rounded-lg px-5 py-2 text-sm font-semibold ml-2 shadow transition-all duration-200">Buy Now</button>
         </div>
         <div className="flex flex-col md:flex-row gap-4 mb-4">
           <div className="flex-1 flex gap-4">
-            <div className="bg-white rounded-lg border shadow-sm flex-1 flex flex-col items-center py-6">
+            <div className="bg-white rounded-2xl border border-[#fbb040]/20 shadow-lg flex-1 flex flex-col items-center py-6">
               <div className="flex items-center gap-2 mb-2">
-                <span className="bg-blue-100 text-blue-700 rounded-full px-2 py-1 text-xs font-semibold">Job Credits</span>
+                <span className="bg-[#FFF7E0] text-[#fbb040] rounded-full px-2 py-1 text-xs font-semibold border border-[#fbb040]/30">Job Credits</span>
               </div>
-              <div className="text-2xl font-bold mb-1">{mockCredits.job} <span className="text-base font-normal">credits</span></div>
+              <div className="text-2xl font-bold mb-1 text-[#253858]">{mockCredits.job} <span className="text-base font-normal text-gray-500">credits</span></div>
             </div>
-            <div className="bg-white rounded-lg border shadow-sm flex-1 flex flex-col items-center py-6">
+            <div className="bg-white rounded-2xl border border-[#fbb040]/20 shadow-lg flex-1 flex flex-col items-center py-6">
               <div className="flex items-center gap-2 mb-2">
-                <span className="bg-purple-100 text-purple-700 rounded-full px-2 py-1 text-xs font-semibold">Database Credits</span>
+                <span className="bg-[#FFF7E0] text-[#fbb040] rounded-full px-2 py-1 text-xs font-semibold border border-[#fbb040]/30">Database Credits</span>
               </div>
-              <div className="text-2xl font-bold mb-1">{mockCredits.database} <span className="text-base font-normal">credits</span></div>
+              <div className="text-2xl font-bold mb-1 text-[#253858]">{mockCredits.database} <span className="text-base font-normal text-gray-500">credits</span></div>
             </div>
           </div>
-          <div className="flex items-center bg-blue-50 border border-blue-200 rounded px-4 py-3 flex-shrink-0 w-full md:w-96">
-            <svg width="32" height="32" fill="none" viewBox="0 0 32 32" className="mr-3"><rect width="32" height="32" rx="8" fill="#E6F4FF"/><path d="M10 16h12M16 10v12" stroke="#1890FF" strokeWidth="2" strokeLinecap="round"/></svg>
-            <div className="text-blue-900 text-sm">New Update!<br />The Transaction history is now cleaner with all credit and debit related transactions from your apna account. To view your future payment related information and invoices, go to <a href="#" className="text-blue-700 underline">billing</a> section.</div>
+          <div className="flex items-center bg-[#FFF7E0] border border-[#fbb040]/40 rounded-2xl px-4 py-3 flex-shrink-0 w-full md:w-96 shadow-sm">
+            <svg width="32" height="32" fill="none" viewBox="0 0 32 32" className="mr-3"><rect width="32" height="32" rx="8" fill="#FFF7E0"/><path d="M10 16h12M16 10v12" stroke="#fbb040" strokeWidth="2" strokeLinecap="round"/></svg>
+            <div className="text-[#b97a13] text-sm">New Update!<br />The Transaction history is now cleaner with all credit and debit related transactions from your apna account. To view your future payment related information and invoices, go to <a href="#" className="text-[#fbb040] underline">billing</a> section.</div>
           </div>
         </div>
-        <div className="bg-white rounded-lg border shadow-sm p-4">
+        <div className="bg-white rounded-2xl border border-[#fbb040]/20 shadow-lg p-4">
           <div className="flex gap-2 mb-4">
-            <button onClick={() => setTab('credits')} className={`px-4 py-1 rounded font-semibold text-sm border ${tab === 'credits' ? 'bg-blue-700 text-white border-blue-700' : 'bg-gray-100 text-gray-700 border-gray-200'}`}>Credits</button>
-            <button onClick={() => setTab('coins')} className={`px-4 py-1 rounded font-semibold text-sm border ${tab === 'coins' ? 'bg-blue-700 text-white border-blue-700' : 'bg-gray-100 text-gray-700 border-gray-200'}`}>Previous coins</button>
+            <button onClick={() => setTab('credits')} className={`px-4 py-1 rounded-xl font-semibold text-sm border transition-all duration-200 ${tab === 'credits' ? 'bg-[#fbb040] text-white border-[#fbb040]' : 'bg-[#FFF7E0] text-gray-700 border-[#fbb040]/20 hover:bg-[#fbb040]/10'}`}>Credits</button>
+            <button onClick={() => setTab('coins')} className={`px-4 py-1 rounded-xl font-semibold text-sm border transition-all duration-200 ${tab === 'coins' ? 'bg-[#fbb040] text-white border-[#fbb040]' : 'bg-[#FFF7E0] text-gray-700 border-[#fbb040]/20 hover:bg-[#fbb040]/10'}`}>Previous coins</button>
           </div>
           {tab === 'credits' && (
             <div>
@@ -136,7 +136,7 @@ const CreditsAndUsage = () => {
                 {creditFilters.map(f => (
                   <button
                     key={f.value}
-                    className={`px-3 py-1 rounded text-xs border font-semibold ${creditFilter === f.value ? 'bg-blue-700 text-white border-blue-700' : 'bg-gray-100 text-gray-700 border-gray-200'}`}
+                    className={`px-3 py-1 rounded-xl text-xs border font-semibold transition-all duration-200 ${creditFilter === f.value ? 'bg-[#fbb040] text-white border-[#fbb040]' : 'bg-[#FFF7E0] text-gray-700 border-[#fbb040]/20 hover:bg-[#fbb040]/10'}`}
                     onClick={() => { setCreditFilter(f.value); setPage(1); }}
                   >
                     {f.label}
@@ -146,7 +146,7 @@ const CreditsAndUsage = () => {
               <div className="overflow-x-auto">
                 <table className="min-w-full text-xs">
                   <thead>
-                    <tr className="bg-gray-50 text-gray-500 font-semibold">
+                    <tr className="bg-[#FFF7E0] text-[#b97a13] font-semibold">
                       <th className="py-2 px-2 text-left">Transaction details</th>
                       <th className="py-2 px-2 text-left">Credits</th>
                       <th className="py-2 px-2 text-left">Date</th>
@@ -156,10 +156,10 @@ const CreditsAndUsage = () => {
                     {paginatedTransactions.map((t, i) => (
                       <tr key={i} className="border-b last:border-b-0">
                         <td className="py-2 px-2">
-                          <div className="font-semibold text-gray-800">{t.detail}</div>
+                          <div className="font-semibold text-[#253858]">{t.detail}</div>
                           <div className="text-gray-500">{t.desc}</div>
                         </td>
-                        <td className="py-2 px-2 font-semibold">{t.credits}</td>
+                        <td className="py-2 px-2 font-semibold text-[#fbb040]">{t.credits}</td>
                         <td className="py-2 px-2 text-gray-500">{t.date}</td>
                       </tr>
                     ))}
@@ -172,7 +172,7 @@ const CreditsAndUsage = () => {
                 </div>
                 <div className="flex gap-1">
                   <button
-                    className={`px-2 py-1 rounded border text-xs font-semibold ${page === 1 ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'}`}
+                    className={`px-2 py-1 rounded-xl border text-xs font-semibold transition-all duration-200 ${page === 1 ? 'bg-[#FFF7E0] text-gray-400 cursor-not-allowed' : 'bg-white text-gray-700 border-[#fbb040]/20 hover:bg-[#fbb040]/10'}`}
                     onClick={() => handlePageChange(page - 1)}
                     disabled={page === 1}
                   >
@@ -181,14 +181,14 @@ const CreditsAndUsage = () => {
                   {Array.from({ length: totalPages }, (_, idx) => (
                     <button
                       key={idx}
-                      className={`px-2 py-1 rounded border text-xs font-semibold ${page === idx + 1 ? 'bg-blue-700 text-white border-blue-700' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'}`}
+                    className={`px-2 py-1 rounded-xl border text-xs font-semibold transition-all duration-200 ${page === idx + 1 ? 'bg-[#fbb040] text-white border-[#fbb040]' : 'bg-white text-gray-700 border-[#fbb040]/20 hover:bg-[#fbb040]/10'}`}
                       onClick={() => handlePageChange(idx + 1)}
                     >
                       {idx + 1}
                     </button>
                   ))}
                   <button
-                    className={`px-2 py-1 rounded border text-xs font-semibold ${page === totalPages ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'}`}
+                    className={`px-2 py-1 rounded-xl border text-xs font-semibold transition-all duration-200 ${page === totalPages ? 'bg-[#FFF7E0] text-gray-400 cursor-not-allowed' : 'bg-white text-gray-700 border-[#fbb040]/20 hover:bg-[#fbb040]/10'}`}
                     onClick={() => handlePageChange(page + 1)}
                     disabled={page === totalPages}
                   >
@@ -204,7 +204,7 @@ const CreditsAndUsage = () => {
                 {coinsFilters.map(f => (
                   <button
                     key={f.value}
-                    className={`px-3 py-1 rounded text-xs border font-semibold ${coinsFilter === f.value ? 'bg-blue-700 text-white border-blue-700' : 'bg-gray-100 text-gray-700 border-gray-200'}`}
+                    className={`px-3 py-1 rounded-xl text-xs border font-semibold transition-all duration-200 ${coinsFilter === f.value ? 'bg-[#fbb040] text-white border-[#fbb040]' : 'bg-[#FFF7E0] text-gray-700 border-[#fbb040]/20 hover:bg-[#fbb040]/10'}`}
                     onClick={() => { setCoinsFilter(f.value); setCoinsPage(1); }}
                   >
                     {f.label}
@@ -214,7 +214,7 @@ const CreditsAndUsage = () => {
               <div className="overflow-x-auto">
                 <table className="min-w-full text-xs">
                   <thead>
-                    <tr className="bg-gray-50 text-gray-500 font-semibold">
+                    <tr className="bg-[#FFF7E0] text-[#b97a13] font-semibold">
                       <th className="py-2 px-2 text-left">Transaction details</th>
                       <th className="py-2 px-2 text-left">Coins</th>
                       <th className="py-2 px-2 text-left">Status</th>
@@ -226,18 +226,18 @@ const CreditsAndUsage = () => {
                     {paginatedCoins.map((t, i) => (
                       <tr key={i} className="border-b last:border-b-0">
                         <td className="py-2 px-2">
-                          <div className="font-semibold text-gray-800">{t.detail}</div>
-                          <div className="text-blue-700 underline">
+                          <div className="font-semibold text-[#253858]">{t.detail}</div>
+                          <div className="text-[#fbb040] underline">
                             {t.jobId ? <a href={`#job${t.jobId}`}>{t.desc}</a> : t.desc}
                           </div>
                         </td>
-                        <td className="py-2 px-2 font-semibold">{t.coins}</td>
+                        <td className="py-2 px-2 font-semibold text-[#fbb040]">{t.coins}</td>
                         <td className="py-2 px-2">
-                          <span className="bg-green-50 text-green-700 px-2 py-1 rounded text-xs font-semibold">{t.status}</span>
+                          <span className="bg-[#FFF7E0] text-[#fbb040] px-2 py-1 rounded-xl text-xs font-semibold border border-[#fbb040]/30">{t.status}</span>
                         </td>
                         <td className="py-2 px-2 text-gray-500">{t.date}</td>
                         <td className="py-2 px-2">
-                          {t.action ? <a href="#" className="text-blue-700 underline text-xs">{t.action}</a> : ""}
+                          {t.action ? <a href="#" className="text-[#fbb040] underline text-xs">{t.action}</a> : ""}
                         </td>
                       </tr>
                     ))}
@@ -250,7 +250,7 @@ const CreditsAndUsage = () => {
                 </div>
                 <div className="flex gap-1">
                   <button
-                    className={`px-2 py-1 rounded border text-xs font-semibold ${coinsPage === 1 ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'}`}
+                    className={`px-2 py-1 rounded-xl border text-xs font-semibold transition-all duration-200 ${coinsPage === 1 ? 'bg-[#FFF7E0] text-gray-400 cursor-not-allowed' : 'bg-white text-gray-700 border-[#fbb040]/20 hover:bg-[#fbb040]/10'}`}
                     onClick={() => handleCoinsPageChange(coinsPage - 1)}
                     disabled={coinsPage === 1}
                   >
@@ -259,14 +259,14 @@ const CreditsAndUsage = () => {
                   {Array.from({ length: coinsTotalPages }, (_, idx) => (
                     <button
                       key={idx}
-                      className={`px-2 py-1 rounded border text-xs font-semibold ${coinsPage === idx + 1 ? 'bg-blue-700 text-white border-blue-700' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'}`}
+                    className={`px-2 py-1 rounded-xl border text-xs font-semibold transition-all duration-200 ${coinsPage === idx + 1 ? 'bg-[#fbb040] text-white border-[#fbb040]' : 'bg-white text-gray-700 border-[#fbb040]/20 hover:bg-[#fbb040]/10'}`}
                       onClick={() => handleCoinsPageChange(idx + 1)}
                     >
                       {idx + 1}
                     </button>
                   ))}
                   <button
-                    className={`px-2 py-1 rounded border text-xs font-semibold ${coinsPage === coinsTotalPages ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'}`}
+                    className={`px-2 py-1 rounded-xl border text-xs font-semibold transition-all duration-200 ${coinsPage === coinsTotalPages ? 'bg-[#FFF7E0] text-gray-400 cursor-not-allowed' : 'bg-white text-gray-700 border-[#fbb040]/20 hover:bg-[#fbb040]/10'}`}
                     onClick={() => handleCoinsPageChange(coinsPage + 1)}
                     disabled={coinsPage === coinsTotalPages}
                   >
