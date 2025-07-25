@@ -42,8 +42,8 @@ const Footer: React.FC = () => {
           {/* Company Info */}
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
-              <OjkLogo className="h-8 w-8" />
-              <span className="text-xl font-bold">OJK Jobs</span>
+              <OjkLogo className="h-10 w-16 drop-shadow-2xl" />
+          
             </div>
             <p className="text-gray-400 text-sm">
               {t('hero.subtitle')}
@@ -82,7 +82,7 @@ const Footer: React.FC = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/contact-us" className="text-gray-400 hover:text-white transition-colors">
+                <Link to="/contactus" className="text-gray-400 hover:text-white transition-colors">
                   {t('footer.contact')}
                 </Link>
               </li>

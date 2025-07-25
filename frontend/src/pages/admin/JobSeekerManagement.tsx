@@ -7,14 +7,15 @@ export interface Employee {
   name: string;
   gender?: string;
   age?: number;
+  dob?: string;
   email: string;
   phone: string;
   registrationDate: string;
   profileComplete: number;
   skills: string[];
-  experience: string;
-  education?: string;
-  resume: string;
+  experience: string | Experience[];
+  education?: string | Education[];
+  resume: string | File | null;
   location: string;
   jobsApplied: number;
   profileImage: string;
@@ -24,6 +25,28 @@ export interface Employee {
     github?: string;
     twitter?: string;
   };
+  certifications?: string[];
+  languages?: string[];
+  preferences?: {
+    jobTitle?: string;
+    preferredLocation?: string;
+    jobType?: string[];
+  };
+}
+
+interface Experience {
+  title: string;
+  company: string;
+  duration: string;
+  salary: string;
+  skills: string[];
+}
+
+interface Education {
+  degree: string;
+  institution: string;
+  batch: string;
+  medium: string;
 }
 
 interface EmployeeManagementProps {
@@ -181,7 +204,6 @@ const JobSeekerManagement: React.FC<EmployeeManagementProps> = ({ employees = mo
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-blue-700 text-center lg:text-left">
             Job Seeker Management
           </h2>
-          
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-stretch sm:items-center">
             {/* Search Input */}
             <div className="relative flex-1 sm:flex-none">
@@ -198,21 +220,16 @@ const JobSeekerManagement: React.FC<EmployeeManagementProps> = ({ employees = mo
                 </svg>
               </div>
             </div>
-            
-          {/* View Toggle removed: now automatic based on screen size */}
           </div>
         </div>
-
         {/* Results Summary */}
         <div className="mb-4 sm:mb-6">
           <p className="text-sm text-gray-600">
             Showing {paginatedEmployees.length} of {filteredEmployees.length} job seekers
           </p>
         </div>
-
         {/* Content */}
         {viewMode === 'cards' ? renderCardView() : renderTableView()}
-
         {/* Pagination */}
         <div className="flex flex-col sm:flex-row justify-between items-center mt-6 sm:mt-8 gap-4">
           <div className="text-sm text-gray-600">
@@ -230,7 +247,6 @@ const JobSeekerManagement: React.FC<EmployeeManagementProps> = ({ employees = mo
             >
               Previous
             </button>
-            
             {/* Page Numbers */}
             {[...Array(Math.min(5, totalPages))].map((_, i) => {
               const pageNum = Math.max(1, Math.min(totalPages - 4, page - 2)) + i;
@@ -249,7 +265,6 @@ const JobSeekerManagement: React.FC<EmployeeManagementProps> = ({ employees = mo
                 </button>
               );
             })}
-            
             <button
               onClick={() => setPage(p => Math.min(totalPages, p+1))}
               disabled={page === totalPages}
@@ -263,7 +278,6 @@ const JobSeekerManagement: React.FC<EmployeeManagementProps> = ({ employees = mo
             </button>
           </div>
         </div>
-
         {/* Modal */}
         {showEmployeeModal && selectedEmployee && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
@@ -271,7 +285,7 @@ const JobSeekerManagement: React.FC<EmployeeManagementProps> = ({ employees = mo
               {/* Modal Header */}
               <div className="sticky top-0 bg-white p-4 sm:p-6 border-b border-gray-200 rounded-t-xl">
                 <div className="flex justify-between items-center">
-                  <h3 className="text-xl sm:text-2xl font-bold text-gray-800">Employee Details</h3>
+                  <h3 className="text-xl sm:text-2xl font-bold text-gray-800">Jobseeker Profile Details</h3>
                   <button 
                     onClick={() => setShowEmployeeModal(false)}
                     className="text-gray-500 hover:text-gray-700 text-2xl sm:text-3xl p-1 hover:bg-gray-100 rounded-full transition-colors"
@@ -280,7 +294,6 @@ const JobSeekerManagement: React.FC<EmployeeManagementProps> = ({ employees = mo
                   </button>
                 </div>
               </div>
-              
               {/* Modal Content */}
               <div className="p-4 sm:p-6">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
@@ -307,26 +320,27 @@ const JobSeekerManagement: React.FC<EmployeeManagementProps> = ({ employees = mo
                           <p className="text-gray-600 text-xs sm:text-sm mt-1">{selectedEmployee.location}</p>
                         </div>
                       </div>
-                      
                       <div className="space-y-4">
                         <div>
                           <label className="text-sm font-medium text-gray-500 block mb-1">Email</label>
                           <p className="text-gray-900 text-sm sm:text-base">{selectedEmployee.email}</p>
                         </div>
                         <div>
-                          <label className="text-sm font-medium text-gray-500 block mb-1">Phone</label>
+                          <label className="text-sm font-medium text-gray-500 block mb-1">Mobile</label>
                           <p className="text-gray-900 text-sm sm:text-base">{selectedEmployee.phone}</p>
                         </div>
                         <div>
-                          <label className="text-sm font-medium text-gray-500 block mb-1">Experience</label>
-                          <p className="text-gray-900 text-sm sm:text-base">{selectedEmployee.experience}</p>
+                          <label className="text-sm font-medium text-gray-500 block mb-1">Date of Birth</label>
+                          <p className="text-gray-900 text-sm sm:text-base">{selectedEmployee.dob || '-'}</p>
                         </div>
-                        {selectedEmployee.education && (
-                          <div>
-                            <label className="text-sm font-medium text-gray-500 block mb-1">Education</label>
-                            <p className="text-gray-900 text-sm sm:text-base">{selectedEmployee.education}</p>
-                          </div>
-                        )}
+                        <div>
+                          <label className="text-sm font-medium text-gray-500 block mb-1">Gender</label>
+                          <p className="text-gray-900 text-sm sm:text-base">{selectedEmployee.gender || '-'}</p>
+                        </div>
+                        <div>
+                          <label className="text-sm font-medium text-gray-500 block mb-1">Location</label>
+                          <p className="text-gray-900 text-sm sm:text-base">{selectedEmployee.location}</p>
+                        </div>
                         <div>
                           <label className="text-sm font-medium text-gray-500 block mb-1">Registration Date</label>
                           <p className="text-gray-900 text-sm sm:text-base">
@@ -340,19 +354,16 @@ const JobSeekerManagement: React.FC<EmployeeManagementProps> = ({ employees = mo
                             <div className="flex gap-2 mt-1">
                               {selectedEmployee.socialLinks.linkedin && (
                                 <a href={selectedEmployee.socialLinks.linkedin} target="_blank" rel="noopener noreferrer" className="text-blue-700 hover:underline flex items-center gap-1">
-                                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.76 0-5 2.24-5 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5v-14c0-2.76-2.24-5-5-5zm-11 19h-3v-10h3v10zm-1.5-11.28c-.97 0-1.75-.79-1.75-1.75s.78-1.75 1.75-1.75 1.75.79 1.75 1.75-.78 1.75-1.75 1.75zm15.5 11.28h-3v-5.6c0-1.34-.03-3.07-1.87-3.07-1.87 0-2.16 1.46-2.16 2.97v5.7h-3v-10h2.89v1.36h.04c.4-.75 1.37-1.54 2.82-1.54 3.01 0 3.57 1.98 3.57 4.56v5.62z"/></svg>
                                   LinkedIn
                                 </a>
                               )}
                               {selectedEmployee.socialLinks.github && (
                                 <a href={selectedEmployee.socialLinks.github} target="_blank" rel="noopener noreferrer" className="text-gray-800 hover:underline flex items-center gap-1">
-                                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 .5c-6.62 0-12 5.38-12 12 0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.726-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.083-.729.083-.729 1.205.085 1.84 1.237 1.84 1.237 1.07 1.834 2.807 1.304 3.492.997.108-.775.418-1.305.762-1.605-2.665-.305-5.466-1.332-5.466-5.93 0-1.31.468-2.38 1.236-3.22-.124-.304-.535-1.527.117-3.18 0 0 1.008-.322 3.3 1.23.96-.267 1.98-.399 3-.404 1.02.005 2.04.137 3 .404 2.29-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.876.12 3.18.77.84 1.235 1.91 1.235 3.22 0 4.61-2.803 5.624-5.475 5.92.43.37.823 1.102.823 2.222 0 1.606-.015 2.898-.015 3.293 0 .322.216.694.825.576 4.765-1.587 8.2-6.086 8.2-11.385 0-6.62-5.38-12-12-12z"/></svg>
                                   GitHub
                                 </a>
                               )}
                               {selectedEmployee.socialLinks.twitter && (
-                                <a href={selectedEmployee.socialLinks.twitter} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline flex items-center gap-1">
-                                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557a9.93 9.93 0 0 1-2.828.775 4.932 4.932 0 0 0 2.165-2.724c-.951.564-2.005.974-3.127 1.195a4.92 4.92 0 0 0-8.384 4.482c-4.086-.205-7.713-2.164-10.141-5.144a4.822 4.822 0 0 0-.664 2.475c0 1.708.87 3.216 2.188 4.099a4.904 4.904 0 0 1-2.229-.616c-.054 2.281 1.581 4.415 3.949 4.89a4.936 4.936 0 0 1-2.224.084c.627 1.956 2.444 3.377 4.6 3.417a9.867 9.867 0 0 1-6.102 2.104c-.396 0-.787-.023-1.175-.069a13.945 13.945 0 0 0 7.548 2.212c9.057 0 14.009-7.513 14.009-14.009 0-.213-.005-.425-.014-.636a10.012 10.012 0 0 0 2.457-2.548z"/></svg>
+                                <a href={selectedEmployee.socialLinks.twitter} target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline flex items-center gap-1">
                                   Twitter
                                 </a>
                               )}
@@ -362,65 +373,130 @@ const JobSeekerManagement: React.FC<EmployeeManagementProps> = ({ employees = mo
                       </div>
                     </div>
                   </div>
-                  
                   {/* Professional Information */}
                   <div className="space-y-6">
                     <div>
                       <h4 className="font-semibold text-gray-800 mb-4 text-lg">Professional Information</h4>
                       <div className="space-y-4">
+                        {/* Experience (object details) */}
                         <div>
-                          <label className="text-sm font-medium text-gray-500 block mb-2">Skills</label>
+                          <label className="text-sm font-medium text-gray-500 block mb-1">Experience</label>
+                          {Array.isArray(selectedEmployee.experience) ? (
+                            selectedEmployee.experience.map((exp, idx) => (
+                              <div key={idx} className="mb-2 p-2 bg-gray-50 rounded-lg">
+                                <div className="text-sm text-gray-700 font-semibold">{exp.title || '-'}</div>
+                                <div className="text-xs text-gray-500">Company: {exp.company || '-'}</div>
+                                <div className="text-xs text-gray-500">Duration: {exp.duration || '-'}</div>
+                                <div className="text-xs text-gray-500">Salary: {exp.salary || '-'}</div>
+                                <div className="text-xs text-gray-500">Skills: {Array.isArray(exp.skills) && exp.skills.length > 0 ? exp.skills.join(', ') : '-'}</div>
+                              </div>
+                            ))
+                          ) : (
+                            <p className="text-gray-900 text-sm sm:text-base">{selectedEmployee.experience || '-'}</p>
+                          )}
+                        </div>
+                        {/* Education (object details) */}
+                        <div>
+                          <label className="text-sm font-medium text-gray-500 block mb-1">Education</label>
+                          {Array.isArray(selectedEmployee.education) ? (
+                            selectedEmployee.education.map((edu, idx) => (
+                              <div key={idx} className="mb-2 p-2 bg-gray-50 rounded-lg">
+                                <div className="text-sm text-gray-700 font-semibold">{edu.degree || '-'}</div>
+                                <div className="text-xs text-gray-500">Institution: {edu.institution || '-'}</div>
+                                <div className="text-xs text-gray-500">Batch: {edu.batch || '-'}</div>
+                                <div className="text-xs text-gray-500">Medium: {edu.medium || '-'}</div>
+                              </div>
+                            ))
+                          ) : (
+                            <p className="text-gray-900 text-sm sm:text-base">{selectedEmployee.education || '-'}</p>
+                          )}
+                        </div>
+                        {/* Skills */}
+                        <div>
+                          <label className="text-sm font-medium text-gray-500 block mb-1">Skills</label>
                           <div className="flex flex-wrap gap-2">
-                            {selectedEmployee.skills.map((skill, index) => (
-                              <span key={index} className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
-                                {skill}
-                              </span>
-                            ))}
+                            {Array.isArray(selectedEmployee.skills) && selectedEmployee.skills.length > 0 ? (
+                              selectedEmployee.skills.map((skill, idx) => (
+                                <span key={idx as number} className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs font-medium">{skill}</span>
+                              ))
+                            ) : (
+                              <span className="text-gray-400">No skills listed</span>
+                            )}
                           </div>
                         </div>
-                        
+                        {/* Certifications */}
                         <div>
-                          <label className="text-sm font-medium text-gray-500 block mb-2">Profile Completion</label>
-                          <div className="flex items-center gap-3">
-                            <div className="flex-1 bg-gray-200 rounded-full h-3">
-                              <div 
-                                className="bg-blue-600 h-3 rounded-full transition-all duration-300" 
-                                style={{ width: `${selectedEmployee.profileComplete}%` }}
-                              ></div>
-                            </div>
-                            <span className="text-sm font-medium text-gray-600 min-w-0">
-                              {selectedEmployee.profileComplete}%
-                            </span>
+                          <label className="text-sm font-medium text-gray-500 block mb-1">Certifications</label>
+                          <div className="flex flex-wrap gap-2">
+                            {Array.isArray(selectedEmployee.certifications) && selectedEmployee.certifications.length > 0 ? (
+                              selectedEmployee.certifications.map((cert, idx) => (
+                                <span key={idx as number} className="bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-medium">{cert}</span>
+                              ))
+                            ) : (
+                              <span className="text-gray-400">No certifications listed</span>
+                            )}
                           </div>
                         </div>
-                        
+                        {/* Languages */}
                         <div>
-                          <label className="text-sm font-medium text-gray-500 block mb-2">Resume</label>
+                          <label className="text-sm font-medium text-gray-500 block mb-1">Languages Known</label>
+                          <div className="flex flex-wrap gap-2">
+                            {Array.isArray(selectedEmployee.languages) && selectedEmployee.languages.length > 0 ? (
+                              selectedEmployee.languages.map((lang, idx) => (
+                                <span key={idx as number} className="bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-xs font-medium">{lang as string}</span>
+                              ))
+                            ) : (
+                              <span className="text-gray-400">No languages listed</span>
+                            )}
+                          </div>
+                        </div>
+                        {/* Resume */}
+                        <div>
+                          <label className="text-sm font-medium text-gray-500 block mb-1">Resume</label>
                           <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
                             <span className="text-2xl">📄</span>
                             <span className="font-medium text-gray-900 flex-1 truncate text-sm sm:text-base">
-                              {selectedEmployee.resume}
+                              {selectedEmployee.resume ? (typeof selectedEmployee.resume === 'string' ? selectedEmployee.resume : selectedEmployee.resume.name) : 'No resume uploaded'}
                             </span>
-                            <button className="text-blue-600 hover:text-blue-800 text-sm font-medium hover:underline">
-                              Download
-                            </button>
+                          </div>
+                        </div>
+                        {/* Preferences */}
+                        <div>
+                          <label className="text-sm font-medium text-gray-500 block mb-1">Preferences</label>
+                          {selectedEmployee.preferences ? (
+                            <div className="space-y-1">
+                              <div className="text-xs text-gray-700">Job Title: {selectedEmployee.preferences.jobTitle || '-'}</div>
+                              <div className="text-xs text-gray-700">Preferred Location: {selectedEmployee.preferences.preferredLocation || '-'}</div>
+                              <div className="text-xs text-gray-700">Job Type: {Array.isArray(selectedEmployee.preferences.jobType) && selectedEmployee.preferences.jobType.length > 0 ? selectedEmployee.preferences.jobType.join(', ') : '-'}</div>
+                            </div>
+                          ) : (
+                            <span className="text-gray-400">No preferences set</span>
+                          )}
+                        </div>
+                        {/* Profile Completion */}
+                        <div>
+                          <label className="text-sm font-medium text-gray-500 block mb-1">Profile Completion</label>
+                          <div className="flex items-center gap-3">
+                            <div className="flex-1 bg-gray-200 rounded-full h-3">
+                              <div className="bg-blue-600 h-3 rounded-full transition-all duration-300" style={{ width: `${selectedEmployee.profileComplete || 0}%` }}></div>
+                            </div>
+                            <span className="text-sm font-medium text-gray-600 min-w-0">{selectedEmployee.profileComplete || 0}%</span>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                
                 {/* Activity Summary */}
                 <div className="mt-8">
                   <h4 className="font-semibold text-gray-800 mb-4 text-lg">Activity Summary</h4>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="bg-blue-50 p-4 sm:p-6 rounded-lg">
-                      <div className="text-2xl sm:text-3xl font-bold text-blue-600">{selectedEmployee.jobsApplied}</div>
+                      <div className="text-2xl sm:text-3xl font-bold text-blue-600">{selectedEmployee.jobsApplied || 0}</div>
                       <div className="text-sm text-gray-600 mt-1">Jobs Applied</div>
                     </div>
                     <div className="bg-green-50 p-4 sm:p-6 rounded-lg">
-                      <div className="text-2xl sm:text-3xl font-bold text-green-600">{selectedEmployee.profileComplete}%</div>
+                      <div className="text-2xl sm:text-3xl font-bold text-green-600">{selectedEmployee.profileComplete || 0}%</div>
                       <div className="text-sm text-gray-600 mt-1">Profile Complete</div>
                     </div>
                   </div>
@@ -431,7 +507,5 @@ const JobSeekerManagement: React.FC<EmployeeManagementProps> = ({ employees = mo
         )}
       </div>
     </div>
-  );
-};
-
-export default JobSeekerManagement;
+  )}
+  export default JobSeekerManagement;

@@ -3,10 +3,11 @@ import React, { useState } from 'react';
 import { mockEmployees, mockEmployers } from '../../constants';
 
 import AdminDashboard from './AdminDashboard';
+import AdminManageFAQ from './AdminManageFAQ';
 import AdminSupport from './AdminSupport';
-import EmployeeManagement from './EmployeeManagement';
 import EmployerManagement from './EmployerManagement';
 import JobManagement from './JobManagement';
+import EmployeeManagement from './JobSeekerManagement';
 import ManageBlogs from './ManageBlogs';
 import ManageTestimonials from './ManageTestimonials';
 
@@ -20,7 +21,7 @@ import ManagePayment from './ManagePayment';
 import { BarChart, Briefcase, Building2, ClipboardList, CreditCard, LifeBuoy, LogOut, Users } from 'lucide-react';
 
 const AdminPanel: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'employers' | 'employees' | 'jobs' | 'support' | 'adminsubscriptionplan' | 'managepayment' | 'manageblogs' | 'managetestimonials'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'employers' | 'employees' | 'jobs' | 'support' | 'adminsubscriptionplan' | 'managepayment' | 'manageblogs' | 'managefaq' | 'managetestimonials'>('dashboard');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState('');
   const [employers, setEmployers] = useState(mockEmployers);
@@ -62,7 +63,7 @@ const AdminPanel: React.FC = () => {
     }
   };
 
-  const handleTabChange = (tab: 'dashboard' | 'employers' | 'employees' | 'jobs' | 'support' | 'adminsubscriptionplan' | 'managepayment' | 'manageblogs' | 'managetestimonials') => {
+  const handleTabChange = (tab: 'dashboard' | 'employers' | 'employees' | 'jobs' | 'support' | 'adminsubscriptionplan' | 'managepayment' | 'manageblogs' | 'managetestimonials' | 'managefaq') => {
     setActiveTab(tab);
     setIsSidebarOpen(false); // Close sidebar on mobile when tab is selected
   };
@@ -192,6 +193,17 @@ const AdminPanel: React.FC = () => {
                   {/* You can use a blog icon here if available */}
                   <Building2 className="w-5 h-5" />
                   <span className="font-semibold">Manage Blogs</span>
+                </button>
+                <button 
+                  onClick={() => handleTabChange('managefaq')} 
+                  className={`w-full text-left px-4 py-3 rounded-xl font-medium transition-all duration-200 flex items-center gap-3 group ${
+                    activeTab === 'managefaq' 
+                      ? 'bg-white text-blue-700 shadow-lg transform scale-105' 
+                      : 'hover:bg-blue-600 hover:bg-opacity-80 hover:translate-x-2'
+                  }`}
+                >
+                  <ClipboardList className="w-5 h-5" />
+                  <span className="font-semibold">Manage FAQs</span>
                 </button>
                 <button 
                   onClick={() => handleTabChange('managetestimonials')} 
@@ -329,6 +341,10 @@ const AdminPanel: React.FC = () => {
                   <ManageBlogs />
                 )}
 
+                {/* Manage FAQ Tab */}
+                {activeTab === 'managefaq' && (
+                  <AdminManageFAQ />
+                )}
                 {/* Manage Testimonials Tab */}
                 {activeTab === 'managetestimonials' && (
                   <ManageTestimonials />
