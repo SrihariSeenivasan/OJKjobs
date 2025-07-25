@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const employeeOptions = [
   "0-50",
@@ -22,7 +23,11 @@ const EmployerSignup: React.FC = () => {
     employees: "",
     workEmail: "",
     agree: false,
+    mobile: "",
   });
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -36,10 +41,32 @@ const EmployerSignup: React.FC = () => {
     setForm((prev) => ({ ...prev, employees: option }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Submit logic
-    alert("Job posted!");
+    setError("");
+    if (!form.mobile || !/^\d{10}$/.test(form.mobile)) {
+      setError("Please enter a valid 10 digit mobile number");
+      return;
+    }
+    setIsLoading(true);
+    try {
+      // Replace with your actual API endpoint
+      const res = await fetch("/api/employer/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        // Registration successful, OTP sent
+        navigate("/Employer/verifyOtp", { state: { mobile: form.mobile } });
+      } else {
+        setError(data.message || "Registration failed");
+      }
+    } catch {
+      setError("Server error. Please try again.");
+    }
+    setIsLoading(false);
   };
 
   return (
@@ -88,6 +115,19 @@ const EmployerSignup: React.FC = () => {
               onChange={handleChange}
               placeholder="Enter your full name"
               className="w-full border border-[#ffe5b8] rounded px-3 py-2 md:px-4 md:py-2 focus:outline-none focus:ring-2 focus:ring-[#fbb040] text-xs md:text-base"
+              required
+            />
+          </div>
+          <div className="mb-3 md:mb-4">
+            <label className="block font-medium mb-1 text-xs md:text-base">Mobile number</label>
+            <input
+              type="text"
+              name="mobile"
+              value={form.mobile}
+              onChange={handleChange}
+              placeholder="Enter 10 digit mobile number"
+              className="w-full border border-[#ffe5b8] rounded px-3 py-2 md:px-4 md:py-2 focus:outline-none focus:ring-2 focus:ring-[#fbb040] text-xs md:text-base"
+              maxLength={10}
               required
             />
           </div>
@@ -155,11 +195,15 @@ const EmployerSignup: React.FC = () => {
               <a href="#" className="text-[#fbb040] underline mx-1">Privacy Policy</a>
             </span>
           </div>
+          {error && (
+            <div className="text-red-500 text-xs mb-2">{error}</div>
+          )}
           <button
             type="submit"
-            className="w-full bg-[#fbb040] text-white font-semibold py-2 md:py-3 rounded-lg hover:bg-[#e09c2d] transition text-xs md:text-base shadow-md"
+            className={`w-full bg-[#fbb040] text-white font-semibold py-2 md:py-3 rounded-lg hover:bg-[#e09c2d] transition text-xs md:text-base shadow-md ${isLoading ? 'opacity-60 cursor-not-allowed' : ''}`}
+            disabled={isLoading}
           >
-            Post a job
+            {isLoading ? 'Processing...' : 'Post a job'}
           </button>
         </form>
       </div>

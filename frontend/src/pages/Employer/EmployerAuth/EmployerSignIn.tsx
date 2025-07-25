@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import OjkLogo from "../../../components/common/OjkLogo";
 
-const EmployerRegistration = () => {
+const EmployerSignIn = () => {
   const [mobile, setMobile] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -16,11 +16,24 @@ const EmployerRegistration = () => {
     }
     setError("");
     setIsLoading(true);
-    // Simulate API call
-    setTimeout(() => {
-      setIsLoading(false);
-      navigate("/Employer/verifyOtp", { state: { mobile } });
-    }, 1000);
+    try {
+      // Replace with your actual API endpoint
+      const res = await fetch("/api/employer/send-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mobile }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        // OTP sent successfully
+        navigate("/Employer/verifyOtp", { state: { mobile } });
+      } else {
+        setError(data.message || "Failed to send OTP");
+      }
+    } catch {
+      setError("Server error. Please try again.");
+    }
+    setIsLoading(false);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -271,4 +284,4 @@ const EmployerRegistration = () => {
   );
 };
 
-export default EmployerRegistration;
+export default EmployerSignIn;

@@ -60,11 +60,11 @@ import SupportHome from './pages/Employer/Help/Support/Home';
 import EmployerProfile from './pages/Employer/Profiles/Profile';
 import CompanyProfile from './pages/Employer/Profiles/CompanyProfile';
 import InterviewerInformation from './pages/Employer/Jobs/PostJobs/InterviewerInformation';
-import EmployerRegistration from './pages/Employer/EmployerAuth/EmployerRegistration';
 import EmployerRegisterVerifyOtp from './pages/Employer/EmployerAuth/VerifyOtp';
 import JobPostPreview from './pages/Employer/Jobs/PostJobs/JobPreview';
 import PublishJob from './pages/Employer/Jobs/PostJobs/PublishJob';
 import EmployerSignup from './pages/Employer/EmployerAuth/EmployerSignup';
+import EmployerSignIn from './pages/Employer/EmployerAuth/EmployerSignIn';
 
 function App() {
   return (
@@ -140,7 +140,7 @@ function App() {
             {/* {EmployerRegistration} */}
             
              <Route path="/Employer/OJKHireSignup" element={<EmployerSignup />} />
-             <Route path="/Employer/EmployerRegistration" element={<EmployerRegistration />} />
+             <Route path="/Employer/EmployerSignIn" element={<EmployerSignIn />} />
              <Route path="/Employer/verifyOtp" element={<EmployerRegisterVerifyOtp />} />
              
 

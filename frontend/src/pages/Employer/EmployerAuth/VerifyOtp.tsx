@@ -21,6 +21,9 @@ const EmployerRegisterVerifyOtp: React.FC<Props> = ({ mobile = "" }) => {
   const [shake, setShake] = useState<boolean>(false);
   const navigate = useNavigate();
 
+  // Get mobile from location state if not passed as prop
+  const locationMobile = (window.history.state && window.history.state.usr && window.history.state.usr.mobile) || mobile;
+
   useEffect(() => {
     if (timer > 0) {
       const interval = setInterval(() => setTimer(t => t - 1), 1000);
@@ -92,22 +95,29 @@ const EmployerRegisterVerifyOtp: React.FC<Props> = ({ mobile = "" }) => {
       setTimeout(() => setShake(false), 500);
       return;
     }
-    
     setIsLoading(true);
-    
-    // Mock API call delay
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    if (otp.join("") === "1234") {
-      navigate("/Employer/Jobs");
-    } else {
-      setError("Invalid OTP. Please try again.");
-      setShake(true);
-      setOtp(["", "", "", ""]);
-      inputRefs[0].current?.focus();
-      setTimeout(() => setShake(false), 500);
+    setError("");
+    try {
+      // Replace with your actual API endpoint
+      const res = await fetch("/api/employer/verify-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mobile: locationMobile, otp: otp.join("") }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        // OTP verified, login success
+        navigate("/Employer/Dashboard");
+      } else {
+        setError(data.message || "Invalid OTP. Please try again.");
+        setShake(true);
+        setOtp(["", "", "", ""]);
+        inputRefs[0].current?.focus();
+        setTimeout(() => setShake(false), 500);
+      }
+    } catch {
+      setError("Server error. Please try again.");
     }
-    
     setIsLoading(false);
   };
 
@@ -179,7 +189,7 @@ const EmployerRegisterVerifyOtp: React.FC<Props> = ({ mobile = "" }) => {
                 A one time password sent on your mobile number
                 <br />
                 <span className="font-bold text-orange-600 text-lg">
-                  +91-{mobile || "XXXXXXXXXX"}
+                  +91-{locationMobile || "XXXXXXXXXX"}
                 </span>
               </p>
             </div>
