@@ -1,6 +1,6 @@
 import { ChatBubbleLeftRightIcon } from '@heroicons/react/24/solid';
 import React, { useState } from 'react';
-import OjkLogo from '../components/common/OjkLogo';
+import OjkLogo from '../../components/common/OjkLogo';
 
 const ContactUs: React.FC = () => {
   const [chatInput, setChatInput] = useState('');

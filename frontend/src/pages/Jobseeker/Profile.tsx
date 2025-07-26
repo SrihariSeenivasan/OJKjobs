@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { RootState } from '../store';
+import { RootState } from '../../store';
 
 const Profile: React.FC = () => {
   const profile = useSelector((state: RootState) => state.auth.profile);

@@ -1,9 +1,9 @@
 
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../../store';
-import { setProfile } from '../../store/slices/authSlice';
+import { useNavigate } from 'react-router-dom';
+import { AppDispatch } from '../../../store';
+import { setProfile } from '../../../store/slices/authSlice';
 
 interface Experience {
   title: string;

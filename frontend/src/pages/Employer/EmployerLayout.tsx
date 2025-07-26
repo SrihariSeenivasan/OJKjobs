@@ -1,9 +1,13 @@
 import type { FC, ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
 import { Outlet } from "react-router-dom";
+import { setLanguage } from '../../store/slices/uiSlice';
 import AvailableCredits from "./BuyPackages/AvailableCredits";
 import EmployerSideNav from "./EmployerSideNav";
 import ProfilePopup from "./Profiles/ProfilePopup";
+import {ChevronDownIcon} from '@heroicons/react/24/outline';
 
 const EmployerLayout: FC<{ children?: ReactNode }> = ({ children }) => {
   const [selected, setSelected] = useState<string | number>(0);
@@ -11,8 +15,29 @@ const EmployerLayout: FC<{ children?: ReactNode }> = ({ children }) => {
   const [isMobile, setIsMobile] = useState(false);
   const [showCreditsPopup, setShowCreditsPopup] = useState(false);
   const [showProfilePopup, setShowProfilePopup] = useState(false);
+  const [isLanguageMenuOpen, setIsLanguageMenuOpen] = useState(false);
   const creditsBtnRef = useRef<HTMLDivElement>(null);
 
+  // Language selector logic
+  const { t, i18n } = useTranslation();
+  const dispatch = useDispatch();
+  const language = useSelector((state: { ui: { language: string } }) => state.ui.language);
+  // Define languages inside the component so t() updates on language change
+ const languages = [
+     { code: 'en', name: 'English', flag: '🇬🇧' },
+     { code: 'hi', name: 'हिन्दी', flag: '🇮🇳' },
+     { code: 'ta', name: 'தமிழ்', flag: '🇮🇳' },
+     { code: 'te', name: 'తెలుగు', flag: '🇮🇳' },
+     { code: 'ml', name: 'മലയാളം', flag: '🇮🇳' },
+     { code: 'kn', name: 'ಕನ್ನಡ', flag: '🇮🇳' },
+   ];
+ 
+   const handleLanguageChange = (langCode: string) => {
+     i18n.changeLanguage(langCode);
+     dispatch(setLanguage(langCode));
+     setIsLanguageMenuOpen(false);
+   };
+  const currentLanguage = languages.find(lang => lang.code === language) || languages[0];
   // Handle responsive behavior
   useEffect(() => {
     const checkScreenSize = () => {
@@ -72,11 +97,39 @@ const EmployerLayout: FC<{ children?: ReactNode }> = ({ children }) => {
             </svg>
           </button>
           <span className="text-xl sm:text-2xl font-bold text-[#fbb040]">
-            OJK<span className="text-gray-900">Hire</span>
+            {t('brand.ojk', 'OJK')}<span className="text-gray-900">{t('brand.hire', 'Hire')}</span>
           </span>
         </div>
         {/* Right: Available Credits + User icon */}
         <div className="flex items-center gap-4">
+           {/* Language Selector */}
+                      <div className="relative">
+                        <button
+                          onClick={() => setIsLanguageMenuOpen(!isLanguageMenuOpen)}
+                          className="flex items-center space-x-1 text-gray-700 hover:text-blue-600 transition-colors"
+                        >
+                          <span>{currentLanguage.flag}</span>
+                          <span className="hidden sm:inline">{currentLanguage.name}</span>
+                          <ChevronDownIcon className="h-4 w-4" />
+                        </button>
+                        {isLanguageMenuOpen && (
+                          <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10">
+                            {languages.map((lang) => (
+                              <button
+                                key={lang.code}
+                                onClick={() => handleLanguageChange(lang.code)}
+                                className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-100 flex items-center space-x-2 ${
+                                  language === lang.code ? 'bg-blue-50 text-blue-600' : 'text-gray-700'
+                                }`}
+                              >
+                                <span>{lang.flag}</span>
+                                <span>{lang.name}</span>
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+          {/* Available Credits */}
           <div
             ref={creditsBtnRef}
             className="hidden md:flex items-center gap-2 cursor-pointer relative"
@@ -87,7 +140,7 @@ const EmployerLayout: FC<{ children?: ReactNode }> = ({ children }) => {
               <ellipse cx="14" cy="9" rx="10" ry="4" fill="#FFF7E0" stroke="#fbb040" strokeWidth="1.5"/>
               <path d="M4 9v8c0 2.21 4.477 4 10 4s10-1.79 10-4V9" stroke="#fbb040" strokeWidth="1.5" fill="none"/>
             </svg>
-            <span className="text-sm lg:text-base font-semibold text-[#fbb040]">Available Credits</span>
+          <span className="text-sm lg:text-base font-semibold text-[#fbb040]">{t('employer.availableCredits', 'Available Credits')}</span>
             {showCreditsPopup && (
               <div
                 style={{ position: 'fixed', top: '60px', right: '40px', zIndex: 100, minWidth: '360px' }}
@@ -99,6 +152,7 @@ const EmployerLayout: FC<{ children?: ReactNode }> = ({ children }) => {
               </div>
             )}
           </div>
+          {/* Profile Icon */}
           <div
             className="bg-[#fbb040] rounded-full w-8 h-8 flex items-center justify-center font-bold text-white cursor-pointer shadow-md border-2 border-white"
             onClick={() => setShowProfilePopup(true)}
@@ -110,6 +164,7 @@ const EmployerLayout: FC<{ children?: ReactNode }> = ({ children }) => {
               style={{ position: 'fixed', top: '60px', right: '40px', zIndex: 101, minWidth: '320px' }}
               className="drop-shadow-xl"
             >
+              
               <ProfilePopup
                 open={true}
                 onClose={() => setShowProfilePopup(false)}
@@ -119,6 +174,7 @@ const EmployerLayout: FC<{ children?: ReactNode }> = ({ children }) => {
                 onCompanyProfile={() => {}}
                 onSignOut={() => {}}
               />
+              
             </div>
           )}
         </div>

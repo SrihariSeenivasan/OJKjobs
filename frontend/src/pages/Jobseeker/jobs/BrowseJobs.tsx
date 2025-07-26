@@ -2,7 +2,7 @@
 import { ChevronDownIcon, ChevronRightIcon, FunnelIcon } from '@heroicons/react/24/outline';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FAQ, getFAQs } from '../admin/faqStore';
+import { FAQ, getFAQs } from '../../admin/faqStore';
 const filters = [
   {
     label: 'Date posted',

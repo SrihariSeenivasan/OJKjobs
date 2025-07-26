@@ -1,70 +1,49 @@
-import Profile from './pages/Profile';
 import { Provider } from 'react-redux';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import './i18n';
+import Profile from './pages/Jobseeker/Profile';
 import { store } from './store';
-
 // Layout Components
 import Layout from './components/common/Layout';
-import ProtectedRoute from './components/common/ProtectedRoute';
 import AdminPanel from './pages/admin/AdminPanel';
-
 // Pages
-import AuthGatewayLog from './pages/AuthGatewayLog';
-
-
-import EmployerPaymentStep from './pages/auth/EmployerPaymentStep';
-import EmployerProfileSetup from './pages/auth/EmployerProfileSetup';
-import EmployerRegister from './pages/auth/EmployerRegister';
-import EmployerReviewStep from './pages/auth/EmployerReviewStep';
-import JobseekerLogin from './pages/auth/JobseekerLogin';
-
-import JobseekerRegister from './pages/auth/JobseekerRegister';
-import AuthGatewayReg from './pages/AuthGatewayReg';
-import Blog from './pages/Blog';
-import ContactUs from './pages/ContactUs';
-
 import Billing from './pages/Employer/Billing';
+import BuyPackageCheckout from './pages/Employer/BuyPackages/BuyPackageCheckout';
+import BuyPackageSelection from './pages/Employer/BuyPackages/BuyPackageSelection';
 import ContactPopup from './pages/Employer/Common/ContactPopup';
 import CreditsAndUsage from './pages/Employer/CreditsAndUsage';
 import SavedSearches from './pages/Employer/Database/SavedSearches';
 import SearchCandidates from './pages/Employer/Database/SearchCandidates';
 import SearchList from './pages/Employer/Database/SearchList';
 import UnlockedCandidates from './pages/Employer/Database/UnlockedCandidates';
+import EmployerSignIn from './pages/Employer/EmployerAuth/EmployerSignIn';
+import EmployerSignup from './pages/Employer/EmployerAuth/EmployerSignup';
+import EmployerRegisterVerifyOtp from './pages/Employer/EmployerAuth/VerifyOtp';
 import EmployerLayout from './pages/Employer/EmployerLayout';
-
+import ScheduleTraining from './pages/Employer/Help/ScheduleTraining';
+import SupportHome from './pages/Employer/Help/Support/Home';
 import Jobs from './pages/Employer/Jobs/Jobs';
+import CandidateRequirements from './pages/Employer/Jobs/PostJobs/CandidateRequirements';
+import InterviewerInformation from './pages/Employer/Jobs/PostJobs/InterviewerInformation';
+import JobPostPreview from './pages/Employer/Jobs/PostJobs/JobPreview';
+import NewJobPost from './pages/Employer/Jobs/PostJobs/NewJobPost';
+import PublishJob from './pages/Employer/Jobs/PostJobs/PublishJob';
+import CompanyProfile from './pages/Employer/Profiles/CompanyProfile';
+import EmployerProfile from './pages/Employer/Profiles/Profile';
 import ReferAndEarn from './pages/Employer/ReferAndEarn';
 import DownloadApplications from './pages/Employer/Report/DownloadApplications';
 import ReportsDashboard from './pages/Employer/Report/ReportsDashboard';
-import Home from './pages/Home';
-import BrowseJobs from './pages/jobs/BrowseJobs';
-import ApplyJob from './pages/jobs/ApplyJob';
-import PostJob from './pages/jobs/PostJob';
-import PrivacyPolicy from './pages/PrivacyPolicy';
-
-import RefundPolicy from './pages/RefundPolicy';
-import TermsAndConditions from './pages/TermsAndConditions';
-
-import EmployeeLogin from './pages/auth/EmployerLogin';
-
-import JobseekerProfileStepper from './pages/auth/JobseekerProfileStepper';
-
-import ApplyViaEmail from './pages/jobs/ApplyViaEmail';
-import CandidateRequirements from './pages/Employer/Jobs/PostJobs/CandidateRequirements';
-import NewJobPost from './pages/Employer/Jobs/PostJobs/NewJobPost';
-import BuyPackageSelection from './pages/Employer/BuyPackages/BuyPackageSelection';
-import BuyPackageCheckout from './pages/Employer/BuyPackages/BuyPackageCheckout';
-import ScheduleTraining from './pages/Employer/Help/ScheduleTraining';
-import SupportHome from './pages/Employer/Help/Support/Home';
-import EmployerProfile from './pages/Employer/Profiles/Profile';
-import CompanyProfile from './pages/Employer/Profiles/CompanyProfile';
-import InterviewerInformation from './pages/Employer/Jobs/PostJobs/InterviewerInformation';
-import EmployerRegisterVerifyOtp from './pages/Employer/EmployerAuth/VerifyOtp';
-import JobPostPreview from './pages/Employer/Jobs/PostJobs/JobPreview';
-import PublishJob from './pages/Employer/Jobs/PostJobs/PublishJob';
-import EmployerSignup from './pages/Employer/EmployerAuth/EmployerSignup';
-import EmployerSignIn from './pages/Employer/EmployerAuth/EmployerSignIn';
+import JobseekerLogin from './pages/Jobseeker/auth/JobseekerLogin';
+import JobseekerProfileStepper from './pages/Jobseeker/auth/JobseekerProfileStepper';
+import Blog from './pages/Jobseeker/Blog';
+import ContactUs from './pages/Jobseeker/ContactUs';
+import Home from './pages/Jobseeker/Home';
+import ApplyJob from './pages/Jobseeker/jobs/ApplyJob';
+import ApplyViaEmail from './pages/Jobseeker/jobs/ApplyViaEmail';
+import BrowseJobs from './pages/Jobseeker/jobs/BrowseJobs';
+import PrivacyPolicy from './pages/Jobseeker/PrivacyPolicy';
+import RefundPolicy from './pages/Jobseeker/RefundPolicy';
+import TermsAndConditions from './pages/Jobseeker/TermsAndConditions';
 
 function App() {
   return (
@@ -73,20 +52,12 @@ function App() {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
-            <Route path="/authLog" element={<AuthGatewayLog />} />
-            <Route path="/authReg" element={<AuthGatewayReg />} />
             <Route path="/browse-jobs" element={<BrowseJobs />} />
             <Route path="/1-day-job" element={<BrowseJobs />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/profile-setup" element={<JobseekerProfileStepper />} />
-            <Route path="/JobseekerRegister" element={<JobseekerRegister />} />
-            <Route path="/EmployerRegister" element={< EmployerRegister/>} />
-            <Route path="/JobseekerLogin" element={<JobseekerLogin />} />
-            <Route path="/EmployeeLogin" element={<EmployeeLogin />} />
+            <Route path="/profile-setup" element={<JobseekerProfileStepper />} />          
+            <Route path="/JobseekerLogin" element={<JobseekerLogin />} />   
             <Route path="/admin" element={<AdminPanel />} />
-            <Route path="/EmployerPaymentSetup" element={<EmployerPaymentStep />} />
-            <Route path="/EmployerProfileSetup" element={<EmployerProfileSetup />} />
-            <Route path="/EmployerReviewStep" element={<EmployerReviewStep />} />
             <Route path="/ContactUs" element ={<ContactUs />} />
             <Route path="/Blog" element ={<Blog />} />
             <Route path="/jobs/apply" element={<ApplyJob />} />
@@ -94,11 +65,7 @@ function App() {
 
             {/* Protected Routes */}
             <Route path="/dashboard" element={<JobseekerProfileStepper />} />
-            <Route path="/post-job" element={
-              <ProtectedRoute requiredRole="employer">
-                <PostJob />
-              </ProtectedRoute>
-            } />
+          
 
             {/* Static Pages */}
             <Route path="/contact-us" element={<div className="p-8 text-center">Contact Us page coming soon!</div>} />
@@ -124,8 +91,7 @@ function App() {
             <Route path="/Employer/Profile" element={<EmployerProfile />} />  
             <Route path="/Employer/CompanyProfile" element={<CompanyProfile />} />  
             
-
-          
+       
           </Route>
              <Route path="/Employer/ScheduleTraining" element={<ScheduleTraining />} />
              <Route path="/Employer/SupportHome" element={<SupportHome />} />
@@ -142,19 +108,9 @@ function App() {
              <Route path="/Employer/OJKHireSignup" element={<EmployerSignup />} />
              <Route path="/Employer/EmployerSignIn" element={<EmployerSignIn />} />
              <Route path="/Employer/verifyOtp" element={<EmployerRegisterVerifyOtp />} />
-             
-
-             
-
-             
-             
-          
-          
-          
-          
+              
           {/* Catch-all route */}
-          
-            
+   
         </Routes>
       </Router>
     </Provider>

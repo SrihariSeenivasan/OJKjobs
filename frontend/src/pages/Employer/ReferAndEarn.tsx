@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 
 // In a real app, get employerId from auth/user context
 const employerId = "EMP123456"; // mock unique employer id
-const referralLink = `https://employer.apna.co/referrals.html?ref=${employerId}`;
+const referralLink = `https://employer.OJK Jobs.co/referrals.html?ref=${employerId}`;
 
 const ReferAndEarn = () => {
   const [email, setEmail] = useState("");
@@ -21,7 +21,7 @@ const ReferAndEarn = () => {
 
   // Social share handlers
   const handleShare = (platform: 'whatsapp' | 'facebook' | 'linkedin') => {
-    const text = encodeURIComponent('Join apna and get free database credits! Use my referral link: ' + referralLink);
+    const text = encodeURIComponent('Join OJK Jobs and get free database credits! Use my referral link: ' + referralLink);
     let url = '';
     if (platform === 'whatsapp') {
       url = `https://wa.me/?text=${text}`;
@@ -111,7 +111,7 @@ const ReferAndEarn = () => {
               <div className="font-semibold mb-2 text-[#fbb040]">It is easy to earn with referrals</div>
               <ul className="text-gray-700 text-sm mb-2 space-y-2">
                 <li className="flex items-center gap-2"><svg width="18" height="18" fill="none" stroke="#fbb040" strokeWidth="2" viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/></svg> Invite your friends from other companies with a unique referral link</li>
-                <li className="flex items-center gap-2"><svg width="18" height="18" fill="none" stroke="#fbb040" strokeWidth="2" viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/></svg> When your friends join apna, they'll get <b className='text-[#fbb040]'>50 Database credits</b> on their first job activation.</li>
+                <li className="flex items-center gap-2"><svg width="18" height="18" fill="none" stroke="#fbb040" strokeWidth="2" viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/></svg> When your friends join OJK Jobs, they'll get <b className='text-[#fbb040]'>50 Database credits</b> on their first job activation.</li>
                 <li className="flex items-center gap-2"><svg width="18" height="18" fill="none" stroke="#fbb040" strokeWidth="2" viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/></svg> Once your friend's first job is activated, you'll earn <b className='text-[#fbb040]'>100 Database credits</b> for free</li>
               </ul>
               <a href="#" className="text-[#fbb040] underline text-xs font-semibold hover:text-[#fbb040]/80 transition-colors">Terms & conditions apply</a>

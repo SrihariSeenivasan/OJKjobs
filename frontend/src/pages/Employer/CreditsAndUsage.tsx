@@ -9,9 +9,9 @@ const mockCredits = {
 const mockTransactions = [
   { detail: "Credits Expired", desc: "Due to expiry of validity period", credits: "-30 Database credits", date: "10 May 2025 4:00:26 AM" },
   { detail: "Credits Expired", desc: "Due to expiry of validity period", credits: "-7 Database credits", date: "01 May 2025 4:00:17 AM" },
-  { detail: "Credits Added", desc: "Complimentary from Apna", credits: "+20 Database credits", date: "27 Apr 2025 10:25:31 AM" },
+  { detail: "Credits Added", desc: "Complimentary from OJK Jobs", credits: "+20 Database credits", date: "27 Apr 2025 10:25:31 AM" },
   { detail: "Credits Spent", desc: "Viewed phone number", credits: "-1 Database credits", date: "24 Apr 2025 3:49:49 PM" },
-  { detail: "Credits Added", desc: "Complimentary from Apna", credits: "+10 Database credits", date: "24 Apr 2025 10:25:31 AM" },
+  { detail: "Credits Added", desc: "Complimentary from OJK Jobs", credits: "+10 Database credits", date: "24 Apr 2025 10:25:31 AM" },
   { detail: "Credits Spent", desc: "Viewed phone number", credits: "-1 Database credits", date: "17 Apr 2025 12:47:15 PM" },
   { detail: "Credits Expired", desc: "Due to expiry of validity period", credits: "-26 Database credits", date: "17 Apr 2025 4:00:17 AM" },
 ];
@@ -121,7 +121,7 @@ const CreditsAndUsage = () => {
           </div>
           <div className="flex items-center bg-[#FFF7E0] border border-[#fbb040]/40 rounded-2xl px-4 py-3 flex-shrink-0 w-full md:w-96 shadow-sm">
             <svg width="32" height="32" fill="none" viewBox="0 0 32 32" className="mr-3"><rect width="32" height="32" rx="8" fill="#FFF7E0"/><path d="M10 16h12M16 10v12" stroke="#fbb040" strokeWidth="2" strokeLinecap="round"/></svg>
-            <div className="text-[#b97a13] text-sm">New Update!<br />The Transaction history is now cleaner with all credit and debit related transactions from your apna account. To view your future payment related information and invoices, go to <a href="#" className="text-[#fbb040] underline">billing</a> section.</div>
+            <div className="text-[#b97a13] text-sm">New Update!<br />The Transaction history is now cleaner with all credit and debit related transactions from your OJK Jobs account. To view your future payment related information and invoices, go to <a href="#" className="text-[#fbb040] underline">billing</a> section.</div>
           </div>
         </div>
         <div className="bg-white rounded-2xl border border-[#fbb040]/20 shadow-lg p-4">

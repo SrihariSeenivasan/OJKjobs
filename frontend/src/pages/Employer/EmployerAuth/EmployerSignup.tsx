@@ -74,10 +74,10 @@ const EmployerSignup: React.FC = () => {
       {/* Left Section */}
       <div className="w-full md:max-w-md bg-[#3c2a4d] text-white flex flex-col justify-center px-6 py-8 md:px-10 md:py-12 h-[320px] md:h-auto min-h-[320px]">
         <div className="mb-6 md:mb-8">
-          <span className={`text-2xl md:text-3xl font-bold ${PRIMARY_TEXT}`}>apnaHire</span>
+          <span className={`text-2xl md:text-3xl font-bold ${PRIMARY_TEXT}`}>OJK Jobs</span>
         </div>
         <h2 className="text-lg md:text-2xl font-semibold mb-3 md:mb-4 flex items-center gap-2">
-          What does apna offer <span className="text-lg md:text-2xl">👋</span>
+          What does OJK offer <span className="text-lg md:text-2xl">👋</span>
         </h2>
         <div className="mb-4 md:mb-6">
           <div className="mb-2 flex items-center">
@@ -189,10 +189,10 @@ const EmployerSignup: React.FC = () => {
               required
             />
             <span className="text-xs md:text-sm">
-              I agree to Apna's
-              <a href="#" className="text-[#fbb040] underline mx-1">Terms of Service</a>
+              I agree to OJK Job's
+              <a href="/terms-and-conditions" className="text-[#fbb040] underline mx-1">Terms of Service</a>
               and
-              <a href="#" className="text-[#fbb040] underline mx-1">Privacy Policy</a>
+              <a href="/privacy-policy" className="text-[#fbb040] underline mx-1">Privacy Policy</a>
             </span>
           </div>
           {error && (

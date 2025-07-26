@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import OtpInput from '../../components/common/OtpInput';
-import { setUser } from '../../store/slices/authSlice';
-import OjkLogo from '../../components/common/OjkLogo';
+import OjkLogo from '../../../components/common/OjkLogo';
+import OtpInput from '../../../components/common/OtpInput';
+import { setUser } from '../../../store/slices/authSlice';
 
 const JobseekerLogin: React.FC = () => {
   const [resendTimer, setResendTimer] = useState(0);

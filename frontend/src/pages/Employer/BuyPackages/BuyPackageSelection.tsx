@@ -203,7 +203,7 @@ const BuyPackageSelection: React.FC = () => {
 
       {/* Main Heading and Sub-link */}
       <div className="max-w-4xl mx-auto flex flex-col items-center mt-8 mb-4">
-        <h1 className="text-4xl font-bold text-[#253858] text-center mb-2">Recruitment made easy with Apna</h1>
+        <h1 className="text-4xl font-bold text-[#253858] text-center mb-2">Recruitment made easy with OJK Jobs</h1>
         <button onClick={() => setShowCreditsPopup(true)} className="text-[#fbb040] underline font-semibold text-base mb-4 flex items-center gap-1 hover:text-[#b97a13] transition-all duration-200"><Info size={18} />View how credits works</button>
       </div>
       {/* Credits Works Popup */}

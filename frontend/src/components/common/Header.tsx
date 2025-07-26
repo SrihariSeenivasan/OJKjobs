@@ -296,7 +296,7 @@ const Header: React.FC = () => {
                 </button>
                 <button
                   className="bg-[#fbb040] text-white px-4 py-2 rounded-md font-medium hover:bg-yellow-500 transition-colors"
-                  onClick={() => navigate('/EmployeeLogin')}
+                  onClick={() => navigate('/Employer/EmployerSignIn')}
                 >
                   Employer Login
                 </button>

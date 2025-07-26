@@ -31,7 +31,7 @@ const CreditsWorksPopup: React.FC<{ onClose: () => void }> = ({ onClose }) => {
               <span className="block w-6 h-6 bg-yellow-200 rounded-full opacity-50" style={{margin:'2px'}}></span>
             </div>
             <h2 className="text-2xl font-bold text-center mb-2 mt-2">What are Credits?</h2>
-            <p className="text-center text-gray-700 max-w-xl mx-auto">Credits are the virtual currencies in apna to make any transactions on platform. Credits are charged each time you do job posting and unlock candidate profiles from database.</p>
+            <p className="text-center text-gray-700 max-w-xl mx-auto">Credits are the virtual currencies in OJK Jobs to make any transactions on platform. Credits are charged each time you do job posting and unlock candidate profiles from database.</p>
           </div>
 
           {/* Credit Types */}
@@ -73,7 +73,7 @@ const CreditsWorksPopup: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                 <svg width="36" height="36" fill="none" viewBox="0 0 36 36"><rect width="36" height="36" rx="8" fill="#E3F2FD"/><path d="M12 24v-2a4 4 0 014-4h4a4 4 0 014 4v2" stroke="#1976D2" strokeWidth="2"/><rect x="14" y="10" width="8" height="6" rx="2" stroke="#1976D2" strokeWidth="2"/></svg>
               </span>
               <div className="font-semibold text-sm text-center">Use it for..</div>
-              <div className="text-xs text-gray-600 text-center">Job posting and searching candidates on apna Database.</div>
+              <div className="text-xs text-gray-600 text-center">Job posting and searching candidates on OJK Jobs Database.</div>
             </div>
             <div className="flex flex-col items-center">
               <span className="mb-2">
