@@ -1,5 +1,5 @@
+import { Calendar, Edit3, PlusCircle, Search, Trash2, User } from 'lucide-react';
 import React, { useState } from 'react';
-import { PlusCircle, Calendar, User, Image, Trash2, Edit3, Search } from 'lucide-react';
 
 interface Blog {
   id: number;
@@ -13,7 +13,7 @@ interface Blog {
 const ManageBlogs: React.FC = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [image, setImage] = useState('');
+  const [image, setImage] = useState<string | undefined>(undefined);
   const [searchTerm, setSearchTerm] = useState('');
   const author = 'Admin';
   const date = new Date().toISOString().slice(0, 10);
@@ -24,19 +24,18 @@ const ManageBlogs: React.FC = () => {
 
   const handleSubmit = () => {
     if (!title.trim() || !content.trim()) return;
-    
     const newBlog = {
       id: Date.now(),
       title,
       content,
-      image: image || undefined,
+      image,
       author,
       date,
     };
     setBlogs([newBlog, ...blogs]);
     setTitle('');
     setContent('');
-    setImage('');
+    setImage(undefined);
     setPage(1);
     setIsFormVisible(false);
   };
@@ -119,16 +118,28 @@ const ManageBlogs: React.FC = () => {
               </div>
               
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Featured Image URL</label>
-                <div className="relative">
-                  <Image className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Featured Image</label>
+                <div className="relative flex items-center gap-4">
                   <input
-                    type="text"
-                    value={image}
-                    onChange={e => setImage(e.target.value)}
-                    placeholder="https://example.com/image.jpg"
-                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200"
+                    type="file"
+                    accept="image/*"
+                    onChange={e => {
+                      const file = e.target.files && e.target.files[0];
+                      if (file) {
+                        const reader = new FileReader();
+                        reader.onloadend = () => {
+                          setImage(reader.result as string);
+                        };
+                        reader.readAsDataURL(file);
+                      } else {
+                        setImage(undefined);
+                      }
+                    }}
+                    className="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200"
                   />
+                  {image && (
+                    <img src={image} alt="Preview" className="w-16 h-16 object-cover rounded-xl border border-gray-200" />
+                  )}
                 </div>
               </div>
               
@@ -204,16 +215,13 @@ const ManageBlogs: React.FC = () => {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
                 </div>
               )}
-              
               <div className="p-6">
                 <h3 className="text-xl font-bold text-gray-800 mb-3 line-clamp-2 hover:text-blue-600 transition-colors duration-200">
                   {blog.title}
                 </h3>
-                
                 <p className="text-gray-600 mb-4 line-clamp-3 leading-relaxed">
                   {blog.content}
                 </p>
-                
                 <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
                   <div className="flex items-center gap-1">
                     <User size={14} />
@@ -224,7 +232,6 @@ const ManageBlogs: React.FC = () => {
                     <span>{new Date(blog.date).toLocaleDateString()}</span>
                   </div>
                 </div>
-                
                 <div className="flex gap-2">
                   <button
                     onClick={() => deleteBlog(blog.id)}

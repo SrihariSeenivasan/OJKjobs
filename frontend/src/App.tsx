@@ -44,6 +44,7 @@ import BrowseJobs from './pages/Jobseeker/jobs/BrowseJobs';
 import PrivacyPolicy from './pages/Jobseeker/PrivacyPolicy';
 import RefundPolicy from './pages/Jobseeker/RefundPolicy';
 import TermsAndConditions from './pages/Jobseeker/TermsAndConditions';
+import AppliedForJobs from './pages/Employer/Jobs/AppliedForJobs';
 
 function App() {
   return (
@@ -78,6 +79,7 @@ function App() {
           {/* Employer Layout with nested routes */}
           <Route path="/Employer" element={<EmployerLayout />}>
             <Route path="/Employer/Jobs" element={<Jobs />} />
+            <Route path="/Employer/Jobs/AppliedForJobs" element={<AppliedForJobs />} />
             <Route path="/Employer/SearchCandidates" element={<SearchCandidates />} />
             <Route path="SearchList" element={<SearchList />} />
             <Route path="/Employer/SavedSearches" element={<SavedSearches />} />
@@ -102,6 +104,7 @@ function App() {
              <Route path="/Employer/InterviewerInformation" element={<InterviewerInformation />} />
              <Route path="/Employer/JobPostPreview" element={<JobPostPreview />} />
              <Route path="/Employer/PublishJob" element={<PublishJob />} />
+             
              
             {/* {EmployerRegistration} */}
             

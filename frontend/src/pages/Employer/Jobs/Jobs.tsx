@@ -1,5 +1,6 @@
 
 import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import PostJobPopup from "./PostJobs/PostJobPopup";
 
 const jobsData = [
@@ -148,6 +149,7 @@ const tabs = statusList.map(label => ({
 }));
 
 const Jobs: React.FC = () => {
+  const navigate = useNavigate();
   // -1 means 'All Filters' (default)
   const [tab, setTab] = useState(-1);
   const filteredJobs =
@@ -348,7 +350,12 @@ const Jobs: React.FC = () => {
               {job.status === 'Active' && (
                 <div className="flex items-center gap-6 text-[#253858] text-sm font-semibold mt-2">
                   <span className="text-orange-600 font-bold">{job.applied} <span className="font-normal text-xs text-[#A0AEC0]">{job.pending ? (<>&gt; <span className='border border-[#A0AEC0] rounded px-2 py-0.5'>{job.pending} pending</span></>) : null}</span></span>
-                  <span>Applied to job</span>
+                  <span
+                    className="cursor-pointer underline hover:text-orange-600 transition-colors"
+                    onClick={() => navigate('/Employer/Jobs/AppliedForJobs')}
+                  >
+                    Applied to job
+                  </span>
                   <span className="text-[#A0AEC0]">{job.matches} Database Matches</span>
                 </div>
               )}

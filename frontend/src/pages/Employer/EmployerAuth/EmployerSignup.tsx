@@ -69,8 +69,30 @@ const EmployerSignup: React.FC = () => {
     setIsLoading(false);
   };
 
+  const handleBack = () => {
+    navigate("/Employer/EmployerSignIn");
+  };
+  const handleSupport = () => {
+    navigate("/Employer/SupportHome");
+  };
+
   return (
-    <div className="min-h-screen flex flex-col md:flex-row bg-gray-50">
+    <div className="min-h-screen flex flex-col md:flex-row bg-gray-50 relative">
+      {/* Top right buttons */}
+      <div className="absolute top-4 right-4 z-50 flex gap-2">
+        <button
+          onClick={handleBack}
+          className="px-4 py-2 rounded-lg bg-gray-200 text-gray-700 font-semibold hover:bg-gray-300 transition text-xs md:text-sm shadow"
+        >
+          &#8592; Back
+        </button>
+        <button
+          onClick={handleSupport}
+          className="px-4 py-2 rounded-lg bg-blue-100 text-blue-700 font-semibold hover:bg-blue-200 transition text-xs md:text-sm shadow"
+        >
+          Support
+        </button>
+      </div>
       {/* Left Section */}
       <div className="w-full md:max-w-md bg-[#3c2a4d] text-white flex flex-col justify-center px-6 py-8 md:px-10 md:py-12 h-[320px] md:h-auto min-h-[320px]">
         <div className="mb-6 md:mb-8">
