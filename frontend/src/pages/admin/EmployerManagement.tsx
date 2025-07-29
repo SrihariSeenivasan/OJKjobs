@@ -20,11 +20,6 @@ const PLAN_OPTIONS = [
   ...plans.map(p => p.title)
 ];
 
-function getPlanTitle(planId?: string) {
-  if (!planId) return 'N/A';
-  const plan = plans.find(p => p.id === planId);
-  return plan ? plan.title : 'N/A';
-}
 export interface Job {
   id: string;
   title: string;
@@ -52,10 +47,19 @@ export interface Employer {
   address: string;
   jobs: Job[];
   yearOfEstablishment?: string;
-  companyLogo?: string; // New field
-  companyDescription?: string; // New field
-  hiringNeeds?: string; // New field
-  currentPlan?: string; // Added field for current plan
+  companyLogo?: string;
+  companyDescription?: string;
+  hiringNeeds?: string;
+  availableCredit?: number;
+  databaseCredit?: number;
+  gstNumber?: string;
+  website?: string;
+  companyType?: string;
+  socialProfiles?: {
+    linkedin?: string;
+    facebook?: string;
+    instagram?: string;
+  };
 }
 
 interface EmployerManagementProps {
@@ -96,9 +100,8 @@ const EmployerManagement: React.FC<EmployerManagementProps> = ({
       e.companyName.toLowerCase().includes(filterLower) ||
       e.contactPerson.toLowerCase().includes(filterLower) ||
       e.industry.toLowerCase().includes(filterLower);
-    const planTitle = getPlanTitle(e.currentPlan);
-    const matchesPlan = planFilter === 'All' || planTitle === planFilter;
-    return matchesText && matchesPlan;
+  
+    return matchesText 
   });
   
   const totalPages = Math.ceil(filteredEmployers.length / PAGE_SIZE);
@@ -122,9 +125,7 @@ const EmployerManagement: React.FC<EmployerManagementProps> = ({
               <p className="text-xs md:text-sm text-gray-500 mt-1">
                 {employer.industry}
               </p>
-              <p className="text-xs md:text-sm text-blue-600 mt-1 font-semibold">
-                Plan: {getPlanTitle(employer.currentPlan)}
-              </p>
+              
             </div>
             <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full flex-shrink-0 ml-2 ${getStatusColor(employer.status)}`}>
               {employer.status}
@@ -204,9 +205,7 @@ const EmployerManagement: React.FC<EmployerManagementProps> = ({
               <th className="px-4 lg:px-6 py-3 lg:py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Jobs
               </th>
-              <th className="px-4 lg:px-6 py-3 lg:py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Actions
-              </th>
+              
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
@@ -237,11 +236,7 @@ const EmployerManagement: React.FC<EmployerManagementProps> = ({
                     {employer.industry}
                   </div>
                 </td>
-                <td className="px-4 lg:px-6 py-4">
-                  <div className="text-sm lg:text-base text-blue-600 font-semibold">
-                    {getPlanTitle(employer.currentPlan)}
-                  </div>
-                </td>
+                
                 <td className="px-4 lg:px-6 py-4">
                   <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(employer.status)}`}>
                     {employer.status}
@@ -456,7 +451,14 @@ const EmployerManagement: React.FC<EmployerManagementProps> = ({
                       <div>
                         <label className="text-sm text-gray-600">Company Name</label>
                         <p className="font-medium text-gray-900 text-lg">{selectedEmployer.companyName}</p>
-                        <p className="text-xs text-blue-600 font-semibold mt-1">Current Plan: {getPlanTitle(selectedEmployer.currentPlan)}</p>
+                        <div className="flex gap-4 mt-1">
+                          <span className="text-xs text-green-700 font-semibold">
+                            Available Credit: {selectedEmployer.availableCredit ?? 0}
+                          </span>
+                          <span className="text-xs text-blue-700 font-semibold">
+                            Database Credit: {selectedEmployer.databaseCredit ?? 0}
+                          </span>
+                        </div>
                       </div>
                     </div>
                     <div>
@@ -464,8 +466,41 @@ const EmployerManagement: React.FC<EmployerManagementProps> = ({
                       <p className="font-medium text-gray-900">{selectedEmployer.address}</p>
                     </div>
                     <div>
-                      <label className="text-sm text-gray-600">Short Company Description</label>
+                      <label className="text-sm text-gray-600">About Company</label>
                       <p className="font-medium text-gray-900 whitespace-pre-line">{selectedEmployer.companyDescription || '-'}</p>
+                    </div>
+                    <div>
+                      <label className="text-sm text-gray-600">GST / ISD-GST Number</label>
+                      <p className="font-medium text-gray-900">{selectedEmployer.gstNumber || '-'}</p>
+                    </div>
+                    <div>
+                      <label className="text-sm text-gray-600">Website</label>
+                      {selectedEmployer.website ? (
+                        <a href={selectedEmployer.website} target="_blank" rel="noopener noreferrer" className="font-medium text-blue-700 underline">{selectedEmployer.website}</a>
+                      ) : (
+                        <p className="font-medium text-gray-900">-</p>
+                      )}
+                    </div>
+                    <div>
+                      <label className="text-sm text-gray-600">Type of Company</label>
+                      <p className="font-medium text-gray-900">{selectedEmployer.companyType || '-'}</p>
+                    </div>
+                    <div>
+                      <label className="text-sm text-gray-600">Social Profiles</label>
+                      <div className="flex gap-2 mt-1">
+                        {selectedEmployer.socialProfiles?.linkedin && (
+                          <a href={selectedEmployer.socialProfiles.linkedin} target="_blank" rel="noopener noreferrer" className="text-blue-700 underline text-xs">LinkedIn</a>
+                        )}
+                        {selectedEmployer.socialProfiles?.facebook && (
+                          <a href={selectedEmployer.socialProfiles.facebook} target="_blank" rel="noopener noreferrer" className="text-blue-700 underline text-xs">Facebook</a>
+                        )}
+                        {selectedEmployer.socialProfiles?.instagram && (
+                          <a href={selectedEmployer.socialProfiles.instagram} target="_blank" rel="noopener noreferrer" className="text-blue-700 underline text-xs">Instagram</a>
+                        )}
+                        {!selectedEmployer.socialProfiles?.linkedin && !selectedEmployer.socialProfiles?.facebook && !selectedEmployer.socialProfiles?.instagram && (
+                          <span className="font-medium text-gray-900">-</span>
+                        )}
+                      </div>
                     </div>
                     <div>
                       <label className="text-sm text-gray-600">Industry</label>
@@ -479,10 +514,7 @@ const EmployerManagement: React.FC<EmployerManagementProps> = ({
                       <label className="text-sm text-gray-600">Year of Establishment</label>
                       <p className="font-medium text-gray-900">{selectedEmployer.yearOfEstablishment || '-'}</p>
                     </div>
-                    <div>
-                      <label className="text-sm text-gray-600">Hiring Needs</label>
-                      <p className="font-medium text-gray-900 whitespace-pre-line">{selectedEmployer.hiringNeeds || '-'}</p>
-                    </div>
+
                     
                   </div>
                 </div>
@@ -520,10 +552,7 @@ const EmployerManagement: React.FC<EmployerManagementProps> = ({
                     <div className="text-2xl font-bold text-blue-600">{selectedEmployer.jobsPosted}</div>
                     <div className="text-sm text-gray-600">Jobs Posted</div>
                   </div>
-                  <div className="bg-green-50 p-4 rounded-lg">
-                    <div className="text-2xl font-bold text-green-600">{selectedEmployer.documents.length}</div>
-                    <div className="text-sm text-gray-600">Documents</div>
-                  </div>
+
                   <div className="bg-purple-50 p-4 rounded-lg">
                     <div className="text-2xl font-bold text-purple-600">
                       <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(selectedEmployer.status)}`}>

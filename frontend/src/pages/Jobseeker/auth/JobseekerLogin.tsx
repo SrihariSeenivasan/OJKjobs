@@ -154,11 +154,7 @@ const JobseekerLogin: React.FC = () => {
             {isLoading ? 'Please wait...' : otpSent ? 'Verify OTP' : 'Send OTP'}
           </button>
         </form>
-        <div className="mt-6 text-center">
-          <span className="text-base text-[#39b54a] cursor-pointer hover:underline" onClick={() => window.location.href = '/authReg'}>
-            I don't have an account !
-          </span>
-        </div>
+        
       </div>
     </div>
   );

@@ -64,10 +64,6 @@ function App() {
             <Route path="/jobs/apply" element={<ApplyJob />} />
             <Route path="/apply-via-email" element={<ApplyViaEmail />} />
 
-            {/* Protected Routes */}
-            <Route path="/dashboard" element={<JobseekerProfileStepper />} />
-          
-
             {/* Static Pages */}
             <Route path="/contact-us" element={<div className="p-8 text-center">Contact Us page coming soon!</div>} />
             <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
