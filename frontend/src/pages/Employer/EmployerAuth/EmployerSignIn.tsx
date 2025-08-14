@@ -2,50 +2,25 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import OjkLogo from "../../../components/common/OjkLogo";
 
-const EmployerSignIn = () => {
+const EmployerSignIn: React.FC = () => {
+  const navigate = useNavigate();
+  const [showVideo, setShowVideo] = useState(false);
   const [mobile, setMobile] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  
-  const navigate = useNavigate();
-
-  const handleContinue = async () => {
-    if (!/^\d{10}$/.test(mobile)) {
-      setError("Please enter a valid 10 digit mobile number");
-      return;
-    }
-    setError("");
-    setIsLoading(true);
-    try {
-      // Replace with your actual API endpoint
-      const res = await fetch("/api/employer/send-otp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ mobile }),
-      });
-      const data = await res.json();
-      if (res.ok && data.success) {
-        // OTP sent successfully
-        navigate("/Employer/verifyOtp", { state: { mobile } });
-      } else {
-        setError(data.message || "Failed to send OTP");
-      }
-    } catch {
-      setError("Server error. Please try again.");
-    }
-    setIsLoading(false);
-  };
-
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      handleContinue();
-    }
-  };
-
-  const [showVideo, setShowVideo] = useState(false);
 
   const handleWatchVideo = () => setShowVideo(true);
   const handleCloseVideo = () => setShowVideo(false);
+
+  const handleContinue = () => {
+    navigate("/Employer/verifyOtp");
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleContinue();
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-orange-50 flex flex-col">

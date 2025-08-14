@@ -97,28 +97,20 @@ const EmployerRegisterVerifyOtp: React.FC<Props> = ({ mobile = "" }) => {
     }
     setIsLoading(true);
     setError("");
-    try {
-      // Replace with your actual API endpoint
-      const res = await fetch("/api/employer/verify-otp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ mobile: locationMobile, otp: otp.join("") }),
-      });
-      const data = await res.json();
-      if (res.ok && data.success) {
-        // OTP verified, login success
-        navigate("/Employer/Dashboard");
+    // fetch logic removed as per request
+    // Simulate OTP check: if OTP is '1234', navigate to dashboard, else show error
+    setTimeout(() => {
+      if (otp.join("") === "1234") {
+        navigate("/Employer/Jobs");
       } else {
-        setError(data.message || "Invalid OTP. Please try again.");
+        setError("Invalid OTP. Please try again.");
         setShake(true);
         setOtp(["", "", "", ""]);
         inputRefs[0].current?.focus();
         setTimeout(() => setShake(false), 500);
       }
-    } catch {
-      setError("Server error. Please try again.");
-    }
-    setIsLoading(false);
+      setIsLoading(false);
+    }, 700);
   };
 
   return (
