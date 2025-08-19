@@ -60,7 +60,7 @@ const JobseekerLogin: React.FC = () => {
         profileComplete: true
       }));
       setIsLoading(false);
-      navigate('/dashboard');
+      navigate('/profile-setup');
     }, 800);
   };
 
