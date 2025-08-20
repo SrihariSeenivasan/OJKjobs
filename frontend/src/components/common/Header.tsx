@@ -1,12 +1,3 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../store';
-import { logout } from '../../store/slices/authSlice';
-import { setLanguage, toggleMobileMenu } from '../../store/slices/uiSlice';
-import NotificationComponent from './Notification';
-import OjkLogo from './OjkLogo';
 import {
   ArrowLeftOnRectangleIcon,
   Bars3Icon,
@@ -15,6 +6,16 @@ import {
   UserIcon,
   XMarkIcon
 } from '@heroicons/react/24/outline';
+import React, { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import JobseekerLogin from '../../pages/Jobseeker/auth/JobseekerLogin';
+import { RootState } from '../../store';
+import { logout } from '../../store/slices/authSlice';
+import { setLanguage, toggleMobileMenu } from '../../store/slices/uiSlice';
+import NotificationComponent from './Notification';
+import OjkLogo from './OjkLogo';
 
 const Header: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -27,6 +28,7 @@ const Header: React.FC = () => {
   const [isLanguageMenuOpen, setIsLanguageMenuOpen] = useState(false);
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const [isJobMenuOpen, setIsJobMenuOpen] = useState(false);
+  const [showJobseekerLogin, setShowJobseekerLogin] = useState(false);
   const jobMenuRef = useRef<HTMLDivElement>(null);
 
   // Close job menu on outside click
@@ -290,7 +292,7 @@ const Header: React.FC = () => {
               <div className="flex items-center space-x-2">
                 <button
                   className="bg-[#39b54a] text-white px-4 py-2 rounded-md font-medium hover:bg-green-700 transition-colors"
-                  onClick={() => navigate('/JobseekerLogin')}
+                  onClick={() => setShowJobseekerLogin(true)}
                 >
                   Candidate Login
                 </button>
@@ -359,6 +361,12 @@ const Header: React.FC = () => {
             </div>
           </div>
         )}
+      {/* JobseekerLogin Modal */}
+      {showJobseekerLogin && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <JobseekerLogin onClose={() => setShowJobseekerLogin(false)} />
+        </div>
+      )}
       </div>
     </header>
   );

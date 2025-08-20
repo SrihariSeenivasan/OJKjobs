@@ -5,9 +5,10 @@ import OjkLogo from "../../../components/common/OjkLogo";
 const EmployerSignIn: React.FC = () => {
   const navigate = useNavigate();
   const [showVideo, setShowVideo] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobile, setMobile] = useState("");
   const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  // Removed unused isLoading state
 
   const handleWatchVideo = () => setShowVideo(true);
   const handleCloseVideo = () => setShowVideo(false);
@@ -84,17 +85,62 @@ const EmployerSignIn: React.FC = () => {
               <button className="px-4 py-2 border border-orange-500 rounded-lg font-semibold text-orange-600 bg-white hover:bg-orange-50 transition-all duration-200 hover:shadow-md">
                 Contact us
               </button>
-              <button className="px-4 py-2 rounded-lg font-semibold text-white bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 transition-all duration-200 hover:shadow-lg transform hover:scale-105">
+              <button 
+                className="px-4 py-2 rounded-lg font-semibold text-white bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 transition-all duration-200 hover:shadow-lg transform hover:scale-105"
+                onClick={() => navigate("/Employer/OJKHireSignup")}
+              >
                 Login/Sign up
               </button>
             </div>
 
             {/* Mobile Menu Button */}
-            <button className="lg:hidden p-2 rounded-lg hover:bg-orange-50 transition-colors">
+            <button
+              className="lg:hidden p-2 rounded-lg hover:bg-orange-50 transition-colors"
+              onClick={() => setMobileMenuOpen(true)}
+              aria-label="Open menu"
+            >
               <svg className="w-6 h-6 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             </button>
+      {/* Mobile Menu Drawer */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 z-50 bg-white flex justify-end">
+          <div className="w-64 h-full shadow-xl p-6 flex flex-col gap-6 relative">
+            <button
+              className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-2xl font-bold"
+              onClick={() => setMobileMenuOpen(false)}
+              aria-label="Close menu"
+            >
+              &times;
+            </button>
+            <button
+              className="w-full text-left py-2 px-4 rounded-lg hover:bg-orange-50 text-orange-600 font-semibold"
+              onClick={() => { setMobileMenuOpen(false); navigate('/Employer/BuyPackageSelection'); }}
+            >
+              Pricing
+            </button>
+            <button
+              className="w-full text-left py-2 px-4 rounded-lg hover:bg-orange-50 text-orange-600 font-semibold"
+              onClick={() => { setMobileMenuOpen(false); navigate('/'); }}
+            >
+              Looking for a job
+            </button>
+            <button
+              className="w-full text-left py-2 px-4 rounded-lg hover:bg-orange-50 text-orange-600 font-semibold"
+              onClick={() => { setMobileMenuOpen(false); navigate('/Employer/OJKHireSignup'); }}
+            >
+              Login/Sign up
+            </button>
+            <button
+              className="w-full text-left py-2 px-4 rounded-lg hover:bg-orange-50 text-orange-600 font-semibold"
+              onClick={() => { setMobileMenuOpen(false); navigate('/ContactUs'); }}
+            >
+              Contact us
+            </button>
+          </div>
+        </div>
+      )}
           </div>
         </div>
       </header>
@@ -220,24 +266,11 @@ const EmployerSignIn: React.FC = () => {
                 <button
                   className="w-full py-3 lg:py-4 rounded-xl font-bold text-white text-lg bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 transition-all duration-200 hover:shadow-lg transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2"
                   onClick={handleContinue}
-                  disabled={isLoading}
                 >
-                  {isLoading ? (
-                    <>
-                      <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                      </svg>
-                      Processing...
-                    </>
-                  ) : (
-                    <>
-                      Continue
-                      <svg className="w-5 h-5 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                      </svg>
-                    </>
-                  )}
+                  Continue
+                  <svg className="w-5 h-5 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                  </svg>
                 </button>
                 
                 <div className="text-xs text-slate-500 leading-relaxed pt-2">
