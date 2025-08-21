@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'owner_api',
     "corsheaders",
     "rest_framework",
+    'user_api'
 ]
 
 MIDDLEWARE = [
@@ -72,7 +73,8 @@ SIMPLE_JWT = {
 }
 
 # settings.py
-AUTH_USER_MODEL = "candidate_api.candidateUser"
+AUTH_USER_MODEL = "candidate_api.CandidateUser"
+
 
 
 CORS_ALLOWED_ORIGINS = [

@@ -8,7 +8,7 @@ class candidateUserManager(BaseUserManager):
         return user
 
 class candidateUser(AbstractBaseUser):
-    phone_number = models.CharField(max_length=15, unique=True)
+    phone_number = models.CharField(max_length=15, unique=True,null=True)
     name = models.CharField(max_length=100, null=True, blank=True)  # ✅ Add this
     is_verified = models.BooleanField(default=False)
 

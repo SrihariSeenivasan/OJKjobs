@@ -55,19 +55,21 @@ class RegisterView(APIView):
                 send_otp_sms(phone, otp, user.name)
 
                 # ✅ Filter by mobile instead of user
-                candidate = Candidate_details.objects.filter(mobile=user.phone_number).last()
+                candidate = Candidate_details.objects.filter(user=user.id).last()
                 if candidate:
                     from .serializers import CandidateUserSerializer
                     candidate_data = CandidateUserSerializer(candidate).data
                     return Response({
                         "message": "OTP sent successfully",
                         "already_registered": True,
+                        "role":"candidate",
                         "candidate_data": candidate_data
                     })
 
                 return Response({
                     "message": "OTP sent successfully",
-                    "already_registered": not created
+                    "already_registered": not created,
+                    "role":"candidate"
                 })
 
             except Exception as e:
