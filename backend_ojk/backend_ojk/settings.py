@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -56,6 +57,23 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
+
+
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),  # ✅ 60 minutes token
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'AUTH_HEADER_TYPES': ('Bearer',),
+}
+
+# settings.py
+AUTH_USER_MODEL = "candidate_api.candidateUser"
+
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",   # your React/Vue frontend
@@ -69,6 +87,7 @@ CORS_ALLOW_CREDENTIALS = True
 
 
 ROOT_URLCONF = 'backend_ojk.urls'
+
 
 TEMPLATES = [
     {
