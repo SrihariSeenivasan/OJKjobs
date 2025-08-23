@@ -14,11 +14,17 @@ const JobseekerLogin: React.FC<JobseekerLoginProps> = ({ onClose }) => {
   const [resendDisabled, setResendDisabled] = useState(false);
   const [mobile, setMobile] = useState('');
   const [otp, setOtp] = useState('');
+  const [name, setName] = useState('');
   const [otpSent, setOtpSent] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showProfileStepper, setShowProfileStepper] = useState(false);
+  const [mode, setMode] = useState(() => localStorage.getItem('candidateMode') || 'login'); // 'login' or 'signup'
 
   const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    localStorage.setItem('candidateMode', mode);
+  }, [mode]);
 
   React.useEffect(() => {
     if (!otpSent) return;
@@ -40,36 +46,84 @@ const JobseekerLogin: React.FC<JobseekerLoginProps> = ({ onClose }) => {
     };
   }, [otpSent, resendTimer]);
 
-  const handleSendOtp = (e: React.FormEvent) => {
+  const SIGNUP_API = 'http://127.0.0.1:8000/candidate/register/';
+
+  const OTP_VERIFY_API = 'http://127.0.0.1:8000/candidate/verify/';
+
+  const handleSendOtp = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    setTimeout(() => {
-      setOtpSent(true);
+    localStorage.setItem('candidateMode', mode);
+    try {
+      if (mode === 'signup') {
+        await fetch(SIGNUP_API, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ phone_number: mobile, name }),
+        });
+        // Save user to localStorage for demo purposes
+        localStorage.setItem('candidateUser', JSON.stringify({ name, phone_number: mobile }));
+        console.log(`${name}, ${mobile} registered`);
+        setOtpSent(true);
+        setResendTimer(300); // 5 minutes
+        setResendDisabled(true);
+      } else {
+        // Check localStorage for user existence
+        const storedUser = localStorage.getItem('candidateUser');
+        let found = false;
+        if (storedUser) {
+          const userObj = JSON.parse(storedUser);
+          if (userObj.name === name && userObj.phone_number === mobile) {
+            found = true;
+          }
+        }
+        if (!found) {
+          alert('User is not found');
+          setIsLoading(false);
+          return;
+        }
+        // Send OTP request to LOGIN_API instead of OTP_VERIFY_API
+        await fetch(SIGNUP_API, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ phone_number: mobile, name }),
+        });
+        console.log(`${name}, ${mobile} has login`);
+        setOtpSent(true);
+        setResendTimer(300); // 5 minutes
+        setResendDisabled(true);
+      }
+    } finally {
       setIsLoading(false);
-      setResendTimer(300); // 5 minutes
-      setResendDisabled(true);
-    }, 800);
+    }
   };
 
-  const handleVerifyOtp = (e: React.FormEvent) => {
+  const handleVerifyOtp = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    setTimeout(() => {
+    try {
+      // Always send phone_number, name, and otp for verification
+      await fetch(OTP_VERIFY_API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone_number: mobile, name, otp }),
+      });
       // Simulate successful OTP verification and set Redux auth state
       dispatch(setUser({
         id: 'jobseeker-1',
         email: 'jobseeker@example.com',
-        name: 'Jobseeker',
+        name,
         role: 'jobseeker',
         isVerified: true,
-        profileComplete: true
+        profileComplete: mode === 'signup' ? false : true
       }));
-      setIsLoading(false);
       setShowProfileStepper(true);
-    }, 800);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  // ...existing code...
+
   // Only one return statement below:
   return (
     <>
@@ -89,11 +143,40 @@ const JobseekerLogin: React.FC<JobseekerLoginProps> = ({ onClose }) => {
               <div className="w-20 h-20 rounded-full bg-[#39b54a]/20 flex items-center justify-center mb-2 shadow-md">
                 <OjkLogo className="h-10 w-16 drop-shadow-2xl" />
               </div>
-              <h2 className="text-3xl font-bold text-[#39b54a]">Candidate Login</h2>
-              <p className="text-gray-500 text-base mt-1">Sign in to access your jobseeker dashboard</p>
+              <h2 className="text-3xl font-bold text-[#39b54a]">Candidate {mode === 'login' ? 'Login' : 'Signup'}</h2>
+              <p className="text-gray-500 text-base mt-1">
+                {mode === 'login' ? 'Sign in to access your jobseeker dashboard' : 'Create your candidate account'}
+              </p>
+              <div className="flex gap-2 mt-3">
+                <button
+                  className={`px-4 py-2 rounded-lg font-semibold border ${mode === 'login' ? 'bg-[#39b54a] text-white' : 'bg-white text-[#39b54a]'} border-[#39b54a]/40 transition-all duration-200`}
+                  onClick={() => setMode('login')}
+                  disabled={mode === 'login'}
+                >
+                  Login
+                </button>
+                <button
+                  className={`px-4 py-2 rounded-lg font-semibold border ${mode === 'signup' ? 'bg-[#39b54a] text-white' : 'bg-white text-[#39b54a]'} border-[#39b54a]/40 transition-all duration-200`}
+                  onClick={() => setMode('signup')}
+                  disabled={mode === 'signup'}
+                >
+                  Signup
+                </button>
+              </div>
             </div>
             <form onSubmit={otpSent ? handleVerifyOtp : handleSendOtp} className="space-y-7 w-full">
+
               <div>
+                <label className="block text-base font-semibold text-[#39b54a] mb-1">Name</label>
+                <input
+                  type="text"
+                  value={name}
+                  onChange={e => setName(e.target.value)}
+                  className="w-full px-4 py-2 border-2 border-[#39b54a]/30 focus:border-[#39b54a] focus:ring-2 focus:ring-[#39b54a]/20 rounded-lg transition-all duration-200 outline-none bg-[#39b54a]/10 text-gray-800 placeholder-gray-400 shadow-sm text-base mb-4"
+                  placeholder="Enter your name"
+                  required
+                  disabled={otpSent}
+                />
                 <label className="block text-base font-semibold text-[#39b54a] mb-1">Mobile Number</label>
                 <div className="flex gap-2 mt-1">
                   <select
@@ -167,7 +250,7 @@ const JobseekerLogin: React.FC<JobseekerLoginProps> = ({ onClose }) => {
                 {isLoading ? (
                   <span className="animate-spin h-6 w-6 mr-2 border-2 border-white border-t-[#39b54a] rounded-full inline-block"></span>
                 ) : null}
-                {isLoading ? 'Please wait...' : otpSent ? 'Verify OTP' : 'Send OTP'}
+                {isLoading ? 'Please wait...' : otpSent ? 'Verify OTP' : mode === 'login' ? 'Send OTP' : 'Signup & Send OTP'}
               </button>
             </form>
           </div>

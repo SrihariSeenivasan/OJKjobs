@@ -63,13 +63,15 @@ class RegisterView(APIView):
                         "message": "OTP sent successfully",
                         "already_registered": True,
                         "role":"candidate",
-                        "candidate_data": candidate_data
+                        "candidate_data": candidate_data,
+                        "dev_otp": otp  # Expose OTP for development
                     })
 
                 return Response({
                     "message": "OTP sent successfully",
                     "already_registered": not created,
-                    "role":"candidate"
+                    "role":"candidate",
+                    "dev_otp": otp  # Expose OTP for development
                 })
 
             except Exception as e:
@@ -103,7 +105,9 @@ class OTPVerifyView(APIView):
             if not phone.startswith('+'):
                 phone = '+91' + phone
 
-            # Validate OTP
+            # Removed default OTP '123456' acceptance logic
+
+            # Validate OTP from DB
             otp_qs = OTP.objects.filter(phone_number=phone, otp_code=otp).order_by('-created_at')
             if not otp_qs.exists():
                 return Response({'verified': False, 'message': 'Invalid OTP or phone number.'}, status=HTTP_400_BAD_REQUEST)

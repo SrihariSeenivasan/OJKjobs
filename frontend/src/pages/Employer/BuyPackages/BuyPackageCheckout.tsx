@@ -11,17 +11,31 @@ const BuyPackageCheckout: React.FC = () => {
   const [showCreditsPopup, setShowCreditsPopup] = useState(false);
   const [showOfferModal, setShowOfferModal] = useState(false);
 
-  // Get plan from location.state or fallback to defaults
-  const plan = location.state?.plan || {};
-  const months = plan.months || 3;
-  const jobCredits = plan.credits ? parseInt(plan.credits) || 6 : 6;
-  const duration = plan.duration ? parseInt(plan.duration) || 90 : 90;
-  const planPrice = plan.price || 3900;
-  const discount = plan.discount ? parseInt(plan.discount) || 501 : 501;
-  const subtotal = plan.total || 3399;
-  const gst = Math.round(subtotal * 0.18);
+  // Get plan from location.state or localStorage
+  let plan = location.state?.plan;
+  if (!plan) {
+    const storedPlan = localStorage.getItem('chosenPlan');
+    if (storedPlan) {
+      plan = JSON.parse(storedPlan);
+    } else {
+      plan = {
+        name: "Free Plan",
+        price: 0,
+        jobPosts: 1,
+        candidateApplications: "Up to 50 profiles",
+        databaseAccess: "50-profile limit per job post",
+      };
+    }
+  }
+
+  // Calculation logic for each plan
+  const planPrice = plan.price;
+  const discount = 0;
+  const subtotal = planPrice;
+  const gst = planPrice > 0 ? Math.round(subtotal * 0.18) : 0;
   const total = subtotal + gst;
-  const planName = `${months} Months Plan`;
+  const planName = plan.name;
+  
 
   return (
         <div className="bg-[#FFF7E0] min-h-screen">
@@ -70,10 +84,7 @@ const BuyPackageCheckout: React.FC = () => {
           <h2 className="text-lg font-bold mb-4 text-[#183b56]">Purchase summary</h2>
           <div className="mb-2">
             <div className="font-semibold text-base mb-1">{planName} <span className="float-right font-bold text-[#fbb040]">₹{planPrice.toLocaleString()}</span></div>
-            <ul className="list-disc ml-5 text-sm text-gray-800 mb-2">
-              <li>You are buying <b>{jobCredits} Job Credits</b></li>
-              <li>Use these credits to post Jobs within <b>{duration} days</b>.</li>
-            </ul>
+            
             <div className="text-[#fbb040] text-sm font-medium flex items-center mb-2">Plan discount (~13%) <span className="ml-auto text-[#fbb040] font-semibold">-₹{discount}</span></div>
           </div>
           <hr className="my-2 border-[#fbb040]/20" />

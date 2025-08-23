@@ -1,15 +1,7 @@
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-// Mock OjkLogo component
-interface OjkLogoProps {
-  className?: string;
-}
-const OjkLogo = ({ className }: OjkLogoProps) => (
-  <div className={`${className} bg-orange-400 rounded-lg flex items-center justify-center text-white font-bold text-xl`}>
-    OJK
-  </div>
-);
+import OjkLogo from "../../../components/common/OjkLogo";
 
 const employeeOptions = [
   "0-50",
@@ -56,19 +48,38 @@ const EmployerSignup = () => {
     }
     setIsLoading(true);
     try {
-      // Replace with your actual API endpoint
-      const res = await fetch("/api/employer/register", {
+      // Prepare payload for backend
+      const payload = {
+        phone_number: form.mobile,
+        name: form.fullName,
+        company_name: form.companyName,
+        is_consultancy: form.isConsultancy,
+        employees: form.employees,
+        work_email: form.workEmail,
+        agree: form.agree,
+      };
+      const res = await fetch("http://localhost:8000/employee/register/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify(payload),
       });
       const data = await res.json();
-      if (res.ok && data.success) {
-        // Registration successful, OTP sent
-        alert("Registration successful! OTP sent to your mobile.");
-      } else {
-        setError(data.message || "Registration failed");
-      }
+      console.log("Registration Response:", data);
+      if (res.ok) {
+        // Show OTP in popup and console
+        if (data.dev_otp) {
+          alert(`Your OTP is: ${data.dev_otp}`);
+          console.log("OTP for development:", data.dev_otp);
+        }
+        // Store registration details in localStorage
+        localStorage.setItem("employerRegistration", JSON.stringify(data));
+        // Log registration details
+        console.log("Registration details stored:", data);
+            // Navigate to VerifyOtp page and pass mobile number
+            navigate("/Employer/EmployerAuth/VerifyOtp", { state: { mobile: form.mobile } });
+          } else {
+            setError(data.message || data.error || "Registration failed");
+          }
     } catch {
       setError("Server error. Please try again.");
     }

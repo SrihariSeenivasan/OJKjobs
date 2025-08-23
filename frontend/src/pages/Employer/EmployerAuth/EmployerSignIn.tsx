@@ -13,9 +13,42 @@ const EmployerSignIn: React.FC = () => {
   const handleWatchVideo = () => setShowVideo(true);
   const handleCloseVideo = () => setShowVideo(false);
 
-  const handleContinue = () => {
-    navigate("/Employer/verifyOtp");
-  };
+    const handleContinue = async () => {
+      setError("");
+      if (!mobile || !/^\d{10}$/.test(mobile)) {
+        setError("Please enter a valid 10 digit mobile number");
+        return;
+      }
+      try {
+        const payload = {
+          phone_number: mobile,
+          name: "", // Name can be empty for login
+        };
+        const res = await fetch("http://localhost:8000/employee/register/", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        const data = await res.json();
+        console.log("Login Response:", data);
+        if (res.ok) {
+          // Show OTP in popup and console
+          if (data.dev_otp) {
+            alert(`Your OTP is: ${data.dev_otp}`);
+            console.log("OTP for development:", data.dev_otp);
+          }
+          // Store login details in localStorage
+          localStorage.setItem("employerLogin", JSON.stringify(data));
+          // Log login details
+          console.log("Login details stored:", data);
+          navigate("/Employer/verifyOtp");
+        } else {
+          setError(data.message || data.error || "Login failed");
+        }
+      } catch {
+        setError("Server error. Please try again.");
+      }
+    };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {

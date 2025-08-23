@@ -45,6 +45,7 @@ import PrivacyPolicy from './pages/Jobseeker/PrivacyPolicy';
 import RefundPolicy from './pages/Jobseeker/RefundPolicy';
 import TermsAndConditions from './pages/Jobseeker/TermsAndConditions';
 import AppliedForJobs from './pages/Employer/Jobs/AppliedForJobs';
+import CandidatePlanSelection from './pages/Jobseeker/CandidatesPlan/CandidatePlanSelection';
 
 function App() {
   return (
@@ -63,6 +64,8 @@ function App() {
             <Route path="/Blog" element ={<Blog />} />
             <Route path="/jobs/apply" element={<ApplyJob />} />
             <Route path="/apply-via-email" element={<ApplyViaEmail />} />
+            <Route path="/CandidatePlanSelection" element={<CandidatePlanSelection />} />
+            
 
             {/* Static Pages */}
             <Route path="/contact-us" element={<div className="p-8 text-center">Contact Us page coming soon!</div>} />

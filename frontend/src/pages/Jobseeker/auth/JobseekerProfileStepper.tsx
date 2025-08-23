@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { AppDispatch } from '../../../store';
 import { setProfile } from '../../../store/slices/authSlice';
@@ -76,10 +76,32 @@ interface Profile {
   };
 }
 
+// Helper to get user info from localStorage only (Redux is handled in component)
+const getUserInfo = () => {
+  let name = '';
+  let email = '';
+  let phone_number = '';
+  const candidateUserRaw = localStorage.getItem('candidateUser');
+  if (candidateUserRaw) {
+    try {
+      const candidateUser = JSON.parse(candidateUserRaw);
+      name = candidateUser.name || '';
+      phone_number = candidateUser.phone_number || '';
+    } catch (err) {
+      console.error('Error parsing candidateUser from localStorage:', err);
+    }
+  }
+  // Fallbacks if needed
+  if (!name) name = localStorage.getItem('user_name') || '';
+  if (!phone_number) phone_number = localStorage.getItem('phone_number') || '';
+  email = localStorage.getItem('user_email') || '';
+  return { name, email, phone_number };
+};
+
 const initialProfile: Profile = {
-  name: '',
-  email: '',
-  mobile: '',
+  name: getUserInfo().name,
+  email: getUserInfo().email,
+  mobile: getUserInfo().phone_number, // always string
   dob: '',
   gender: '',
   location: '',
@@ -99,6 +121,8 @@ interface JobseekerProfileStepperProps {
 const JobseekerProfileStepper: React.FC<JobseekerProfileStepperProps> = ({ onClose }) => {
   const [step, setStep] = useState(0);
   const [profile, setProfileState] = useState<Profile>(initialProfile);
+  // Get user info from Redux store
+  const user = useSelector((state: { auth: { user?: { name?: string; email?: string; phone_number?: string | number } } }) => state.auth?.user || {});
   const [isLoading, setIsLoading] = useState(false);
   const [skillInput, setSkillInput] = useState('');
   const [certInput, setCertInput] = useState('');
@@ -143,7 +167,7 @@ const JobseekerProfileStepper: React.FC<JobseekerProfileStepperProps> = ({ onClo
           <div className="space-y-7">
             <div>
               <label className="block font-semibold text-green-700 mb-1 text-xs">Full Name</label>
-              <input type="text" className="w-full px-2 py-1 border-2 border-green-300 focus:border-green-500 rounded bg-green-50 text-xs" value={profile.name} onChange={e => setProfileState({ ...profile, name: e.target.value })} required />
+              <input type="text" className="w-full px-2 py-1 border-2 border-green-300 focus:border-green-500 rounded bg-green-50 text-xs" value={user.name || profile.name} readOnly disabled />
             </div>
             <div className="flex gap-4">
               <div className="flex-1">
@@ -152,7 +176,7 @@ const JobseekerProfileStepper: React.FC<JobseekerProfileStepperProps> = ({ onClo
               </div>
               <div className="flex-1">
                 <label className="block font-semibold text-green-700 mb-1 text-xs">Mobile</label>
-                <input type="tel" className="w-full px-2 py-1 border-2 border-green-300 focus:border-green-500 rounded bg-green-50 text-xs" value={profile.mobile} onChange={e => setProfileState({ ...profile, mobile: e.target.value })} required />
+                <input type="tel" className="w-full px-2 py-1 border-2 border-green-300 focus:border-green-500 rounded bg-green-50 text-xs" value={String(user.phone_number || profile.mobile)} readOnly disabled />
               </div>
             </div>
             <div className="flex gap-4">
@@ -386,15 +410,51 @@ const JobseekerProfileStepper: React.FC<JobseekerProfileStepperProps> = ({ onClo
     }
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (step < steps.length - 1) setStep(step + 1);
     else {
       setIsLoading(true);
-      setTimeout(() => {
+      try {
+        // Prepare payload for candidate profile creation
+        const payload = { ...profile };
+        // Remove resume file from payload for now (handle separately if needed)
+        if (payload.resume) payload.resume = null;
+        // API endpoint for candidate profile creation
+        const CANDIDATE_API = 'http://127.0.0.1:8000/candidate/candidates/';
+        // Get JWT token from localStorage if available
+        const token = localStorage.getItem('access_token');
+        console.log('Debug: access_token from localStorage:', token);
+        if (!token) {
+          alert('No access_token found in localStorage. Please login again.');
+          setIsLoading(false);
+          return;
+        }
+        const response = await fetch(CANDIDATE_API, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(payload)
+        });
+        if (!response.ok) {
+          throw new Error(`API returned status ${response.status}`);
+        }
+        let data;
+        try {
+          data = await response.json();
+        } catch {
+          throw new Error('Invalid JSON response from API');
+        }
+        console.log('Candidate profile created:', data);
         dispatch(setProfile(profile));
         setIsLoading(false);
         navigate('/profile');
-      }, 1000);
+      } catch (err) {
+        setIsLoading(false);
+        console.error('Error creating candidate profile:', err);
+        alert('Error creating candidate profile: ' + err);
+      }
     }
   };
   const handlePrev = () => {

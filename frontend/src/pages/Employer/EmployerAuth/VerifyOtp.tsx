@@ -97,20 +97,40 @@ const EmployerRegisterVerifyOtp: React.FC<Props> = ({ mobile = "" }) => {
     }
     setIsLoading(true);
     setError("");
-    // fetch logic removed as per request
-    // Simulate OTP check: if OTP is '1234', navigate to dashboard, else show error
-    setTimeout(() => {
-      if (otp.join("") === "1234") {
+    try {
+      // Get mobile from location or localStorage
+      const mobileNumber = locationMobile || (JSON.parse(localStorage.getItem("employerLogin") || "{}").phone_number || "");
+      const name = ""; // You can fetch name from localStorage if needed
+      const payload = {
+        phone_number: mobileNumber,
+        otp: otp.join("") + "", // join OTP digits
+        name,
+      };
+      const res = await fetch("http://localhost:8000/employee/verify/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      console.log("OTP Verify Response:", data);
+      if (res.ok && data.verified) {
+        alert("OTP verified! Login successful.");
+        // Store user and token details in localStorage
+        localStorage.setItem("employerUser", JSON.stringify(data));
+        // Log all details
+        console.log("User and token details stored:", data);
         navigate("/Employer/Jobs");
       } else {
-        setError("Invalid OTP. Please try again.");
+        setError(data.message || data.error || "Invalid OTP. Please try again.");
         setShake(true);
         setOtp(["", "", "", ""]);
         inputRefs[0].current?.focus();
         setTimeout(() => setShake(false), 500);
       }
-      setIsLoading(false);
-    }, 700);
+    } catch {
+      setError("Server error. Please try again.");
+    }
+    setIsLoading(false);
   };
 
   return (
